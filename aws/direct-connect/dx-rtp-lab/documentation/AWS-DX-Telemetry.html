@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>AWS-DX-Telemetry</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<p><img src="https://images.folloze.com/image/upload/v1623245899/oic1b8o6v91c1m2tnd4u.png" height="200" class="image-margin-right">
+<span style="margin-right: 100px;"></span>
+<!-- Adjust the 20px to whatever space you need -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Cisco_logo.svg/320px-Cisco_logo.svg.png" height="200"></p>
+<p><br></p>
+<h1 id="aws-direct-connect---telemetry">AWS Direct Connect -
+Telemetry</h1>
+<h2 id="contact-information">Contact Information</h2>
+<ul>
+<li><a href="nicmcl@cisco.com">Nicolas Michel, Solution
+Architect</a></li>
+</ul>
+<p>Revision information:</p>
+<p>v0.1: Draft</p>
+<h2 id="revision-history---changelog">Revision History - Changelog</h2>
+<p>Document any changes made to the lab setup, including updates to
+configurations, hardware changes, or topology modifications.</p>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 61%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr>
+<th>Date</th>
+<th>Description</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024-05-21</td>
+<td>Initial document revision</td>
+<td>Nicolas MICHEL</td>
+</tr>
+<tr>
+<td>2024-08-14</td>
+<td>Added Power - Platform and DX Topology</td>
+<td>Nicolas MICHEL</td>
+</tr>
+</tbody>
+</table>
+<p><em>Last Updated: [2024-08-14]</em></p>
+<h2 id="lab-backlog-for-dx">Lab Backlog for DX</h2>
+<ul>
+<li>Add Power Efficiency</li>
+<li>Add Co2</li>
+<li>Add Cost calculation</li>
+</ul>
+<p>Check these sensors paths:</p>
+<pre><code>•   Cisco-IOS-XR-envmon-oper:environmental-monitoring
+•   Cisco-IOS-XR-envmon-oper:power-management/rack/chassis
+•   Cisco-IOS-XR-envmon-oper:power-management/rack/consumers
+•   Cisco-IOS-XR-invmgr-oper:inventory/entities/entity/attributes/env-sensor-info
+•   Cisco-IOS-XR-controller-optics-oper:optics-oper/optics-ports/optics-port/optics-info
+•   Cisco-IOS-XR-invmgr-oper:inventory/entities/entity/attributes/inv-basic-bag/power-capacity
+•   Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/total/data-rate/input-data-rate
+•   Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/total/data-rate/output-data-rate</code></pre>
+<h2 id="general-backlog">General Backlog</h2>
+<h2 id="telemetry">Telemetry</h2>
+<h3 id="containerized-telemetry">Containerized Telemetry</h3>
+<p>The docker compose file looks like this:</p>
+<pre><code>
+version: &quot;2&quot;
+services:
+  grafana:
+    image: grafana/grafana:10.2.1
+    container_name: DX-grafana
+    ports:
+      - &#39;3000:3000&#39;
+    volumes:
+      #- ~/code/telemetry/grafana/data:/var/lib/grafana
+      #- ~/code/telemetry/grafana/provisioning:/etc/grafana/provisioning
+      #- ~/code/telemetry/grafana/data/plugins:/var/lib/grafana/plugins
+      - ~/code/telemetry/grafana/provisioning/dashboards/:/var/lib/grafana/dashboards
+      - ~/code/telemetry/grafana/provisioning/datasources/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+      - ~/code/telemetry/grafana/provisioning/dashboards/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      #- type: bind
+      #  source: ~/code/telemetry/grafana/data/plugins
+      #  target: /var/lib/grafana/plugins
+      #  bind:
+      #    create_host_path: true
+    #user: &quot;472:472&quot;
+    environment:
+      - GF_SECURITY_ADMIN_USER=netadmin
+      - GF_SECURITY_ADMIN_PASSWORD=C1sco12345!
+      - GF_AUTH_ANONYMOUS_ENABLED= true
+      - GF_AUTH_ANONYMOUS= true
+      - INFLUX_DB_TOKEN=C1sco12345!
+      - GF_INSTALL_PLUGINS=https://algenty.github.io/flowcharting-repository/archives/agenty-flowcharting-panel-1.0.0d.220606199-SNAPSHOT.zip;agenty-flowcharting-panel
+    deploy:
+      resources:
+        reservations:
+          cpus: &quot;4&quot;
+    networks:
+      - telemetry_network
+
+
+
+  influxdb:
+    image: influxdb:latest
+    container_name: DX-influxdb
+    ports:
+      - &#39;8086:8086&#39;
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_BUCKET=telemetry
+      - DOCKER_INFLUXDB_INIT_USERNAME=netadmin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=C1sco12345!
+      - DOCKER_INFLUXDB_INIT_ORG=lab
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=C1sco12345!
+    volumes:
+      - ~/code/telemetry/influxdb/data:/var/lib/influxdb2
+    networks:
+      - telemetry_network
+    deploy:
+      resources:
+        reservations:
+          cpus: &quot;8&quot;
+    
+
+  telegraf:
+    image: telegraf:latest
+    container_name: DX-telegraf
+    depends_on:
+      - influxdb
+    ports:
+      - &#39;57500:57500&#39;
+    volumes:
+      - ~/code/telemetry/telegraf/telegraf_dial_out.conf:/etc/telegraf/telegraf.conf:ro
+      #- ./telegraf_dial_in.conf:/etc/telegraf/telegraf.conf:ro
+      #- ./embedded_tag.star:/etc/telegraf/embedded_tag.star:ro
+    networks:
+      - telemetry_network
+
+networks:
+  telemetry_network:
+    driver: bridge</code></pre>
+<p>launch the containers using</p>
+<pre><code>netadmin@srv-ubuntu-01:/home/netadmin/code/telemetry $ docker compose up -d
+WARN[0000] /home/netadmin/code/telemetry/docker-compose.yml: `version` is obsolete
+...                                                                                                                                                                          
+ ✔ Container DX-influxdb  Started                                                                                                                                                                                                                          
+ ✔ Container DX-grafana   Started                                                                                                                                                                                                                          
+ ✔ Container DX-telegraf  Started</code></pre>
+<p>Verify the containers are running:</p>
+<pre><code>netadmin@srv-ubuntu-01:/home/netadmin/code/telemetry $ docker ps -a | grep DX
+5099b8c83cad   grafana/grafana:latest       &quot;/run.sh&quot;                14 minutes ago   Up 14 minutes   0.0.0.0:3000-&gt;3000/tcp, :::3000-&gt;3000/tcp            DX-grafana
+2926672e944d   telegraf:latest              &quot;/entrypoint.sh tele…&quot;   14 minutes ago   Up 14 minutes   8092/udp, 8125/udp, 8094/tcp, 0.0.0.0:57500-&gt;57500/tcp, :::57500-&gt;57500/tcp          DX-telegraf
+013f49fb15ca   influxdb:latest              &quot;/entrypoint.sh infl…&quot;   14 minutes ago   Up 14 minutes   0.0.0.0:8086-&gt;8086/tcp, :::8086-&gt;8086/tcp            DX-influxdb</code></pre>
+<p>The credentials are both :</p>
+<ul>
+<li>netadmin / C1sco12345!</li>
+</ul>
+<p>Grafana is reachable <a href="http://198.18.140.3:3000">here</a>.<br>
+InflucDB is reachable <a href="http://198.18.140.3:8086/orgs/">here</a>
+<br> Telegraf can be access throught the container directly:</p>
+<pre><code>docker exec -it DX-telegraf /bin/</code></pre>
+<h3 id="telegraf-configuration">Telegraf Configuration</h3>
+<p>Here is the telegraf configuration for reference and analysis:</p>
+<pre><code>
+netadmin@srv-ubuntu-01:/home/netadmin/code/telemetry $ cat telegraf_dial_out.conf
+# Telegraf Configuration
+#
+# Telegraf is entirely plugin driven. All metrics are gathered from the
+# declared inputs, and sent to the declared outputs.
+#
+# Plugins must be declared in here to be active.
+# To deactivate a plugin, comment out the name and any variables.
+#
+# Use &#39;telegraf -config telegraf.conf -test&#39; to see what metrics a config
+# file would generate.
+#
+# Environment variables can be used anywhere in this config file, simply surround
+# them with ${}. For strings the variable must be within quotes (ie, &quot;${STR_VAR}&quot;),
+# for numbers and booleans they should be plain (ie, ${INT_VAR}, ${BOOL_VAR})
+
+
+# Global tags can be specified here in key=&quot;value&quot; format.
+[global_tags]
+  # dc = &quot;us-east-1&quot; # will tag all metrics with dc=us-east-1
+  # rack = &quot;1a&quot;
+  ## Environment variables can be used as tags, and throughout the config file
+  # user = &quot;$USER&quot;
+
+
+# Configuration for telegraf agent
+[agent]
+  ## Default data collection interval for all inputs
+  interval = &quot;10s&quot;
+  ## Rounds collection interval to &#39;interval&#39;
+  ## ie, if interval=&quot;10s&quot; then always collect on :00, :10, :20, etc.
+  round_interval = true
+
+  ## Telegraf will send metrics to outputs in batches of at most
+  ## metric_batch_size metrics.
+  ## This controls the size of writes that Telegraf sends to output plugins.
+  metric_batch_size = 1000
+
+  ## Maximum number of unwritten metrics per output.  Increasing this value
+  ## allows for longer periods of output downtime without dropping metrics at the
+  ## cost of higher maximum memory usage.
+  metric_buffer_limit = 10000
+
+  ## Collection jitter is used to jitter the collection by a random amount.
+  ## Each plugin will sleep for a random time within jitter before collecting.
+  ## This can be used to avoid many plugins querying things like sysfs at the
+  ## same time, which can have a measurable effect on the system.
+  collection_jitter = &quot;0s&quot;
+
+  ## Default flushing interval for all outputs. Maximum flush_interval will be
+  ## flush_interval + flush_jitter
+  flush_interval = &quot;10s&quot;
+  ## Jitter the flush interval by a random amount. This is primarily to avoid
+  ## large write spikes for users running a large number of telegraf instances.
+  ## ie, a jitter of 5s and interval 10s means flushes will happen every 10-15s
+  flush_jitter = &quot;0s&quot;
+
+  ## By default or when set to &quot;0s&quot;, precision will be set to the same
+  ## timestamp order as the collection interval, with the maximum being 1s.
+  ##   ie, when interval = &quot;10s&quot;, precision will be &quot;1s&quot;
+  ##       when interval = &quot;250ms&quot;, precision will be &quot;1ms&quot;
+  ## Precision will NOT be used for service inputs. It is up to each individual
+  ## service input to set the timestamp at the appropriate precision.
+  ## Valid time units are &quot;ns&quot;, &quot;us&quot; (or &quot;µs&quot;), &quot;ms&quot;, &quot;s&quot;.
+  precision = &quot;&quot;
+
+  ## Log at debug level.
+  debug = false
+  ## Log only error level messages.
+  quiet = false
+
+  ## Log target controls the destination for logs and can be one of &quot;file&quot;,
+  ## &quot;stderr&quot; or, on Windows, &quot;eventlog&quot;.  When set to &quot;file&quot;, the output file
+  ## is determined by the &quot;logfile&quot; setting.
+  logtarget = &quot;file&quot;
+
+  ## Name of the file to be logged to when using the &quot;file&quot; logtarget.  If set to
+  ## the empty string then logs are written to stderr.
+  logfile = &quot;&quot;
+
+  ## The logfile will be rotated after the time interval specified.  When set
+  ## to 0 no time based rotation is performed.  Logs are rotated only when
+  ## written to, if there is no log activity rotation may be delayed.
+  # logfile_rotation_interval = &quot;0d&quot;
+
+  ## The logfile will be rotated when it becomes larger than the specified
+  ## size.  When set to 0 no size based rotation is performed.
+  # logfile_rotation_max_size = &quot;0MB&quot;
+
+  ## Maximum number of rotated archives to keep, any older logs are deleted.
+  ## If set to -1, no archives are removed.
+  # logfile_rotation_max_archives = 5
+
+  ## Override default hostname, if empty use os.Hostname()
+  hostname = &quot;&quot;
+  ## If set to true, do no set the &quot;host&quot; tag in the telegraf agent.
+  omit_hostname = false
+
+
+###############################################################################
+#                            OUTPUT PLUGINS                                   #
+###############################################################################
+
+
+# Configuration for sending metrics to InfluxDB
+[[outputs.influxdb_v2]]
+    ## The URLs of the InfluxDB cluster nodes.
+  ##
+  ## Multiple URLs can be specified for a single cluster, only ONE of the
+  ## urls will be written to each interval.
+  ##   ex: urls = [&quot;https://us-west-2-1.aws.cloud2.influxdata.com&quot;]
+  urls = [&quot;http://198.18.140.3:8086&quot;]
+
+  ## Token for authentication.
+  token = &quot;C1sco12345!&quot;
+
+  ## Organization is the name of the organization you wish to write to.
+  organization = &quot;lab&quot;
+
+  ## Destination bucket to write into.
+  bucket = &quot;telemetry&quot;
+
+  ## The value of this tag will be used to determine the bucket.  If this
+  ## tag is not set the &#39;bucket&#39; option is used as the default.
+  # bucket_tag = &quot;&quot;
+
+  ## If true, the bucket tag will not be added to the metric.
+  # exclude_bucket_tag = false
+
+  ## Timeout for HTTP messages.
+  # timeout = &quot;5s&quot;
+
+  ## Additional HTTP headers
+  # http_headers = {&quot;X-Special-Header&quot; = &quot;Special-Value&quot;}
+
+  ## HTTP Proxy override, if unset values the standard proxy environment
+  ## variables are consulted to determine which proxy, if any, should be used.
+  # http_proxy = &quot;http://corporate.proxy:3128&quot;
+
+  ## HTTP User-Agent
+  # user_agent = &quot;telegraf&quot;
+
+  ## Content-Encoding for write request body, can be set to &quot;gzip&quot; to
+  ## compress body or &quot;identity&quot; to apply no encoding.
+  # content_encoding = &quot;gzip&quot;
+
+  ## Enable or disable uint support for writing uints influxdb 2.0.
+  # influx_uint_support = false
+
+  ## HTTP/2 Timeouts
+  ## The following values control the HTTP/2 client&#39;s timeouts. These settings
+  ## are generally not required unless a user is seeing issues with client
+  ## disconnects. If a user does see issues, then it is suggested to set these
+  ## values to &quot;15s&quot; for ping timeout and &quot;30s&quot; for read idle timeout and
+  ## retry.
+  ##
+  ## Note that the timer for read_idle_timeout begins at the end of the last
+  ## successful write and not at the beginning of the next write.
+  # ping_timeout = &quot;0s&quot;
+  # read_idle_timeout = &quot;0s&quot;
+
+  ## Optional TLS Config for use on HTTP connections.
+  # tls_ca = &quot;/etc/telegraf/ca.pem&quot;
+  # tls_cert = &quot;/etc/telegraf/cert.pem&quot;
+  # tls_key = &quot;/etc/telegraf/key.pem&quot;
+  ## Use TLS but skip chain &amp; host verification
+  # insecure_skip_verify = false
+
+
+###############################################################################
+#                            PROCESSOR PLUGINS                                #
+###############################################################################
+
+
+# Rename measurements, tags, and fields that pass through this filter.
+[[processors.rename]]
+  namepass = [&quot;StatsQosIn&quot;,&quot;StatsQosOut&quot;]
+  [[processors.rename.replace]]
+    tag = &quot;class_stats/class_name&quot;
+    dest = &quot;class_name&quot;
+
+[[processors.regex]]
+  namepass = [&quot;StatsQosIn&quot;,&quot;StatsQosOut&quot;]
+   # Rename metric fields
+  [[processors.regex.field_rename]]
+    ## Regular expression to match on a field name
+    pattern = &quot;^class_stats\\/general_stats\\/(.*)$&quot;
+    ## Matches of the pattern will be replaced with this string.  Use ${1}
+    ## notation to use the text of the first submatch.
+    replacement = &quot;${1}&quot;
+    ## If the new field name already exists, you can either &quot;overwrite&quot; the
+    ## existing one with the value of the renamed field OR you can &quot;keep&quot;
+    ## both the existing and source field.
+    # result_key = &quot;keep&quot;
+
+[[processors.converter]]
+  namepass = [&quot;StatsQosIn&quot;,&quot;StatsQosOut&quot;]
+  ## Tags to convert
+  ##
+  ## The table key determines the target type, and the array of key-values
+  ## select the keys to convert.  The array may contain globs.
+  ##   &lt;target-type&gt; = [&lt;tag-key&gt;...]
+  [processors.converter.fields]
+   ## measurement = []
+   ## tag = []
+   ## string = []
+   ## integer = []
+   ## unsigned = []
+   ## boolean = []
+   ## float = []
+   unsigned = [&quot;*bytes&quot;,&quot;*packets&quot;,&quot;*rate&quot;]
+
+    ## Optional field to use as metric timestamp
+    # timestamp = []
+
+    ## Format of the timestamp determined by the field above. This can be any
+    ## of &quot;unix&quot;, &quot;unix_ms&quot;, &quot;unix_us&quot;, &quot;unix_ns&quot;, or a valid Golang time
+    ## format. It is required, when using the timestamp option.
+    # timestamp_format = &quot;&quot;
+
+###############################################################################
+#                            INPUT PLUGINS                                    #
+###############################################################################
+
+# Cisco model-driven telemetry (MDT) input plugin for IOS XR, IOS XE and NX-OS platforms
+[[inputs.cisco_telemetry_mdt]]
+ ## Telemetry transport can be &quot;tcp&quot; or &quot;grpc&quot;.  TLS is only supported when
+ ## using the grpc transport.
+ transport = &quot;grpc&quot;
+
+ ## Address and port to host telemetry listener
+ service_address = &quot;:57500&quot;
+
+ ## Grpc Maximum Message Size, default is 4MB, increase the size. This is
+ ## stored as a uint32, and limited to 4294967295.
+ max_msg_size = 4000000
+
+ ## Enable TLS; grpc transport only.
+ # tls_cert = &quot;/etc/telegraf/cert.pem&quot;
+ # tls_key = &quot;/etc/telegraf/key.pem&quot;
+
+ ## Enable TLS client authentication and define allowed CA certificates; grpc
+ ##  transport only.
+ # tls_allowed_cacerts = [&quot;/etc/telegraf/clientca.pem&quot;]
+
+ ## Define (for certain nested telemetry measurements with embedded tags) which fields are tags
+ embedded_tags = [&quot;Cisco-IOS-XR-qos-ma-oper:qos/interface-table/interface/input/service-policy-names/service-policy-instance/statistics/class-stats/class-name&quot;,
+ &quot;Cisco-IOS-XR-qos-ma-oper:qos/interface-table/interface/output/service-policy-names/service-policy-instance/statistics/class-stats/class-name&quot;]
+
+  ## Include the delete field in every telemetry message.
+  # include_delete_field = false
+
+ ## Define aliases to map telemetry encoding paths to simple measurement names
+  [inputs.cisco_telemetry_mdt.aliases]
+   StatsQosIn = &quot;Cisco-IOS-XR-qos-ma-oper:qos/interface-table/interface/input/service-policy-names/service-policy-instance/statistics&quot;
+   StatsQosOut = &quot;Cisco-IOS-XR-qos-ma-oper:qos/interface-table/interface/output/service-policy-names/service-policy-instance/statistics&quot;
+ ## Define Property Xformation, please refer README and https://pubhub.devnetcloud.com/media/dme-docs-9-3-3/docs/appendix/ for Model details.
+ [inputs.cisco_telemetry_mdt.dmes]
+#    Global Property Xformation.
+#    prop1 = &quot;uint64 to int&quot;
+#    prop2 = &quot;uint64 to string&quot;
+#    prop3 = &quot;string to uint64&quot;
+#    prop4 = &quot;string to int64&quot;
+#    prop5 = &quot;string to float64&quot;
+#    auto-prop-xfrom = &quot;auto-float-xfrom&quot; #Xform any property which is string, and has float number to type float64
+#    Per Path property xformation, Name is telemetry configuration under sensor-group, path configuration &quot;WORD         Distinguished Name&quot;
+#    Per Path configuration is better as it avoid property collision issue of types.
+#    dnpath = &#39;{&quot;Name&quot;: &quot;show ip route summary&quot;,&quot;prop&quot;: [{&quot;Key&quot;: &quot;routes&quot;,&quot;Value&quot;: &quot;string&quot;}, {&quot;Key&quot;: &quot;best-paths&quot;,&quot;Value&quot;: &quot;string&quot;}]}&#39;
+#    dnpath2 = &#39;{&quot;Name&quot;: &quot;show processes cpu&quot;,&quot;prop&quot;: [{&quot;Key&quot;: &quot;kernel_percent&quot;,&quot;Value&quot;: &quot;float&quot;}, {&quot;Key&quot;: &quot;idle_percent&quot;,&quot;Value&quot;: &quot;float&quot;}, {&quot;Key&quot;: &quot;process&quot;,&quot;Value&quot;: &quot;string&quot;}, {&quot;Key&quot;: &quot;user_percent&quot;,&quot;Value&quot;: &quot;float&quot;}, {&quot;Key&quot;: &quot;onesec&quot;,&quot;Value&quot;: &quot;float&quot;}]}&#39;
+#    dnpath3 = &#39;{&quot;Name&quot;: &quot;show processes memory physical&quot;,&quot;prop&quot;: [{&quot;Key&quot;: &quot;processname&quot;,&quot;Value&quot;: &quot;string&quot;}]}&#39;
+
+ ## Additional GRPC connection settings.
+ [inputs.cisco_telemetry_mdt.grpc_enforcement_policy]
+  ## GRPC permit keepalives without calls, set to true if your clients are
+  ## sending pings without calls in-flight. This can sometimes happen on IOS-XE
+  ## devices where the GRPC connection is left open but subscriptions have been
+  ## removed, and adding subsequent subscriptions does not keep a stable session.
+  # permit_keepalive_without_calls = false
+
+  ## GRPC minimum timeout between successive pings, decreasing this value may
+  ## help if this plugin is closing connections with ENHANCE_YOUR_CALM (too_many_pings).
+  # keepalive_minimum_time = &quot;5m&quot;
+
+</code></pre>
+<p>This Telegraf configuration file (telegraf_dial_out.conf) is set up
+to collect telemetry data from Cisco devices and send it to an InfluxDB
+database for storage and analysis. Here’s a breakdown of the
+configuration:</p>
+<p>Global Tags</p>
+<pre><code>•   [global_tags]: Allows you to define tags that will be applied to all metrics. These tags can help categorize and filter data in InfluxDB. In this configuration, global tags are commented out.</code></pre>
+<p>Agent Configuration</p>
+<pre><code>•   [agent]: Configures the behavior of the Telegraf agent.
+•   interval: Sets the data collection interval to 10 seconds.
+•   round_interval: Ensures data collection happens on exact intervals (e.g., :00, :10, :20).
+•   metric_batch_size: Specifies the number of metrics to send in each batch (1000).
+•   metric_buffer_limit: Limits the number of unwritten metrics to 10000.
+•   collection_jitter: Adds a random delay to data collection to avoid spikes (set to 0s).
+•   flush_interval: Sets the interval for flushing data to outputs (10 seconds).
+•   flush_jitter: Adds a random delay to flush intervals (set to 0s).
+•   precision: Defines the timestamp precision (default is determined by the collection interval).
+•   logtarget: Specifies the log destination (file).
+•   logfile: Specifies the log file (empty, so logs go to stderr).
+•   hostname: Uses the OS hostname by default.
+•   omit_hostname: If true, does not set the “host” tag (false by default).</code></pre>
+<p>Output Plugins</p>
+<pre><code>•   [[outputs.influxdb_v2]]: Configures Telegraf to send metrics to an InfluxDB instance.
+•   urls: Specifies the URL of the InfluxDB instance (http://198.18.140.3:8086).
+•   token: Sets the authentication token (C1sco12345!).
+•   organization: Specifies the organization name in InfluxDB (lab).
+•   bucket: Defines the bucket in InfluxDB to write metrics to (telemetry).</code></pre>
+<p>Processor Plugins</p>
+<pre><code>•   [[processors.rename]]: Renames measurements, tags, and fields.
+•   namepass: Applies renaming only to specified metrics (StatsQosIn, StatsQosOut).
+•   tag: Renames a specific tag.
+•   [[processors.regex]]: Renames metric fields using regular expressions.
+•   namepass: Applies regex renaming to specified metrics (StatsQosIn, StatsQosOut).
+•   pattern: Matches field names using a regex pattern.
+•   replacement: Replaces matched field names with a specified format.
+•   [[processors.converter]]: Converts fields to different types.
+•   namepass: Applies conversion to specified metrics (StatsQosIn, StatsQosOut).
+•   unsigned: Converts fields matching specified patterns to unsigned integers.</code></pre>
+<p>Input Plugins</p>
+<pre><code>•   [[inputs.cisco_telemetry_mdt]]: Configures the input plugin for Cisco Model-Driven Telemetry (MDT).
+•   transport: Uses gRPC for telemetry transport.
+•   service_address: Listens for telemetry on port 57500.
+•   max_msg_size: Sets the maximum message size to 4MB.
+•   embedded_tags: Specifies which fields are tags.
+•   aliases: Maps telemetry encoding paths to simple measurement names.
+•   grpc_enforcement_policy: Additional settings for the gRPC connection.</code></pre>
+<p>Summary</p>
+<pre><code>1.  Data Collection: Telegraf collects telemetry data every 10 seconds from Cisco devices using the gRPC transport protocol.
+2.  Data Processing: The data is processed by renaming fields and converting data types to ensure consistency and readability.
+3.  Data Output: The processed data is sent to an InfluxDB instance at http://198.18.140.3:8086, authenticated with a token, and stored in the telemetry bucket under the lab organization.</code></pre>
+<p>This configuration ensures that telemetry data is collected
+efficiently, processed appropriately, and stored securely for analysis
+and monitoring in InfluxDB.</p>
+<h3 id="model-driven-telemetry-metrics">Model Driven Telemetry
+Metrics</h3>
+<h4 id="system-metrics">System Metrics</h4>
+<p>Platform</p>
+<pre><code>Chassis Hostname:   Cisco-IOS-XR-um-hostname-cfg:hostname/system-network-name
+System Uptime
+Temperature Sensors
+Power Supply Status
+Power Supply Voltage
+Power Supply Current
+Power Supply Power Output
+Fan Status
+Chassis Temperature
+Chassis Fan Speed
+Chassis Power Consumption</code></pre>
+<p>CPU and Memory Metrics</p>
+<pre><code>CPU Utilization
+Memory Utilization</code></pre>
+<p>Interface Metrics</p>
+<pre><code>Interface Status (Up/Down)
+Interface Bandwidth Utilization (In/Out)
+Interface Error Rate (CRC Errors)
+Interface Discard Rate
+Interface Packet Drops (In/Out)
+Interface Queue Utilization
+Interface Congestion
+Interface MTU Size
+Interface Speed</code></pre>
+<p>Traffic Metrics</p>
+<pre><code>Total Packets (In/Out)
+Total Bytes (In/Out)
+Packet Rate (PPS - Packets Per Second)
+Byte Rate (BPS - Bytes Per Second)</code></pre>
+<p>BGP Metrics</p>
+<pre><code>BGP Peer Status (Established/Not Established)
+BGP Route Counts (IPv4/IPv6)
+BGP Prefixes Received
+BGP Prefixes Advertised
+BGP Updates Received
+BGP Updates Sent
+BGP AS Path Length
+BGP Route Age
+BGP Route Refresh Requests</code></pre>
+<p>VRF Metrics</p>
+<pre><code>VRF Counts
+VRF Route Counts
+VRF Traffic Utilization
+VRF Specific Interface Utilization
+VRF Specific Error Rate</code></pre>
+<p>QoS Metrics (VALUABLE BUT NOT USED BY AWS TODAY)</p>
+<pre><code>QoS Policy Drops
+QoS Policy Matches
+QoS Queue Length
+QoS Queue Drops
+QoS Marking Statistics</code></pre>
+<p>Platform and Optics Metrics</p>
+<pre><code>Optics Power Levels (Transmit)
+Optics Power Levels (Receive)
+Optics Temperature
+Optics Voltage
+Transceiver Presence
+Transceiver Operational Status
+Transceiver Error Count
+Transceiver Module Type
+Transceiver Vendor
+Transceiver Serial Number
+Interface Light Levels</code></pre>
+<p>Example Grafana Dashboard Setup</p>
+<pre><code>Interface Status Panel: Display the up/down status of critical interfaces.
+Bandwidth Utilization Panel: Graph showing the in/out bandwidth usage over time for key interfaces.
+Error Rate Panel: Highlight interfaces with high error rates.
+Packet Drops Panel: Show the number of dropped packets on each interface.
+Top Talkers Panel: List of top source and destination IPs based on traffic volume.
+BGP Peer Status Panel: Display the status of BGP peers.
+BGP Route Counts Panel: Number of routes received and advertised by BGP.
+CPU Utilization Panel: Graph of CPU usage over time.
+Memory Utilization Panel: Graph of memory usage over time.
+System Uptime Panel: Display the uptime of the PE router.
+Temperature Sensors Panel: Current temperature readings from various sensors.
+QoS Policy Drops Panel: Display drops due to QoS policies.
+Optics Power Levels Panel: Show transmit and receive power levels for optics.
+Optics Temperature Panel: Display temperature of optics.
+Optics Bias Current Panel: Show bias current of optics.
+Transceiver Status Panel: Display status of transceivers.
+Chassis Temperature Panel: Show temperature readings of the chassis.
+Power Supply Status Panel: Display status and metrics of power supplies.
+Fan Status Panel: Show the status and speed of fans.
+Line Card Status Panel: Display status and metrics of line cards.</code></pre>
+</body>
+</html>

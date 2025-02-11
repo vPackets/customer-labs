@@ -1,0 +1,92 @@
+{
+  "id": 4,
+  "gridPos": {
+    "h": 13,
+    "w": 12,
+    "x": 12,
+    "y": 12
+  },
+  "type": "timeseries",
+  "title": "Current sensors",
+  "transformations": [
+    {
+      "id": "groupBy",
+      "options": {}
+    }
+  ],
+  "datasource": {
+    "type": "influxdb",
+    "uid": "PAA239D41A0EF0C37"
+  },
+  "pluginVersion": "8.3.0",
+  "description": "TODO - check unit of measurement",
+  "fieldConfig": {
+    "defaults": {
+      "custom": {
+        "drawStyle": "line",
+        "lineInterpolation": "smooth",
+        "barAlignment": 0,
+        "lineWidth": 2,
+        "fillOpacity": 30,
+        "gradientMode": "opacity",
+        "spanNulls": false,
+        "showPoints": "always",
+        "pointSize": 4,
+        "stacking": {
+          "mode": "none",
+          "group": "A"
+        },
+        "axisPlacement": "auto",
+        "axisLabel": "",
+        "scaleDistribution": {
+          "type": "linear"
+        },
+        "hideFrom": {
+          "tooltip": false,
+          "viz": false,
+          "legend": false
+        },
+        "thresholdsStyle": {
+          "mode": "off"
+        },
+        "lineStyle": {
+          "fill": "solid"
+        }
+      },
+      "color": {
+        "mode": "palette-classic"
+      },
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          }
+        ]
+      },
+      "mappings": [],
+      "displayName": "${__field.labels}",
+      "unit": "mamp"
+    },
+    "overrides": []
+  },
+  "options": {
+    "tooltip": {
+      "mode": "single"
+    },
+    "legend": {
+      "displayMode": "table",
+      "placement": "right",
+      "calcs": []
+    }
+  },
+  "targets": [
+    {
+      "datasource": "InfluxDB-2",
+      "hide": false,
+      "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-envmon-oper:environmental-monitoring/rack/nodes/node/sensor-types/sensor-type/sensor-names/sensor-name\" and \n    (\n    r._field == \"sensor_value\"\n    ))\n  |> filter(fn: (r) => r.type == \"current\")\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"node\", \"location\", \"name\", \"type\", \"source\"])",
+      "refId": "current sensors"
+    }
+  ]
+}

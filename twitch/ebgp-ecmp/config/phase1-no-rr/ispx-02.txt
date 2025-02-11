@@ -1,0 +1,60 @@
+
+hostname ispx-02
+
+!
+interface Loopback0
+ ip address 172.16.20.2 255.255.255.255
+!
+interface GigabitEthernet1
+ ip address 10.0.0.15 255.255.255.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet2
+ ip address 203.0.113.14 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet3
+ ip address 10.2.0.9 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet4
+ ip address 10.2.0.2 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+router ospf 1
+ network 10.2.0.0 0.0.0.3 area 0
+ network 10.2.0.8 0.0.0.3 area 0
+ network 172.16.20.2 0.0.0.0 area 0
+!
+router bgp 2222
+ bgp log-neighbor-changes
+ neighbor 172.16.20.1 remote-as 2222
+ neighbor 172.16.20.1 update-source Loopback0
+ neighbor 172.16.20.1 next-hop-self
+ neighbor 172.16.20.1 send-community
+ neighbor 172.16.20.1 soft-reconfiguration inbound
+ neighbor 172.16.20.10 remote-as 2222
+ neighbor 172.16.20.10 update-source Loopback0
+ neighbor 172.16.20.10 next-hop-self
+ neighbor 172.16.20.10 send-community
+ neighbor 172.16.20.10 soft-reconfiguration inbound
+ neighbor 203.0.113.13 remote-as 46489
+ neighbor 203.0.113.13 route-map TAG_ALL_TWITCH in
+!
+
+!
+route-map TAG_ALL_TWITCH permit 10
+ set community 3046749593 additive
+!

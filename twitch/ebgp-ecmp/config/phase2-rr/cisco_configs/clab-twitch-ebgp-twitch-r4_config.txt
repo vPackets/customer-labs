@@ -1,0 +1,243 @@
+
+
+Fri Nov  8 21:48:39.372 UTC
+!! Building configuration...
+!! IOS XR Configuration 24.1.1
+!! Last configuration change at Thu Sep 26 22:53:58 2024 by cisco
+!
+hostname twitch-r4
+logging console disable
+username cisco
+ group root-lr
+ group cisco-support
+ secret 10 $6$0ifNsvO4CaV1s...$YGo.ZBgxLYYzovG4PpkB16mTTkjbTW9NnvbyJK7hkzFrLwFiVd0kiNAciSmhp2EerRH8Q3uYJ8iU2jEpU9J121
+!
+username cisco123
+ group root-lr
+ group cisco-support
+ secret 10 $6$iaRHNNrI4BZ/N...$x1h8zgWyL4fA0/GiRrnnIhsKxI2BX4AiTjVEY7ULLvMl67/fdbp76TH.NDKPnv1hC3k..avqgyH8/P9v9UzEt0
+!
+grpc
+ no-tls
+ address-family dual
+!
+line console
+ exec-timeout 0 0
+ absolute-timeout 0
+ session-timeout 0
+!
+line default
+ exec-timeout 0 0
+ absolute-timeout 0
+ session-timeout 0
+ transport input ssh
+!
+netconf-yang agent
+ ssh
+!
+interface Loopback0
+ ipv4 address 172.16.30.4 255.255.255.255
+!
+interface MgmtEth0/RP0/CPU0/0
+ ipv4 address 172.20.20.20 255.255.255.0
+!
+interface FourHundredGigE0/0/0/0
+ ipv4 address 203.0.113.2 255.255.255.252
+!
+interface FourHundredGigE0/0/0/1
+ ipv4 address 203.0.113.9 255.255.255.252
+!
+interface FourHundredGigE0/0/0/2
+ ipv4 address 10.10.0.1 255.255.255.252
+!
+interface FourHundredGigE0/0/0/3
+ ipv4 address 10.10.0.13 255.255.255.252
+!
+interface FourHundredGigE0/0/0/4
+ ipv4 address 10.10.0.17 255.255.255.252
+!
+interface FourHundredGigE0/0/0/5
+ shutdown
+!
+interface FourHundredGigE0/0/0/6
+ shutdown
+!
+interface FourHundredGigE0/0/0/7
+ shutdown
+!
+interface FourHundredGigE0/0/0/8
+ shutdown
+!
+interface FourHundredGigE0/0/0/9
+ shutdown
+!
+interface FourHundredGigE0/0/0/10
+ shutdown
+!
+interface FourHundredGigE0/0/0/11
+ shutdown
+!
+interface FourHundredGigE0/0/0/12
+ shutdown
+!
+interface FourHundredGigE0/0/0/13
+ shutdown
+!
+interface FourHundredGigE0/0/0/14
+ shutdown
+!
+interface FourHundredGigE0/0/0/15
+ shutdown
+!
+interface FourHundredGigE0/0/0/16
+ shutdown
+!
+interface FourHundredGigE0/0/0/17
+ shutdown
+!
+interface FourHundredGigE0/0/0/18
+ shutdown
+!
+interface FourHundredGigE0/0/0/19
+ shutdown
+!
+interface FourHundredGigE0/0/0/20
+ shutdown
+!
+interface FourHundredGigE0/0/0/21
+ shutdown
+!
+interface FourHundredGigE0/0/0/22
+ shutdown
+!
+interface FourHundredGigE0/0/0/23
+ shutdown
+!
+interface FourHundredGigE0/0/0/24
+ shutdown
+!
+interface FourHundredGigE0/0/0/25
+ shutdown
+!
+interface FourHundredGigE0/0/0/26
+ shutdown
+!
+interface FourHundredGigE0/0/0/27
+ shutdown
+!
+interface FourHundredGigE0/0/0/28
+ shutdown
+!
+interface FourHundredGigE0/0/0/29
+ shutdown
+!
+interface FourHundredGigE0/0/0/30
+ shutdown
+!
+interface FourHundredGigE0/0/0/31
+ shutdown
+!
+route-policy ALLOW
+  pass
+end-policy
+!
+route-policy TAG_ALL_1111
+  set community (1111:1111) additive
+  pass
+end-policy
+!
+route-policy TAG_ALL_2222
+  set community (2222:2222) additive
+  pass
+end-policy
+!
+route-policy TAG_ALL_TWITCH
+  set community 46489:46489 additive
+  pass
+end-policy
+!
+route-policy OUTBOUND_NO_TRANSIT
+  if not as-path is-local then
+    drop
+  else
+    pass
+  endif
+end-policy
+!
+router static
+ address-family ipv4 unicast
+  0.0.0.0/0 172.20.20.1
+  0.0.0.0/0 MgmtEth0/RP0/CPU0/0 172.20.20.1
+ !
+ address-family ipv6 unicast
+  ::/0 MgmtEth0/RP0/CPU0/0 2001:172:20:20::1
+ !
+!
+router ospf 1
+ router-id 172.16.30.4
+ area 0
+  interface Loopback0
+  !
+  interface FourHundredGigE0/0/0/2
+  !
+  interface FourHundredGigE0/0/0/3
+  !
+  interface FourHundredGigE0/0/0/4
+  !
+ !
+!
+router bgp 46489
+ bgp router-id 172.16.30.4
+ bgp bestpath as-path multipath-relax
+ address-family ipv4 unicast
+  maximum-paths ibgp 128
+ !
+ neighbor 203.0.113.1
+  remote-as 1111
+  address-family ipv4 unicast
+   route-policy TAG_ALL_1111 in
+   route-policy OUTBOUND_NO_TRANSIT out
+   soft-reconfiguration inbound always
+  !
+ !
+ neighbor 172.16.30.10
+  remote-as 46489
+  capability additional-paths receive
+  capability additional-paths send
+  update-source Loopback0
+  address-family ipv4 unicast
+   next-hop-self
+   route-policy ALLOW in
+   route-policy ALLOW out
+   soft-reconfiguration inbound always
+   additional-paths receive
+   additional-paths send
+  !
+ !
+ neighbor 172.16.30.20
+  remote-as 46489
+  capability additional-paths receive
+  capability additional-paths send
+  update-source Loopback0
+  address-family ipv4 unicast
+   next-hop-self
+   route-policy ALLOW in
+   route-policy ALLOW out
+   soft-reconfiguration inbound always
+   additional-paths receive
+   additional-paths send
+  !
+ !
+ neighbor 203.0.113.10
+  remote-as 2222
+  address-family ipv4 unicast
+   route-policy TAG_ALL_2222 in
+   route-policy OUTBOUND_NO_TRANSIT out
+   soft-reconfiguration inbound
+  !
+ !
+!
+ssh server v2
+ssh server netconf vrf default
+end
+

@@ -1,0 +1,21 @@
+[
+    {
+        "access": "proxy",
+        "basicAuth": true,
+        "database": "",
+        "id": 2,
+        "isDefault": true,
+        "jsonData": {
+            "dbName": "telemetry"
+        },
+        "name": "influxdb",
+        "orgId": 1,
+        "readOnly": false,
+        "type": "influxdb",
+        "typeLogoUrl": "public/app/plugins/datasource/influxdb/img/influxdb_logo.svg",
+        "typeName": "InfluxDB",
+        "uid": "fdhjqjbpjez28a",
+        "url": "http://198.18.140.3:8086",
+        "user": ""
+    }
+]

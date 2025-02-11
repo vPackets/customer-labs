@@ -1,0 +1,299 @@
+rtp-cpoc-AWS-SELAB-9336-1# show run
+
+!Command: show running-config
+!Running configuration last done at: Thu Feb  1 21:33:20 2024
+!Time: Thu Feb  1 21:54:33 2024
+
+version 10.2(6) Bios:version 05.47
+hostname rtp-cpoc-AWS-SELAB-9336-1
+install feature-set mpls
+vdc rtp-cpoc-AWS-SELAB-9336-1 id 1
+  allow feature-set mpls
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+feature-set mpls
+
+feature telnet
+feature bash-shell
+feature scp-server
+feature sftp-server
+nv overlay evpn
+feature ospf
+feature bgp
+feature netconf
+feature mpls l3vpn
+feature interface-vlan
+feature lacp
+feature dhcp
+feature tunnel
+feature macsec
+feature lldp
+
+no password strength-check
+username admin password 5 $5$d1BysEYL$LtFakL77//ad3jgN0G6dj5et2ZSEqLpvQn7hcPQMMfB  role network-admin
+ip domain-lookup
+class-map type qos match-all TEST
+  match mpls experimental topmost 5
+class-map type qos match-all TEST1
+policy-map type qos TEST
+  class TEST
+    set mpls experimental imposition 3
+copp profile lenient
+snmp-server user admin network-admin auth md5 0xceede850ce6cbd9f9d7b210c3622ab35 priv des 0xceede850ce6cbd9f9d7b210c3622ab35 localizedkey
+rmon event 1 description FATAL(1) owner PMON@FATAL
+rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 description ERROR(3) owner PMON@ERROR
+rmon event 4 description WARNING(4) owner PMON@WARNING
+rmon event 5 description INFORMATION(5) owner PMON@INFO
+snmp-server community public group network-operator
+ntp server 198.18.128.1 use-vrf default
+
+ip route 0.0.0.0/0 208.117.236.1
+vlan 1-10,101-102,1234
+
+spanning-tree vlan 101 priority 4096
+key chain 100 macsec
+  key 1000
+    key-octet-string 7 070e234f4a0c1f5546405858517c7c7c713237211702105350040a0c0602595b41175b5b5356540505590852520e005c4a0706580f0309711d1c5a4d5041455355 cryptographic-algorithm AES_256_CMAC
+    send-lifetime 00:00:00 Apr 01 2023  infinite
+key chain KEY_1 macsec
+  key 01
+    key-octet-string 7 075f701e1d5d4c53404a525c557878707d65627a4a57475152020c0e040c575349440a0c0205050d0d5b0a54540c0252445e5d0b5a545c7519185e415c4743595f cryptographic-algorithm AES_256_CMAC
+    send-lifetime 00:00:00 Jan 01 2022  infinite
+no ip dhcp relay
+no ipv6 dhcp relay
+vrf context INTERNET
+  rd 42:42
+  address-family ipv4 unicast
+  address-family ipv6 unicast
+vrf context cust-c
+  description Customer C
+vrf context management
+  ip route 0.0.0.0/0 198.18.128.1
+
+macsec policy DX_TEST
+  cipher-suite GCM-AES-256
+  key-server-priority 0
+  window-size 512
+  sak-expiry-time 100
+macsec policy aws-test
+  key-server-priority 0
+  window-size 512
+  sak-expiry-time 3600
+
+
+interface Vlan1
+  no shutdown
+
+interface Vlan2
+
+interface Vlan101
+  no shutdown
+  vrf member INTERNET
+  ip address 192.168.88.2/30
+
+interface Vlan1234
+  no shutdown
+  ip address 10.1.1.250/24
+
+interface port-channel5
+  description trunk to Customer C
+  mtu 9216
+  mpls ip forwarding
+
+interface port-channel5.105
+  mtu 9216
+  encapsulation dot1q 105
+  vrf member cust-c
+  ip address 192.168.105.1/24
+  no shutdown
+
+interface port-channel10
+  speed 100000
+  no negotiate auto
+  no ip redirects
+  ip address 208.117.236.10/24
+  ipv6 address 2001:208:117:236::10/64
+
+interface port-channel101
+  switchport
+  switchport mode trunk
+  switchport vlan mapping 2-3,5,10 dot1q-tunnel 101
+  mtu 9216
+
+interface port-channel102
+  switchport
+  switchport mode trunk
+  switchport vlan mapping 2,4,8,10 dot1q-tunnel 102
+  mtu 9216
+
+interface port-channel1001
+  description trunk to 93180-1
+  vrf member INTERNET
+  ip address 192.168.77.2/30
+  ip ospf network point-to-point
+  ip router ospf 1 area 0.0.0.0
+
+interface port-channel1003
+  description trunk to 93180-3
+  mtu 9216
+
+interface port-channel1004
+  description trunk to 93180-4
+  mtu 9216
+
+interface Ethernet1/1
+  channel-group 1001
+  no shutdown
+
+interface Ethernet1/2
+  macsec keychain 100 policy DX_TEST
+  no shutdown
+
+interface Ethernet1/3
+  description to 93180-3/e1/49
+  mtu 9216
+  channel-group 1003
+  no shutdown
+
+interface Ethernet1/4
+  description to 93180-3/e1/50
+  mtu 9216
+  channel-group 1003
+  no shutdown
+
+interface Ethernet1/5
+
+interface Ethernet1/6
+
+interface Ethernet1/7
+
+interface Ethernet1/8
+
+interface Ethernet1/9
+  ip address dhcp
+  speed 100000
+  fec rs-fec
+  no negotiate auto
+  no shutdown
+
+interface Ethernet1/10
+  speed 100000
+  fec rs-fec
+  no negotiate auto
+  channel-group 10 mode active
+  no shutdown
+
+interface Ethernet1/11
+
+interface Ethernet1/12
+
+interface Ethernet1/13
+  no shutdown
+
+interface Ethernet1/14
+  no shutdown
+
+interface Ethernet1/15
+
+interface Ethernet1/16
+  description <Eth1/16> CONFIGURED BY ANSIBLE
+
+interface Ethernet1/17
+
+interface Ethernet1/18
+  switchport
+  switchport mode trunk
+  switchport trunk allowed vlan 1234
+  no shutdown
+
+interface Ethernet1/19
+  switchport
+  switchport mode trunk
+  switchport vlan mapping 2-3,5,10 dot1q-tunnel 101
+  mtu 9216
+  channel-group 101
+  no shutdown
+
+interface Ethernet1/20
+  switchport
+  switchport mode trunk
+  switchport vlan mapping 2,4,8,10 dot1q-tunnel 102
+  mtu 9216
+  channel-group 102
+  no shutdown
+
+interface Ethernet1/21
+
+interface Ethernet1/22
+
+interface Ethernet1/23
+
+interface Ethernet1/24
+
+interface Ethernet1/25
+
+interface Ethernet1/26
+
+interface Ethernet1/27
+
+interface Ethernet1/28
+
+interface Ethernet1/29
+
+interface Ethernet1/30
+
+interface Ethernet1/31
+
+interface Ethernet1/32
+
+interface Ethernet1/33
+
+interface Ethernet1/34
+
+interface Ethernet1/35
+
+interface Ethernet1/36
+  mtu 9216
+  service-policy type qos input TEST
+  ip address 12.12.12.1/24
+
+interface Ethernet1/36.1
+  mtu 600
+  encapsulation dot1q 100
+
+interface mgmt0
+  vrf member management
+  ip address 198.18.128.2/18
+
+interface loopback123
+  vrf member INTERNET
+  ip address 123.123.123.123/32
+  ip router ospf 1 area 0.0.0.0
+line console
+line vty
+boot nxos bootflash:/nxos64-cs.10.2.6.M.bin
+router ospf 1
+  vrf INTERNET
+router bgp 11344
+  address-family ipv4 unicast
+  address-family ipv6 unicast
+  neighbor 2001:208:117:236::1
+    remote-as 36040
+    address-family ipv6 unicast
+  neighbor 208.117.236.1
+    remote-as 36040
+    address-family ipv4 unicast
+  vrf INTERNET
+    address-family ipv4 unicast
+      network 123.123.123.123/32
+    neighbor 192.168.77.1
+      remote-as 4200180740
+      address-family ipv4 unicast
+
+
+
+rtp-cpoc-AWS-SELAB-9336-1#

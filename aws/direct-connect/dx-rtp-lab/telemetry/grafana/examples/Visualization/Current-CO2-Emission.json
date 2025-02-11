@@ -1,0 +1,97 @@
+{
+  "id": 164,
+  "gridPos": {
+    "h": 18,
+    "w": 5,
+    "x": 4,
+    "y": 33
+  },
+  "type": "stat",
+  "title": "Current C emissions / h [g CO2 eq / h]",
+  "repeatDirection": "v",
+  "transformations": [],
+  "datasource": {
+    "type": "influxdb",
+    "uid": "PAA239D41A0EF0C37"
+  },
+  "pluginVersion": "8.3.0",
+  "description": "",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "#EAB839",
+            "value": 150
+          },
+          {
+            "color": "orange",
+            "value": 300
+          },
+          {
+            "color": "red",
+            "value": 500
+          },
+          {
+            "color": "dark-red",
+            "value": 700
+          }
+        ]
+      },
+      "mappings": [],
+      "color": {
+        "mode": "thresholds"
+      },
+      "max": 800,
+      "min": 0,
+      "unit": "massg"
+    },
+    "overrides": []
+  },
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "lastNotNull"
+      ],
+      "fields": ""
+    },
+    "orientation": "horizontal",
+    "textMode": "auto",
+    "colorMode": "background",
+    "graphMode": "none",
+    "justifyMode": "auto"
+  },
+  "targets": [
+    {
+      "datasource": "InfluxDB-2",
+      "hide": false,
+      "query": "src = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  r._measurement == \"Cisco-IOS-XR-sysadmin-asr9k-envmon-ui:environment/oper/power/location/pem_attributes\" and\n  r._field == \"system_power_input\")\n\nco2eqkwh = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  \t  r._measurement == \"electricity-map\" and\n      r._field == \"carbonIntensity\")\n  |> drop(columns: [\"_measurement\"])\n\nj = join(\n\ttables: {t1: src, t2: co2eqkwh},\n    on: [\"cc\"],\n\t)\n    |> map(fn: (r) => ({\n    r with\n    \t//system_power_input: r._value_t1,\n    \t//carbonIntensity: r._value_t2,\n    \tregion: r.region_t1,\n    \tcountry: r.country_t1,\n      _value: float(v: r._value_t1) * float(v: r._value_t2) / 1000.0,\n    \t_time: r._time_t1\n\t}))\n    |> keep(columns: [\"_value\", \"_time\", \"cc\", \"source\", \"subscription\", \"_measurement\"])\n    // For sorting data (replaces |>last())\n    |> group()\n    |> sort(columns: [\"_time\"], desc: true)\n    |> unique(column: \"source\")\n    |> sort(columns: [\"source\"], desc: true)\n    |> pivot(rowKey:[\"_time\"], columnKey: [\"source\", \"cc\"], valueColumn: \"_value\")\n  \t|> yield()",
+      "refId": "Dynamic measurements - Total carbon emissions - sorted"
+    },
+    {
+      "datasource": "InfluxDB-2",
+      "hide": true,
+      "query": "// Use this ${__field.labels.source} for Grafana Display name\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  r._measurement == \"Cisco-IOS-XR-sysadmin-asr9k-envmon-ui:environment/oper/power/location/pem_attributes\" and\n  r._field == \"system_power_input\")\n\nco2eqkwh = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  \t  r._measurement == \"electricity-map\" and\n      r._field == \"carbonIntensity\")\n  |> drop(columns: [\"_measurement\"])\n\nj = join(\n\ttables: {t1: src, t2: co2eqkwh},\n    on: [\"cc\"],\n\t)\n    |> map(fn: (r) => ({\n    r with\n    \t//system_power_input: r._value_t1,\n    \t//carbonIntensity: r._value_t2,\n    \tregion: r.region_t1,\n    \tcountry: r.country_t1,\n      _value: float(v: r._value_t1) * float(v: r._value_t2) / 1000.0,\n    \t_time: r._time_t1\n\t}))\n    |> keep(columns: [\"_value\", \"_time\", \"cc\", \"source\", \"subscription\", \"_measurement\"])\n    |> last()\n  \t|> yield()",
+      "refId": "Dynamic measurements - Total carbon emissions - unsorted"
+    },
+    {
+      "datasource": "InfluxDB-2",
+      "hide": true,
+      "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XR-sysadmin-asr9k-envmon-ui:environment/oper/power/location/pem_attributes\")\n  |> filter(fn: (r) =>  (\n    r._field == \"system_power_input\" or\n    r._field == \"co2_emission\"))\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> filter(fn: (r) => r.pem == \"0\" or r.pem == \"1\" or r.pem == \"3\")\n  |> map(fn: (r) => ({\n    r with\n    _value: float(v: r.system_power_input) * float(v: r.co2_emission) / 1000.0\n   }))\n  |> drop(columns: [\"system_power_input\", \"co2_emission\"])\n  |> last()",
+      "refId": "Static measurements - Deprecated - Total carbon emissions"
+    },
+    {
+      "datasource": "InfluxDB-2",
+      "hide": true,
+      "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XR-sysadmin-asr9k-envmon-ui:environment/oper/power/location/pem_attributes\")\n  |> filter(fn: (r) => r._field == \"co2_emission\")\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"source\", \"country\", \"region\"])\n  |> last()",
+      "refId": "Carbon_emission"
+    }
+  ]
+}
+

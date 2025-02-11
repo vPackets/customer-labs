@@ -1,0 +1,227 @@
+# This topology represents the ECMP lab topology at Twitch without the Route Reflectors
+
+name: twitch-ebgp
+topology:
+  nodes:
+  
+# ISP X 
+
+    ispx-01:
+      kind: cisco_c8000v
+      image: vpackets/cisco_cat8kv:17.11.01a
+      startup-config: config/phase2-rr/ispx-01.cfg
+      mgmt-ipv4: 172.20.20.2
+
+    ispx-02:
+      kind: cisco_c8000v
+      image: vpackets/cisco_cat8kv:17.11.01a
+      startup-config: config/phase2-rr/ispx-02.cfg
+      mgmt-ipv4: 172.20.20.3
+
+    ispx-10:
+      kind: cisco_c8000v
+      image: vpackets/cisco_cat8kv:17.11.01a
+      startup-config: config/phase2-rr/ispx-10.cfg
+      mgmt-ipv4: 172.20.20.4
+
+
+    ispx-container-01:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.5
+      #mgmt-ipv6: '2001:172:20:20::14'
+      exec:
+        - ip addr add 5.5.5.5/24 dev eth1
+        - ip route add 6.6.6.0/24 via 5.5.5.254
+        - ip route add 7.7.7.0/24 via 5.5.5.254
+        - ip route add 11.11.11.0/24 via 5.5.5.254
+
+    ispx-container-02:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.6
+      #mgmt-ipv6: '2001:172:20:20::15'
+      exec:
+        - ip addr add 6.6.6.6/24 dev eth1
+        - ip route add 5.5.5.0/24 via 6.6.6.254
+        - ip route add 7.7.7.0/24 via 6.6.6.254
+        - ip route add 11.11.11.0/24 via 6.6.6.254
+
+    ispx-container-03:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.7
+      #mgmt-ipv6: '2001:172:20:20::16'
+      exec:
+        - ip addr add 7.7.7.7/24 dev eth1
+        - ip route add 5.5.5.0/24 via 7.7.7.254
+        - ip route add 6.6.6.0/24 via 7.7.7.254
+        - ip route add 11.11.11.0/24 via 7.7.7.254
+
+
+
+    # ISP Z 
+
+    ispz-01:
+      kind: cisco_c8000v
+      image: vpackets/cisco_cat8kv:17.11.01a
+      startup-config: config/phase2-rr/ispz-01.cfg
+      mgmt-ipv4: 172.20.20.10      
+    
+    ispz-02:
+      kind: cisco_c8000v
+      image: vpackets/cisco_cat8kv:17.11.01a
+      startup-config: config/phase2-rr/ispz-02.cfg
+      mgmt-ipv4: 172.20.20.11      
+
+    ispz-10:
+      kind: cisco_c8000v
+      image: vpackets/cisco_cat8kv:17.11.01a
+      startup-config: config/phase2-rr/ispz-10.cfg
+      mgmt-ipv4: 172.20.20.12
+
+
+    ispz-container-01:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.13
+      #mgmt-ipv6: '2001:172:20:20::11'
+      exec:
+        - ip addr add 1.1.1.1/24 dev eth1
+        - ip route add 2.2.2.0/24 via 1.1.1.254
+        - ip route add 3.3.3.0/24 via 1.1.1.254
+        - ip route add 11.11.11.0/24 via 1.1.1.254
+
+    ispz-container-02:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.14
+      #mgmt-ipv6: '2001:172:20:20::12'
+      exec:
+        - ip addr add 2.2.2.2/24 dev eth1
+        - ip route add 1.1.1.0/24 via 2.2.2.254
+        - ip route add 3.3.3.0/24 via 2.2.2.254
+        - ip route add 11.11.11.0/24 via 2.2.2.254
+
+    ispz-container-03:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.15
+      #mgmt-ipv6: '2001:172:20:20::13'
+      exec:
+        - ip addr add 3.3.3.3/24 dev eth1
+        - ip route add 1.1.1.0/24 via 3.3.3.254
+        - ip route add 2.2.2.0/24 via 3.3.3.254
+        - ip route add 11.11.11.0/24 via 3.3.3.254
+
+
+    # Twitch ISP
+
+    twitch-r1:
+      kind: cisco_c8000
+      image: '8201-32fh_clab276:24.1.1'
+      mgmt-ipv4: 172.20.20.20
+      startup-config: config/phase2-rr/twitch-r1.cfg
+
+    twitch-r2:
+      kind: cisco_c8000
+      image: '8201-32fh_clab276:24.1.1'
+      mgmt-ipv4: 172.20.20.21
+      startup-config: config/phase2-rr/twitch-r2.cfg      
+
+    twitch-r3:
+      kind: cisco_c8000
+      image: '8201-32fh_clab276:24.1.1'
+      mgmt-ipv4: 172.20.20.22
+      startup-config: config/phase2-rr/twitch-r3.cfg
+
+    twitch-r4:
+      kind: cisco_c8000
+      image: '8201-32fh_clab276:24.1.1'
+      mgmt-ipv4: 172.20.20.23
+      startup-config: config/phase2-rr/twitch-r4.cfg
+
+    twitch-r5:
+      kind: cisco_c8000
+      image: '8201-32fh_clab276:24.1.1'
+      mgmt-ipv4: 172.20.20.24
+      startup-config: config/phase2-rr/twitch-r5.cfg
+
+    twitch-xrd-rr-01:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:7.10.2
+      mgmt-ipv4: 172.20.20.25
+      startup-config: config/phase2-rr/twitch-xrd-rr-01.cfg
+
+    twitch-xrd-rr-02:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:7.10.2
+      mgmt-ipv4: 172.20.20.26
+      startup-config: config/phase2-rr/twitch-xrd-rr-02.cfg
+
+
+    twitch-container:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.27
+      #mgmt-ipv6: '2001:172:20:20::17'
+      binds:
+        - ./script/start-ping.sh:/start-ping.sh
+      exec:
+        - ip addr add 11.11.11.11/24 dev eth1
+        - ip route add 1.1.1.0/24 via 11.11.11.254
+        - ip route add 2.2.2.0/24 via 11.11.11.254
+        - ip route add 3.3.3.0/24 via 11.11.11.254
+        - ip route add 5.5.5.0/24 via 11.11.11.254
+        - ip route add 6.6.6.0/24 via 11.11.11.254
+        - ip route add 7.7.7.0/24 via 11.11.11.254
+
+
+
+  links:
+    # ISP Z Container Links
+    - endpoints: ["ispz-10:Gi2", "ispz-container-01:eth1"]   # ISP Z - 01
+    - endpoints: ["ispz-10:Gi3", "ispz-container-02:eth1"]   # ISP Z - 02
+    - endpoints: ["ispz-10:Gi4", "ispz-container-03:eth1"]   # ISP Z - 10
+
+    # ISP X Container Links
+    - endpoints: ["ispx-10:Gi2", "ispx-container-01:eth1"]   # ISP X - 01
+    - endpoints: ["ispx-10:Gi3", "ispx-container-02:eth1"]   # ISP X - 02
+    - endpoints: ["ispx-10:Gi4", "ispx-container-03:eth1"]   # ISP X - 10
+
+    # Links Between ISP Z routers
+    - endpoints: ["ispz-10:Gi5", "ispz-01:Gi3"]
+    - endpoints: ["ispz-10:Gi6", "ispz-02:Gi3"]
+    - endpoints: ["ispz-01:Gi4", "ispz-02:Gi4"]
+
+    # Links Between ISP Z routers and Twitch Routers
+    - endpoints: ["ispz-01:Gi2", "twitch-r4:FH0_0_0_0"]
+    - endpoints: ["ispz-02:Gi2", "twitch-r5:FH0_0_0_0"]
+
+    # Links Between ISP X routers
+    - endpoints: ["ispx-10:Gi5", "ispx-01:Gi3"]
+    - endpoints: ["ispx-10:Gi6", "ispx-02:Gi3"]
+    - endpoints: ["ispx-01:Gi4", "ispx-02:Gi4"]
+
+    # Links Between ISP X routers and Twitch Routers
+    - endpoints: ["ispx-01:Gi2", "twitch-r4:FH0_0_0_1"]
+    - endpoints: ["ispx-02:Gi2", "twitch-r5:FH0_0_0_1"]
+
+    # Links Within Twitch BGP AS
+    - endpoints: ["twitch-r4:FH0_0_0_2", "twitch-r5:FH0_0_0_2"]
+    - endpoints: ["twitch-r4:FH0_0_0_3", "twitch-r3:FH0_0_0_3"]
+    - endpoints: ["twitch-r4:FH0_0_0_4", "twitch-r2:FH0_0_0_4"]
+    - endpoints: ["twitch-r5:FH0_0_0_3", "twitch-r2:FH0_0_0_3"]
+    - endpoints: ["twitch-r5:FH0_0_0_4", "twitch-r3:FH0_0_0_4"]
+    - endpoints: ["twitch-r2:FH0_0_0_2", "twitch-r3:FH0_0_0_2"]
+    - endpoints: ["twitch-r2:FH0_0_0_1", "twitch-r1:FH0_0_0_1"]
+    - endpoints: ["twitch-r3:FH0_0_0_1", "twitch-r1:FH0_0_0_2"]
+
+    # Link between R1 Twitch Router and Container
+    - endpoints: ["twitch-container:eth1", "twitch-r1:FH0_0_0_0"]   # ISP Z - 01
+
+    # Link between the Route reflectors and the Cisco 8000 Twitch BGP Routers.
+    - endpoints: ["twitch-r2:FH0_0_0_5", "twitch-xrd-rr-01:Gi0-0-0-0"]
+    - endpoints: ["twitch-r2:FH0_0_0_6", "twitch-xrd-rr-02:Gi0-0-0-1"]
+    - endpoints: ["twitch-r3:FH0_0_0_5", "twitch-xrd-rr-02:Gi0-0-0-0"]
+    - endpoints: ["twitch-r3:FH0_0_0_6", "twitch-xrd-rr-01:Gi0-0-0-1"]    

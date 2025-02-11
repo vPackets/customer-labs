@@ -1,0 +1,156 @@
+{
+  "id": 26,
+  "gridPos": {
+    "h": 10,
+    "w": 6,
+    "x": 3,
+    "y": 26
+  },
+  "type": "timeseries",
+  "title": "Rack 43 Power Consumption and Carbon Footprint",
+  "transformations": [],
+  "datasource": {
+    "type": "influxdb",
+    "uid": "PAA239D41A0EF0C37"
+  },
+  "description": "Total power for DC (data source: UCS); Total Carbon Emissions for DC (data source: ElectricityMap and UCS)",
+  "fieldConfig": {
+    "defaults": {
+      "custom": {
+        "drawStyle": "line",
+        "lineInterpolation": "smooth",
+        "barAlignment": 0,
+        "lineWidth": 3,
+        "fillOpacity": 17,
+        "gradientMode": "none",
+        "spanNulls": false,
+        "showPoints": "always",
+        "pointSize": 5,
+        "stacking": {
+          "mode": "none",
+          "group": "A"
+        },
+        "axisPlacement": "auto",
+        "axisLabel": "",
+        "scaleDistribution": {
+          "type": "linear"
+        },
+        "hideFrom": {
+          "tooltip": false,
+          "viz": false,
+          "legend": false
+        },
+        "thresholdsStyle": {
+          "mode": "off"
+        }
+      },
+      "color": {
+        "mode": "palette-classic"
+      },
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "red",
+            "value": null
+          }
+        ]
+      },
+      "mappings": [],
+      "decimals": 2,
+      "min": 0,
+      "unit": "none"
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byFrameRefID",
+          "options": "TotalPower"
+        },
+        "properties": [
+          {
+            "id": "unit",
+            "value": "watth"
+          },
+          {
+            "id": "displayName",
+            "value": "rack 43 Power [W]"
+          },
+          {
+            "id": "custom.axisLabel",
+            "value": "Power"
+          },
+          {
+            "id": "custom.drawStyle",
+            "value": "bars"
+          },
+          {
+            "id": "custom.axisSoftMin",
+            "value": 9500
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byFrameRefID",
+          "options": "TotalCarbonFootprint"
+        },
+        "properties": [
+          {
+            "id": "unit",
+            "value": "massg"
+          },
+          {
+            "id": "displayName",
+            "value": "rack 43 Carbon Footprint [kgCO2eq]"
+          },
+          {
+            "id": "custom.lineStyle",
+            "value": {
+              "dash": [
+                10,
+                10
+              ],
+              "fill": "dash"
+            }
+          },
+          {
+            "id": "custom.axisLabel",
+            "value": "Carbon Footprint"
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "tooltip": {
+      "mode": "multi"
+    },
+    "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "calcs": []
+    }
+  },
+  "targets": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PAA239D41A0EF0C37"
+      },
+      "hide": false,
+      "query": "timeInterval = 1h\n\nnexus_switches= from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"show environment power\" and\n    r._field == \"powersup/power_summary/tot_pow_input_actual_draw\"\n    and r.rack == \"43\")\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"source\"])\n  |> window(every: timeInterval)\n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n\nncs_5500 = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and\n    r._field == \"system_power_input\"\n    and r.rack == \"43\")\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"source\"])\n  |> window(every: timeInterval)\n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  \n  |> group()\n  \n\n\nncs540L = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XR-envmon-oper:power-management/rack/chassis\" and\n    r._field == \"total_pwr_output\"\n    and r.rack == \"43\")\n |> map(fn: (r) => ({\n    r with\n    _value: (float(v: r._value) * 0.1 + float(v: r._value)) // Workaround: consider +10% of the output as input power\n   }))\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"source\"])\n  |> window(every: timeInterval)\n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n  \nucs_power = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"cimc-ucs-power\" and r._field == \"current_power\" and r.domain == \"Platform\" and r.rack == \"43\" )\n  |> window(every: timeInterval) \n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n  \n\nasr_9k_32 = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"asr9k_power\" and r.rack == \"43\" )\n  |> pivot(columnKey: [\"_field\"], rowKey: [\"source\",\"_time\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({r with \"_value\": (r.voltage1 * r.current1 + r.voltage2 * r.current2) / 1000000}))\n  |> window(every: timeInterval) \n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n  \n\nasr9k = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XR-sysadmin-asr9k-envmon-ui:environment/oper/power/location/pem_attributes\" and\n    r._field == \"system_power_input\"\n    and r.rack == \"43\")\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"source\"])\n  |> window(every: timeInterval)\n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n  \n\nunion = union(tables: [nexus_switches, ncs_5500, ncs540L, ucs_power, asr_9k_32, asr9k])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |>first()\n  |> group()\n  |> yield()",
+      "refId": "TotalPower"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PAA239D41A0EF0C37"
+      },
+      "hide": false,
+      "query": "timeInterval = 1h\n\nnexus_switches= from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"show environment power\" and\n    r._field == \"powersup/power_summary/tot_pow_input_actual_draw\"\n    and r.rack == \"43\")\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"source\"])\n  |> window(every: timeInterval)\n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n\nncs_5500 = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and\n    r._field == \"system_power_input\"\n    and r.rack == \"43\")\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"source\"])\n  |> window(every: timeInterval)\n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n\nncs540L = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XR-envmon-oper:power-management/rack/chassis\" and\n    r._field == \"total_pwr_output\"\n    and r.rack == \"43\")\n |> map(fn: (r) => ({\n    r with\n    _value: (float(v: r._value) * 0.1 + float(v: r._value)) // Workaround: consider +10% of the output as input power\n   }))\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"source\"])\n  |> window(every: timeInterval)\n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n\n\nucs_power = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"cimc-ucs-power\" and r._field == \"current_power\" and r.domain == \"Platform\" and r.rack == \"43\" )\n  |> window(every: timeInterval) \n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n\nasr_9k_32 = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"asr9k_power\" and r.rack == \"43\" )\n  |> pivot(columnKey: [\"_field\"], rowKey: [\"source\",\"_time\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({r with \"_value\": (r.voltage1 * r.current1 + r.voltage2 * r.current2) / 1000000}))\n  |> window(every: timeInterval) \n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n\nasr9k = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XR-sysadmin-asr9k-envmon-ui:environment/oper/power/location/pem_attributes\" and\n    r._field == \"system_power_input\"\n    and r.rack == \"43\")\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"source\"])\n  |> window(every: timeInterval)\n  |> mean()\n  |> duplicate(column: \"_start\", as: \"_time\")\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |> group()\n\nunion = union(tables: [nexus_switches, ncs_5500, ncs540L, ucs_power, asr_9k_32, asr9k])\n  |> aggregateWindow(every: timeInterval, fn: sum)\n  |> truncateTimeColumn(unit: timeInterval)\n  |> keep(columns: [\"_value\", \"_time\"])\n  |> group(columns: [\"_time\"])\n  |>first()\n  |> group()\n\nco2eqkwh = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n      r._measurement == \"electricity-map\" and\n      r._field == \"carbonIntensity\" and r.cc == \"IT-CNO\")\n  |> drop(columns: [\"_measurement\"])\n  |> truncateTimeColumn(unit: timeInterval)\n  |> drop(columns: [\"_measurement\", \"_stop\", \"_start\"])\n  |> window(every: timeInterval)\n  |> mean()\n  |> duplicate(as: \"_time\", column: \"_start\")\n  |> drop(columns: [\"_measurement\", \"_stop\", \"_start\"])\n  |> truncateTimeColumn(unit: timeInterval)\n  |> group(columns: [\"_time\"])\n  |> first()\n\nj_co2 = join(\n  tables: {t1: union, t2: co2eqkwh},\n    on: [\"_time\"],\n  )\n    |> map(fn: (r) => ({\n    r with\n        _value: float(v: r._value_t1) * float(v: r._value_t2) / 1000.0,\n  }))\n    |> keep(columns: [\"_time\", \"_value\", \"cc\"])\n    |> group()\n    |> yield()\n",
+      "refId": "TotalCarbonFootprint"
+    }
+  ],
+  "transparent": true
+}

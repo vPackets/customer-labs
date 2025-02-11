@@ -1,0 +1,18 @@
+{
+  "id": 303,
+  "gridPos": {
+    "h": 16,
+    "w": 24,
+    "x": 0,
+    "y": 0
+  },
+  "type": "text",
+  "pluginVersion": "8.3.0",
+  "options": {
+    "mode": "html",
+    "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <style>\n    .image-container {\n      position: relative;\n      display: inline-block;\n    }\n\n    .clickable-area {\n      position: absolute;\n      cursor: pointer;\n      /* border: 2px solid #007bff; */\n    }\n\n    /* Adjust the following styles based on your image size and positions */\n    .area1 { \n      top: 4300px;\n      left: 3000px;\n      width: 1800px;\n      height: 700px;\n    }\n\n    .area2 {\n      top: 4300px;\n      left: 7000px;\n      width: 1800px;\n      height: 700px;\n    }\n\n    .area3 {\n      top: 4300px;\n      left: 10500px;\n      width: 1800px;\n      height: 700px;\n    }\n\n    .area5 {\n      top: 4300px;\n      left: 14500px;\n      width: 1800px;\n      height: 700px;\n    }\n\n  </style>\n</head>\n<body>\n\n<div class=\"image-container\">\n  <img src=\"https://i.imgur.com/Bo0oie5.png\" alt=\"WonderWall\">\n</div>\n\n  <!-- Clickable areas\n  <div class=\"clickable-area area1\" onclick=\"location.href='http://10.58.239.170:3000/d/oW0p96NSz/emer?orgId=1&var-network_segment=access&kiosk'\"></div>\n  <div class=\"clickable-area area2\" onclick=\"location.href='http://10.58.239.170:3000/d/oW0p96NSz/emer?orgId=1&var-network_segment=pre-aggregation&kiosk'\"></div>\n  <div class=\"clickable-area area3\" onclick=\"location.href='http://10.58.239.170:3000/d/oW0p96NSz/emer?orgId=1&var-network_segment=aggregation&kiosk'\"></div>\n  <div class=\"clickable-area area5\" onclick=\"location.href='http://10.58.239.170:3000/d/oW0p96NSz/emer?orgId=1&var-network_segment=core&kiosk'\"></div>\n -->\n</body>\n</html>\n"
+  },
+  "transparent": true,
+  "datasource": null
+}
+

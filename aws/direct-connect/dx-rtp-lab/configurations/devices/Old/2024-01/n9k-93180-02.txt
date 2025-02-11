@@ -1,0 +1,300 @@
+rtp-cpoc-AWS-SELAB-93180-2# show run
+
+!Command: show running-config
+!Running configuration last done at: Thu Feb  1 21:36:00 2024
+!Time: Thu Feb  1 21:37:37 2024
+
+version 10.2(6) Bios:version 05.47
+hostname rtp-cpoc-AWS-SELAB-93180-2
+vdc rtp-cpoc-AWS-SELAB-93180-2 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature bash-shell
+feature scp-server
+feature sftp-server
+cfs eth distribute
+nv overlay evpn
+feature bgp
+feature netconf
+feature interface-vlan
+feature vn-segment-vlan-based
+feature lacp
+feature macsec
+feature lldp
+feature nv overlay
+feature ofm
+
+no password strength-check
+username admin password 5 $5$eL8S/dBn$7QSSax0OwFldqcjK.bvw2SEdiOpoT/heUhojDfeQvIB  role network-admin
+username dcloud password 5 $5$HAIILK$UyrzRtQOV6DdY83vVd9/0otYbVgxvXgZi2I5T8iWaFB  role network-admin
+username dcloud passphrase  lifetime 99999 warntime 14 gracetime 3
+ip domain-lookup
+copp profile strict
+snmp-server user admin network-admin auth md5 0x14e04e8ca022cd0fb324a0ad3888f7ad priv des 0x14e04e8ca022cd0fb324a0ad3888f7ad localizedkey
+snmp-server user dcloud network-admin auth md5 0x14e04e8ca022cd0fb324a0ad3888f7ad priv des 0x14e04e8ca022cd0fb324a0ad3888f7ad localizedkey
+rmon event 1 description FATAL(1) owner PMON@FATAL
+rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 description ERROR(3) owner PMON@ERROR
+rmon event 4 description WARNING(4) owner PMON@WARNING
+rmon event 5 description INFORMATION(5) owner PMON@INFO
+
+ip route 172.16.1.0/24 132.98.98.1
+vlan 1,5,8,10,101-102,1234
+vlan 1234
+  name AWS_VXLAN_EC2
+  vn-segment 1234000
+
+key chain 1 macsec
+  key 1000
+    key-octet-string 7 070e234f4a0c1f5546405858517c7c7c713237211702105350040a0c0602595b41175b5b5356540505590852520e005c4a0706580f0309711d1c5a4d5041455355 cryptographic-algorithm AES_256_CMAC
+vrf context AWS_VXLAN_EC2
+  ip route 172.16.1.0/24 132.98.98.1
+vrf context cust-a
+vrf context cust-b
+vrf context management
+  ip route 0.0.0.0/0 198.18.128.1
+
+macsec policy abc
+
+
+interface Vlan1
+  no shutdown
+
+interface Vlan1234
+  no shutdown
+  vrf member AWS_VXLAN_EC2
+  ip address 10.1.1.10/24
+
+interface port-channel101
+  mtu 9216
+
+interface port-channel101.10
+  mtu 9216
+  encapsulation dot1q 10
+  vrf member cust-a
+  ip address 192.168.101.1/24
+  no shutdown
+
+interface port-channel102
+  mtu 9216
+
+interface port-channel102.8
+  mtu 9216
+  encapsulation dot1q 8
+  vrf member cust-b
+  ip address 192.168.102.1/24
+  no shutdown
+
+interface nve1
+  no shutdown
+  source-interface loopback0
+  member vni 1234000
+    ingress-replication protocol static
+      peer-ip 172.16.1.1
+
+interface Ethernet1/1
+  no shutdown
+
+interface Ethernet1/2
+  no shutdown
+
+interface Ethernet1/3
+  no shutdown
+
+interface Ethernet1/4
+  no shutdown
+
+interface Ethernet1/5
+  no shutdown
+
+interface Ethernet1/6
+  no shutdown
+
+interface Ethernet1/7
+  no shutdown
+
+interface Ethernet1/8
+  no shutdown
+
+interface Ethernet1/9
+  no shutdown
+
+interface Ethernet1/10
+  no shutdown
+
+interface Ethernet1/11
+  no shutdown
+
+interface Ethernet1/12
+  no shutdown
+
+interface Ethernet1/13
+  no shutdown
+
+interface Ethernet1/14
+  no shutdown
+
+interface Ethernet1/15
+  no shutdown
+
+interface Ethernet1/16
+  description <Eth1/16> CONFIGURED BY ANSIBLE
+  no shutdown
+
+interface Ethernet1/17
+  no shutdown
+
+interface Ethernet1/18
+  description TEST CONFIGURED BY ANSIBLE
+  no shutdown
+
+interface Ethernet1/19
+  no shutdown
+
+interface Ethernet1/20
+  description TEST CONFIGURED BY ANSIBLE
+  no shutdown
+
+interface Ethernet1/21
+  no shutdown
+
+interface Ethernet1/22
+  description TEST CONFIGURED BY ANSIBLE
+  no shutdown
+
+interface Ethernet1/23
+  no shutdown
+
+interface Ethernet1/24
+  description TEST CONFIGURED BY ANSIBLE
+  no shutdown
+
+interface Ethernet1/25
+  no shutdown
+
+interface Ethernet1/26
+  no shutdown
+
+interface Ethernet1/27
+  no shutdown
+
+interface Ethernet1/28
+  no shutdown
+
+interface Ethernet1/29
+  no shutdown
+
+interface Ethernet1/30
+  description <Eth1/30> CONFIGURED BY ANSIBLE
+  no shutdown
+
+interface Ethernet1/31
+  no shutdown
+
+interface Ethernet1/32
+  no shutdown
+
+interface Ethernet1/33
+  no shutdown
+
+interface Ethernet1/34
+  no shutdown
+
+interface Ethernet1/35
+  no shutdown
+
+interface Ethernet1/36
+  no shutdown
+
+interface Ethernet1/37
+  no shutdown
+
+interface Ethernet1/38
+  no shutdown
+
+interface Ethernet1/39
+  no shutdown
+
+interface Ethernet1/40
+  no shutdown
+
+interface Ethernet1/41
+  no shutdown
+
+interface Ethernet1/42
+  no shutdown
+
+interface Ethernet1/43
+  no shutdown
+
+interface Ethernet1/44
+  no shutdown
+
+interface Ethernet1/45
+  no shutdown
+
+interface Ethernet1/46
+  no shutdown
+
+interface Ethernet1/47
+  no shutdown
+
+interface Ethernet1/48
+  no shutdown
+
+interface Ethernet1/49
+  no shutdown
+
+interface Ethernet1/50
+  description to 9336-1/e1/18
+  switchport
+  switchport mode trunk
+  switchport trunk allowed vlan 1234
+  no shutdown
+
+interface Ethernet1/51
+  no shutdown
+
+interface Ethernet1/52
+  no shutdown
+
+interface Ethernet1/53
+  ip address 132.98.98.2/24
+  no shutdown
+
+interface Ethernet1/54
+  description connected to 93180-1 e1/54
+  mtu 9216
+  channel-group 102
+  no shutdown
+
+interface mgmt0
+  vrf member management
+  ip address 198.18.128.4/18
+
+interface loopback0
+  description VXLAN
+  ip address 123.45.56.79/32
+line console
+line vty
+boot nxos bootflash:/nxos64-cs.10.2.6.M.bin
+router bgp 65220
+  vrf cust-a
+    address-family ipv4 unicast
+    neighbor 192.168.1.2
+      remote-as 7224
+      local-as 63300
+  vrf cust-b
+    address-family ipv4 unicast
+    neighbor 192.168.3.2
+      remote-as 7225
+      local-as 63400
+
+
+
+rtp-cpoc-AWS-SELAB-93180-2#

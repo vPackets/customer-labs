@@ -1,0 +1,75 @@
+version: "2"
+services:
+  grafana:
+    image: grafana/grafana:10.2.1
+    container_name: DX-grafana
+    ports:
+      - '3000:3000'
+    volumes:
+      #- ~/code/telemetry/grafana/data:/var/lib/grafana
+      #- ~/code/telemetry/grafana/provisioning:/etc/grafana/provisioning
+      #- ~/code/telemetry/grafana/data/plugins:/var/lib/grafana/plugins
+      - ~/code/telemetry/grafana/provisioning/dashboards/:/var/lib/grafana/dashboards
+      - ~/code/telemetry/grafana/provisioning/datasources/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+      - ~/code/telemetry/grafana/provisioning/dashboards/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      #- type: bind
+      #  source: ~/code/telemetry/grafana/data/plugins
+      #  target: /var/lib/grafana/plugins
+      #  bind:
+      #    create_host_path: true
+    #user: "472:472"
+    environment:
+      - GF_SECURITY_ADMIN_USER=netadmin
+      - GF_SECURITY_ADMIN_PASSWORD=C1sco12345!
+      - GF_AUTH_ANONYMOUS_ENABLED= true
+      - GF_AUTH_ANONYMOUS= true
+      - INFLUX_DB_TOKEN=C1sco12345!
+      - GF_INSTALL_PLUGINS=https://algenty.github.io/flowcharting-repository/archives/agenty-flowcharting-panel-1.0.0d.220606199-SNAPSHOT.zip;agenty-flowcharting-panel
+    deploy:
+      resources:
+        reservations:
+          cpus: "4"
+    networks:
+      - telemetry_network
+
+
+
+  influxdb:
+    image: influxdb:latest
+    container_name: DX-influxdb
+    ports:
+      - '8086:8086'
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_BUCKET=telemetry
+      - DOCKER_INFLUXDB_INIT_USERNAME=netadmin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=C1sco12345!
+      - DOCKER_INFLUXDB_INIT_ORG=lab
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=C1sco12345!
+    volumes:
+      - ~/code/telemetry/influxdb/data:/var/lib/influxdb2
+    networks:
+      - telemetry_network
+    deploy:
+      resources:
+        reservations:
+          cpus: "8"
+    
+
+  telegraf:
+    image: telegraf:latest
+    container_name: DX-telegraf
+    depends_on:
+      - influxdb
+    ports:
+      - '57500:57500'
+    volumes:
+      - ~/code/telemetry/telegraf/telegraf_dial_out.conf:/etc/telegraf/telegraf.conf:ro
+      #- ./telegraf_dial_in.conf:/etc/telegraf/telegraf.conf:ro
+      #- ./embedded_tag.star:/etc/telegraf/embedded_tag.star:ro
+    networks:
+      - telemetry_network
+
+networks:
+  telemetry_network:
+    driver: bridge

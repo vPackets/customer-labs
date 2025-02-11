@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>AWS-DX-RTP-LAB</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<p><img src="https://images.folloze.com/image/upload/v1623245899/oic1b8o6v91c1m2tnd4u.png" height="200" class="image-margin-right">
+<span style="margin-right: 100px;"></span>
+<!-- Adjust the 20px to whatever space you need -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Cisco_logo.svg/320px-Cisco_logo.svg.png" height="200"></p>
+<p><br></p>
+<h1 id="aws-se-lab---dcloud-rtp">AWS SE Lab - dCloud RTP</h1>
+<p>This document provides an overview of the AWS network lab setup,
+including details about device configurations, IP addressing, physical
+wiring, software versions, and access credentials.</p>
+<h2 id="overview">Overview</h2>
+<p>This lab has been designed to replicate an AWS DX environment.</p>
+<h2 id="dcloud-instance-information">dCloud Instance information</h2>
+<p>The dCloud instance can be acessed <a
+href="https://tbv3-ui.ciscodcloud.com/sessions/1100269?versionUid=40gfzk4bxpe32z6e98u5lzyml">here</a>
+and is connected using a management vlan of 198.18.128.0/18</p>
+<figure>
+<img src="./images/dCloud-instance.png" alt="dCloud Diagram" />
+<figcaption aria-hidden="true">dCloud Diagram</figcaption>
+</figure>
+<p>In order to connect to the lab, you must be on the dCloud RTP SSL
+VPN:</p>
+<p>AnyConnect credentials: VPN: https://dcloud-rtp-anyconnect.cisco.com
+User: v232user1 Password: f4822b</p>
+<p>The VPN instance can support up to 16 different users connected to
+the lab simultaneously.</p>
+<p>User1 : v232user1</p>
+<p>….</p>
+<p>User16: v232user16</p>
+<h2 id="contact-information">Contact Information</h2>
+<p>Provide contact information for individuals responsible for the lab,
+such as network administrators or IT support staff.</p>
+<ul>
+<li><a href="nicmcl@cisco.com">Nicolas Michel, Solution
+Architect</a></li>
+<li><a href="dheidelb@cisco.com">Dakari heidelberg, Cisco RTP Lab
+Admin</a></li>
+<li><a href="geimiran@cisco.com">Geiner Ernesto Miranda, Cisco RTP Lab
+Admin</a></li>
+</ul>
+<h2 id="revision-history---changelog">Revision History - Changelog</h2>
+<p>Document any changes made to the lab setup, including updates to
+configurations, hardware changes, or topology modifications.</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Description</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2023-12-11</td>
+<td>Initial document revision</td>
+<td>Nicolas MICHEL</td>
+</tr>
+<tr>
+<td>2023-12-12</td>
+<td>Added Diagrams and action items</td>
+<td>Nicolas MICHEL</td>
+</tr>
+<tr>
+<td>2023-12-30</td>
+<td>Added IP Addressing</td>
+<td>Nicolas MICHEL</td>
+</tr>
+<tr>
+<td>2024-03-2</td>
+<td>Added MANY things :)</td>
+<td>Nicolas MICHEL</td>
+</tr>
+<tr>
+<td>2023-03-15</td>
+<td>DX Topology</td>
+<td>Nicolas MICHEL</td>
+</tr>
+<tr>
+<td>2023-03-18</td>
+<td>Changed Credentials</td>
+<td>Nicolas MICHEL</td>
+</tr>
+</tbody>
+</table>
+<p><em>Last Updated: [2024-03-18]</em></p>
+<h2 id="backlog">Backlog</h2>
+<ul>
+<li><p>Document how the Physical 8K communicate with the
+containerlab</p></li>
+<li><p>Port Forwarding for containerlab</p></li>
+<li><p>Upgrade Cisco Nexus 9000</p></li>
+<li><p>Upgrade Cisco 8201-32FH using manual CLI</p></li>
+<li><p>Upgrade Cisco 8201-32FH using Yang Model</p></li>
+<li><p>Install Virtual Machines for telemetry.</p></li>
+<li><p>Netconf Script to create and delete VRF</p>
+<ul>
+<li>Add telemetry to calculate VRF CRUD</li>
+</ul></li>
+</ul>
+<h2 id="physical-topology-wip">Physical Topology (WIP)</h2>
+<p>Describe the physical layout of the network, including how devices
+are interconnected. Consider using a diagramming tool to create a
+network topology diagram and include it here.</p>
+<p><a href="./LAB-AWS-DX-RTP-Diagram-Physical.drawio">DrawIO
+Diagram</a></p>
+<figure>
+<img
+src="./images/LAB-AWS-DX-RTP-Diagram-Physical-Physical-white.drawio.png"
+alt="Topology" />
+<figcaption aria-hidden="true">Topology</figcaption>
+</figure>
+<h2 id="remote-desktop">Remote Desktop</h2>
+<p>2 Virtual machines are available in this dCloud instance for various
+purpose. The information are the following:</p>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 17%" />
+<col style="width: 23%" />
+<col style="width: 19%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>Device Type</th>
+<th>IP Address</th>
+<th>Access Method</th>
+<th>Username</th>
+<th>Password</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows 10</td>
+<td>198.18.133.10</td>
+<td>RDP over port 3389</td>
+<td>DCLOUD</td>
+<td>C1sco12345</td>
+</tr>
+<tr>
+<td>CENTOS</td>
+<td>198.18.133.42</td>
+<td>RDP over port 3389</td>
+<td>dcloud</td>
+<td>C1sco12345</td>
+</tr>
+</tbody>
+</table>
+<h2 id="network-devices-inventory">Network Devices Inventory</h2>
+<p>The lab in RTP uses the following subnet information:
+198.18.128.0/18</p>
+<pre><code>Address:   198.18.128.1         11000110.00010010.10 000000.00000001
+Netmask:   255.255.192.0 = 18   11111111.11111111.11 000000.00000000
+Wildcard:  0.0.63.255           00000000.00000000.00 111111.11111111
+=&gt;
+Network:   198.18.128.0/18      11000110.00010010.10 000000.00000000
+HostMin:   198.18.128.1         11000110.00010010.10 000000.00000001
+HostMax:   198.18.191.254       11000110.00010010.10 111111.11111110
+Broadcast: 198.18.191.255       11000110.00010010.10 111111.111111
+</code></pre>
+<p>The default gateway for this lab is 198.18.128.1 The DNS queries for
+this lab shoudl be directed to the following DNS server:
+198.18.128.1</p>
+<p>List all network devices used in the lab, including routers,
+switches, firewalls, etc.</p>
+<p>Table sorted per Device Type:</p>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 21%" />
+<col style="width: 16%" />
+<col style="width: 36%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr>
+<th>Device Type</th>
+<th>Device Name</th>
+<th>Model</th>
+<th>Software Version</th>
+<th>Management IP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AWS VC-CAS</td>
+<td>rtp-cpoc-AWS-SELAB-9336-1</td>
+<td>Cisco N9K-C9336C-FX2</td>
+<td>NX-OS 10.2(6)</td>
+<td>198.18.128.2</td>
+</tr>
+<tr>
+<td>AWS VC-CAS</td>
+<td>rtp-cpoc-AWS-SELAB-93180-1</td>
+<td>Cisco N9K-C93180YC-FX</td>
+<td>NX-OS 10.2(6)</td>
+<td>198.18.128.3</td>
+</tr>
+<tr>
+<td>AWS VC-CAS DX-GW</td>
+<td>rtp-cpoc-AWS-SELAB-93180-2</td>
+<td>Cisco N9K-C93180YC-FX</td>
+<td>NX-OS 10.2(6)</td>
+<td>198.18.128.4</td>
+</tr>
+<tr>
+<td>AWS VC CAR</td>
+<td>rtp-cpoc-AWS-SELAB-8201-32FH-1</td>
+<td>Cisco 8201-32FH</td>
+<td>IOS XR 7.9.1</td>
+<td>198.18.128.7</td>
+</tr>
+<tr>
+<td>Customer PE</td>
+<td>C8500-12X4QC-2</td>
+<td>Cisco C8500-12X4QC</td>
+<td>IOS XE 17.09.03a</td>
+<td>198.18.128.5</td>
+</tr>
+<tr>
+<td>Customer PE</td>
+<td>rtp-cpoc-AWS-SELAB-ASR1002-X-1</td>
+<td>Cisco ASR1002-X</td>
+<td>IOS XE 16.09.03a</td>
+<td>198.18.128.15</td>
+</tr>
+<tr>
+<td>Google Core Router</td>
+<td>8101-32H-O-1</td>
+<td>Cisco 8101-32H-O</td>
+<td>SONiC.azure_cisco_202205.4677-dirty-20230524.051258</td>
+<td>198.18.128.6</td>
+</tr>
+</tbody>
+</table>
+<p>Table sorted per IP Address:</p>
+<table>
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 14%" />
+<col style="width: 21%" />
+<col style="width: 16%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr>
+<th>Management IP</th>
+<th>Device Type</th>
+<th>Device Name</th>
+<th>Model</th>
+<th>Software Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>198.18.128.2</td>
+<td>AWS VC-CAS</td>
+<td>rtp-cpoc-AWS-SELAB-9336-1</td>
+<td>Cisco N9K-C9336C-FX2</td>
+<td>NX-OS 10.2(6)</td>
+</tr>
+<tr>
+<td>198.18.128.3</td>
+<td>AWS VC-CAS</td>
+<td>rtp-cpoc-AWS-SELAB-93180-1</td>
+<td>Cisco N9K-C93180YC-FX</td>
+<td>NX-OS 10.2(6)</td>
+</tr>
+<tr>
+<td>198.18.128.4</td>
+<td>AWS VC-CAS DX-GW</td>
+<td>rtp-cpoc-AWS-SELAB-93180-2</td>
+<td>Cisco N9K-C93180YC-FX</td>
+<td>NX-OS 10.2(6)</td>
+</tr>
+<tr>
+<td>198.18.128.5</td>
+<td>Customer PE</td>
+<td>C8500-12X4QC-2</td>
+<td>Cisco C8500-12X4QC</td>
+<td>IOS XE 17.09.03a</td>
+</tr>
+<tr>
+<td>198.18.128.6</td>
+<td>Google Core Router</td>
+<td>8101-32H-O-1</td>
+<td>Cisco 8101-32H-O</td>
+<td>SONiC.azure_cisco_202205.4677-dirty-20230524.051258</td>
+</tr>
+<tr>
+<td>198.18.128.7</td>
+<td>AWS VC CAR</td>
+<td>rtp-cpoc-AWS-SELAB-8201-32FH-1</td>
+<td>Cisco 8201-32FH</td>
+<td>IOS XR 7.8.2</td>
+</tr>
+<tr>
+<td>198.18.128.15</td>
+<td>Customer PE</td>
+<td>rtp-cpoc-AWS-SELAB-ASR1002-X-1</td>
+<td>Cisco ASR1002-X</td>
+<td>IOS XE 16.09.03a</td>
+</tr>
+</tbody>
+</table>
+<h2 id="configurations">Configurations</h2>
+<p>Configurations are saved using a python script. It is still a work in
+progress as not all the devices are configured yet.</p>
+<p>Configurations are saved on srv-ubuntu-01 (198.18.140.3) in the
+/home/netadmin/code/backup folder.</p>
+<pre><code>from netmiko import ConnectHandler
+from datetime import datetime
+import os
+
+# Device details with an added &#39;name&#39; field for custom filenames
+devices = [
+    {&#39;device_type&#39;: &#39;cisco_xe&#39;, &#39;host&#39;: &#39;198.18.128.5&#39;, &#39;username&#39;: &#39;admin&#39;, &#39;password&#39;: &#39;C1sco12345&#39;, &#39;name&#39;: &#39;AWS-DX-Customer_PE&#39;},
+    {&#39;device_type&#39;: &#39;cisco_nxos_ssh&#39;, &#39;host&#39;: &#39;198.18.128.3&#39;, &#39;username&#39;: &#39;admin&#39;, &#39;password&#39;: &#39;C1sco12345&#39;, &#39;name&#39;: &#39;AWS-DX-VC-CAS&#39;},
+    {&#39;device_type&#39;: &#39;cisco_xr&#39;, &#39;host&#39;: &#39;198.18.128.7&#39;, &#39;username&#39;: &#39;admin&#39;, &#39;password&#39;: &#39;C1sco12345&#39;, &#39;name&#39;: &#39;AWS-DX-VC-CAR&#39;}
+]
+
+# Backup directory
+backup_dir = &quot;/home/netadmin/code/backup/files&quot;
+
+# Ensure backup directory exists
+if not os.path.exists(backup_dir):
+    os.makedirs(backup_dir)
+
+# Function to backup device configuration
+def backup_config(device):
+    try:
+        # Copy the device dictionary to avoid modifying the original
+        device_info = device.copy()
+        # Extract and remove the &#39;name&#39; key from the device_info dictionary
+        device_name = device_info.pop(&#39;name&#39;)
+        # Establish SSH connection without the &#39;name&#39; key
+        net_connect = ConnectHandler(**device_info)
+        # Get the current date and time for the filename
+        now = datetime.now().strftime(&quot;%Y-%m-%d_%H-%M-%S&quot;)
+        # Use device name for the filename
+        filename = f&quot;{backup_dir}/{device_name}_{now}.cfg&quot;
+        # Fetching configuration
+        config = net_connect.send_command(&quot;show running-config&quot;)
+        # Writing configuration to file
+        with open(filename, &#39;w&#39;) as config_file:
+            config_file.write(config)
+        print(f&quot;Backup completed for {device_name} on {now}&quot;)
+    except Exception as e:
+        print(f&quot;Failed to backup {device_name}: {str(e)} on {now}&quot; )
+
+# Backup configurations for all devices
+for device in devices:
+    backup_config(device)</code></pre>
+<p>Then a cron job will be run to backup the configurations for all
+devices.</p>
+<pre><code>netadmin@srv-ubuntu-01:/home/netadmin/code/backup $ crontab -l
+
+0 8 * * 1 /usr/bin/python3 /home/netadmin/code/backup/backup.py &gt;&gt; /home/netadmin/code/backup/logfile.log 2&gt;&amp;1</code></pre>
+<p>When the script is run, it should generate a log file for every
+device.</p>
+<pre><code>netadmin@srv-ubuntu-01:/home/netadmin/code/backup $ python3 backup.py
+Backup completed for AWS-DX-Customer_PE on 2024-03-01_23-57-26
+Backup completed for AWS-DX-VC-CAS on 2024-03-01_23-57-27
+Backup completed for AWS-DX-VC-CAR on 2024-03-01_23-57-28</code></pre>
+<h2 id="access-credentials">Access Credentials</h2>
+<p>List the credentials required to access the devices.</p>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 21%" />
+<col style="width: 16%" />
+<col style="width: 36%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr>
+<th>Device Type</th>
+<th>Device Name</th>
+<th>Access Method</th>
+<th>Username</th>
+<th>Password</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AWS VC-CAS</td>
+<td>rtp-cpoc-AWS-SELAB-9336-1</td>
+<td>SSH</td>
+<td>admin</td>
+<td>C1sco12345</td>
+</tr>
+<tr>
+<td>AWS VC-CAS</td>
+<td>rtp-cpoc-AWS-SELAB-93180-1</td>
+<td>SSH</td>
+<td>admin</td>
+<td>C1sco12345</td>
+</tr>
+<tr>
+<td>AWS VC-CAS DX-GW</td>
+<td>rtp-cpoc-AWS-SELAB-93180-2</td>
+<td>SSH</td>
+<td>admin</td>
+<td>C1sco12345</td>
+</tr>
+<tr>
+<td>AWS VC CAR</td>
+<td>rtp-cpoc-AWS-SELAB-8201-32FH-1</td>
+<td>SSH</td>
+<td>admin</td>
+<td>C1sco12345</td>
+</tr>
+<tr>
+<td>Customer PE</td>
+<td>C8500-12X4QC-2</td>
+<td>SSH</td>
+<td>admin</td>
+<td>C1sco12345</td>
+</tr>
+<tr>
+<td>Customer PE</td>
+<td>rtp-cpoc-AWS-SELAB-ASR1002-X-1</td>
+<td>SSH</td>
+<td>admin</td>
+<td>C1sco12345</td>
+</tr>
+<tr>
+<td>Google Core Router</td>
+<td>8101-32H-O-1</td>
+<td>SSH</td>
+<td>cisco</td>
+<td>cisco123</td>
+</tr>
+</tbody>
+</table>
+<h2 id="server-devices-inventory">Server Devices Inventory</h2>
+<p>List all Physical servers devices used in the lab</p>
+<p>Table sorted per Device Type:</p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 14%" />
+<col style="width: 46%" />
+<col style="width: 21%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr>
+<th>Device Type</th>
+<th>Device Name</th>
+<th>Model - Version</th>
+<th>Software Version</th>
+<th>Username</th>
+<th>Password</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Physical Server - CIMC</td>
+<td>transformers-cimc-1</td>
+<td>UCS C220 M4S - 2x CPU Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz - 10
+Cores - 40 Threads - 256 GB RAM - 2TB Storage</td>
+<td><a href="https://198.18.157.16/">198.18.157.16</a></td>
+<td>admin</td>
+<td>C1sco12345!</td>
+</tr>
+<tr>
+<td>Hypervisor - ESXi</td>
+<td>transformers-1.dcloud.cisco.com</td>
+<td>VMware 7.0 Update 3</td>
+<td><a href="https://198.18.157.6/ui/#/host">198.18.157.6</a></td>
+<td>root</td>
+<td>C1sco12345!</td>
+</tr>
+<tr>
+<td>Physical Server - CIMC</td>
+<td>transformers-cimc-2</td>
+<td>UCS C220 M4S - 2x CPU Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz - 10
+Cores - 40 Threads - 256 GB RAM - 2TB Storage</td>
+<td><a href="https://198.18.157.17/">198.18.157.17</a></td>
+<td>admin</td>
+<td>C1sco12345!</td>
+</tr>
+<tr>
+<td>Hypervisor - ESXi</td>
+<td>transformers-2.dcloud.cisco.com</td>
+<td>VMware 7.0 Update 3</td>
+<td><a href="https://198.18.157.7/ui/#/host">198.18.157.7</a></td>
+<td>root</td>
+<td>C1sco12345!</td>
+</tr>
+</tbody>
+</table>
+<h2 id="software-virtual-machines-and-tools">Software, Virtual Machines
+and Tools</h2>
+<p>List any software or tools required to interact with the devices,
+such as terminal emulators, SSH clients, or network management
+software.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 9%" />
+<col style="width: 19%" />
+<col style="width: 12%" />
+<col style="width: 23%" />
+<col style="width: 8%" />
+<col style="width: 5%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr>
+<th>VM name</th>
+<th>Hosts</th>
+<th>Comment</th>
+<th>Operating System</th>
+<th>Specs</th>
+<th>IP Address</th>
+<th>Username</th>
+<th>Password</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SRV-CONTAINERLAB-01</td>
+<td>Transformers 01</td>
+<td>Containerlab 01</td>
+<td>Ubuntu 22.04.03 LTS</td>
+<td>40vCPU - 192 G Memory - 400 GB Storage</td>
+<td>198.18.140.1</td>
+<td>netadmin</td>
+<td>C1sco12345!</td>
+</tr>
+<tr>
+<td>SRV-CONTAINERLAB-02</td>
+<td>Transformers 02</td>
+<td>Containerlab 02</td>
+<td>Ubuntu 22.04.03 LTS</td>
+<td>40vCPU - 220 G Memory - 400 GB Storage</td>
+<td>198.18.140.2</td>
+<td>netadmin</td>
+<td>C1sco12345!</td>
+</tr>
+<tr>
+<td>SRV-Ubuntu-01</td>
+<td>Transformers 01</td>
+<td>Network tools and Telemetry</td>
+<td>Ubuntu 22.04.03 LTS</td>
+<td>8vCPU - 16 G Memory - 500 GB Storage</td>
+<td>198.18.140.3</td>
+<td>netadmin</td>
+<td>C1sco12345!</td>
+</tr>
+<tr>
+<td>SRV-Rocky-01</td>
+<td>Transformers 02</td>
+<td>Network tools</td>
+<td>Rocky Linux 9.3</td>
+<td>8vCPU - 16 G Memory - 250 GB Storage</td>
+<td>198.18.140.3</td>
+<td>netadmin</td>
+<td>C1sco12345!</td>
+</tr>
+<tr>
+<td>SRV-Rocky-01</td>
+<td>Transformers 02</td>
+<td>Network tools</td>
+<td>Rocky Linux 9.3</td>
+<td>8vCPU - 16 G Memory - 250 GB Storage</td>
+<td>198.18.140.4</td>
+<td>netadmin</td>
+<td>C1sco12345!</td>
+</tr>
+<tr>
+<td>SRV-FREEBSD-01</td>
+<td>Transformers 01</td>
+<td>FreeBSD Lab</td>
+<td>FreeBSD 14.0</td>
+<td>8vCPU - 16 G Memory - 200 GB Storage</td>
+<td>198.18.140.6</td>
+<td>netadmin</td>
+<td>C1sco12345!</td>
+</tr>
+<tr>
+<td>SRV-AWS-DX-Customer-01</td>
+<td>Transformers 01</td>
+<td>AWS DX Customer 01</td>
+<td>Ubuntu 22.04.03 LTS</td>
+<td>2vCPU - 4 G Memory - 40 GB Storage</td>
+<td>198.18.140.5</td>
+<td>netadmin</td>
+<td>C1sco12345!</td>
+</tr>
+</tbody>
+</table>
+<h1 id="web-server">Web Server</h1>
+<p>This lab has a nginx container running on Rocky linux (Transformers
+01) to serve the lab and distribute images using HTTP.</p>
+<p>It is important to note that this nginx container has a custom
+configuration file so that it can be browsed using automatic directory
+listing (to ease the usability of the lab).</p>
+<p>NGINX Configuration.</p>
+<pre><code>[netadmin@srv-rocky-01 ~]$ cat nginx/default.conf
+server {
+    listen       80;
+    server_name  localhost;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+        autoindex on;  # Enable automatic directory listings
+    }
+
+    # Redirect server error pages to the static page /50x.html
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
+</code></pre>
+<p>HTTP folder architecture.</p>
+<pre><code>[netadmin@srv-rocky-01 networking]$ pwd
+/home/netadmin/networking
+
+
+
+[netadmin@srv-rocky-01 networking]$ tree
+.
+├── 8000
+│   ├── 7.10.1
+│   │   ├── 8000-k9sec-rpms.7.10.1.tar
+│   │   ├── 8000-optional-rpms.7.10.1.tar
+│   │   ├── 8000-x64-7.10.1.docs.tar
+│   │   ├── 8000-x64-7.10.1.iso
+│   │   └── 8000-x64-usb-7.10.1.zip
+│   ├── 7.10.2
+│   │   ├── 8000-optional-rpms.7.10.2.tar
+│   │   └── 8000-x64-usb-7.10.2.zip
+│   ├── 7.11.1
+│   │   ├── 8000-k9sec-rpms.7.11.1.tar
+│   │   ├── 8000-optional-rpms.7.11.1.tar
+│   │   ├── 8000-x64-7.11.1.docs.tar
+│   │   ├── 8000-x64-7.11.1.iso
+│   │   └── 8000-x64-usb-7.11.1.zip
+│   ├── 7.8.2
+│   │   ├── 8000-k9sec-rpms.7.8.2.tar
+│   │   ├── 8000-optional-rpms.7.8.2.tar
+│   │   ├── 8000-x64-7.8.2.docs.tar
+│   │   ├── 8000-x64-7.8.2.iso
+│   │   └── 8000-x64-usb-7.8.2.zip
+│   ├── 7.9.1
+│   │   ├── 8000-k9sec-rpms.7.9.1.tar
+│   │   ├── 8000-x64-7.9.1.docs.tar
+│   │   ├── 8000-x64-7.9.1.iso
+│   │   ├── 8000-x64-optional-rpms.7.9.1.tar
+│   │   └── 8000-x64-usb-7.9.1.zip
+│   ├── 7.9.2
+│   │   ├── 8000-k9sec-rpms.7.9.2.tar
+│   │   ├── 8000-x64-7.9.2.docs.tar
+│   │   ├── 8000-x64-7.9.2.iso
+│   │   ├── 8000-x64-optional-rpms.7.9.2.tar
+│   │   └── 8000-x64-usb-7.9.2.zip
+│   └── lol.lol
+└── c8k-update-v2.tar
+
+7 directories, 29 files</code></pre>
+<p>Here are the commands needed to launch the nginx container using the
+custom configuration file:</p>
+<pre><code>[netadmin@srv-rocky-01 nginx]$ docker run --name nginx-lab \
+&gt; -v /home/netadmin/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro \
+&gt; -v /home/netadmin/networking:/usr/share/nginx/html:ro \
+&gt; -p 8080:80 \
+&gt; -d \
+&gt; nginx:latest
+a49f39273502ad63dcb98401a9964fef66f7c8ec0adbfe8aa7864e1887fbe623</code></pre>
+<p>It is now possible to browse the folder using :
+http://198.18.140.4:8080</p>
+<pre><code>(base) nmichel@NICMCL-M-NX99:/Users/nmichel/Downloads $ wget http://198.18.140.4:8080                                                                       
+--2024-02-29 17:15:45--  http://198.18.140.4:8080/
+Connecting to 198.18.140.4:8080... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘index.html’
+
+index.html                                                 [ &lt;=&gt;                                                                                                                        ]     367  --.-KB/s    in 0s      
+
+2024-02-29 17:15:45 (50.0 MB/s) - ‘index.html’ saved [367]</code></pre>
+<figure>
+<img src="./images/LAB-AWS-DX-RTP-HTTP-NGINX.png" alt="HTTP nginx" />
+<figcaption aria-hidden="true">HTTP nginx</figcaption>
+</figure>
+<p>image should be available at
+http://198.18.140.4:8080/8000/7.10.1/8000-x64-7.10.1.iso for example</p>
+<p>Verification:</p>
+<pre><code>[netadmin@srv-rocky-01 nginx]$ docker logs -f nginx-lab
+...
+198.18.140.3 - - [29/Feb/2024:23:23:55 +0000] &quot;GET /8000/7.10.1/8000-x64-7.10.1.iso HTTP/1.1&quot; 200 1685852160 &quot;-&quot; &quot;Wget/1.21.2&quot; &quot;-&quot;</code></pre>
+<h1 id="yang-suite">Yang Suite</h1>
+<p>This lab has an yang suite set of containers that allow you to get
+the latest information regarding the yang model on any devices of the
+Cisco portfolio. The yang suite is running on SRV-Ubuntu-01
+(Transformers 01).</p>
+<p>Git repo has been cloned:</p>
+<pre><code>netadmin@srv-ubuntu-01:/home/netadmin $ git clone https://github.com/CiscoDevNet/yangsuite.git
+Cloning into &#39;yangsuite&#39;...
+remote: Enumerating objects: 917, done.
+remote: Counting objects: 100% (122/122), done.
+remote: Compressing objects: 100% (83/83), done.
+remote: Total 917 (delta 45), reused 112 (delta 39), pack-reused 795
+Receiving objects: 100% (917/917), 74.23 MiB | 44.32 MiB/s, done.
+Resolving deltas: 100% (371/371), done.</code></pre>
+<p>Containers need to be created and started:</p>
+<pre><code>
+netadmin@srv-ubuntu-01:/home/netadmin/yangsuite/docker git:(main) $ ./start_yang_suite.sh
+Hello, please setup YANG Suite admin user.
+username: netadmin
+password:
+confirm password:
+Will you access the system from a remote host? (y/n): y
+Enter local host FQDN or IP: 198.18.140.3
+email: nicmcl@cisco.com
+
+Setup test certificates? (y/n): y
+################################################################
+## Generating self-signed certificates...                     ##
+##                                                            ##
+## WARNING: Obtain certificates from a trusted authority!     ##
+##                                                            ##
+## NOTE: Some browsers may still reject these certificates!!  ##
+################################################################
+
+...+..................+...+......+.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.....+......+...+...+....+...+..+....+..+...+.+.........+..+.........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.......+..+...+............+.+.....................+.........+.....+......+...+.+......+......+.....+....+......+.....+.......+..+....+..+....+.....+...+.+......+........+.+..+...+.......+...............+.....+............+.......+...+..+......+.......+.....................+.....+.+........+...+............+.+............+.....+....+...+..+...+..........+..+.+...+..+...+....+.....+...+.......+........+...+...................+..+.+...+...............+.........+..+...+.......+.....+.........+.........................+.....+.+..................+..+.+..+.......+.....+...+.......+......+.....+....+.....+......+.......+...+.....+.........+...+.+..+...+.........+......+.....................+......+....+......+..+.......+...........+.........+....+..+....+...............+...+......+......+......+..+.+.....+...............+.........+......+......+.+...............+...+...........+......+....+...+......+.........+.................+.+..+...+...+.........+...+...+.+.........+..+.......+......+.........+..+.........+.+........+.+..+.............+..............+......+......+......+....+..............+..........+.........+..+...+......+.+......+..+...+.......+...+.........+......+..+.+.....+............+.........+......+..........+...+.........+......+.....+.+..................+..+.........+.+........+......+....+...+..+......+....+........+..........+..+.......+...+.....+...+....+...........+....+...+.....+......+..........+.....+....+................................+......+....+...+..+....+..+............+......+.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+.+.......+......+.....+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.+...+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*..+..+......+............+.......+...+...+..+....+..............+....+......+.........+..+..........+......+.........+...+..+.+.....+.......+..+.............+..+.+...+..............+.+............+..+.+.....+.+.....+.+...............+........+.+.....+...+.............+...+...........+...+................+.........+.....+.+......+..............+.+.....+.............+..+................+...+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter &#39;.&#39;, the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:US
+State or Province Name (full name) [Some-State]:NC
+Locality Name (eg, city) []:RTP
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Cisco
+Organizational Unit Name (eg, section) []:AWS-DX-SE-Lab
+Common Name (e.g. server FQDN or YOUR name) []:localhost
+Email Address []:nicmcl@cisco.com
+Certificates generated...
+</code></pre>
+<p>yang Suite can be reached at : https://198.18.140.3:8443</p>
+<p>To make it easier and persistent, it is recommended to run these
+container using docker compose and by detaching the container from the
+CLI:</p>
+<pre><code>netadmin@srv-ubuntu-01:/home/netadmin/yangsuite/docker git:(main*) $ docker compose up -d
+[+] Running 3/3
+ ✔ Container docker-yangsuite-1  Started   0.0s
+ ✔ Container docker-backup-1     Started   0.0s
+ ✔ Container docker-nginx-1      Started   0.0s</code></pre>
+<figure>
+<img src="./images/LAB-AWS-DX-RTP-HTTP-YANG-SUITE.png"
+alt="HTTP YANG Suite" />
+<figcaption aria-hidden="true">HTTP YANG Suite</figcaption>
+</figure>
+<h1 id="edge-shark">Edge Shark</h1>
+<p>Edge shark is a suite of containers that allows you to sniff
+container traffic in a very easy way. Source code can be found here:
+https://github.com/siemens/edgeshark From the documentation: If you want
+to live capture traffic using Wireshark, please download the csharg
+extcap plugin for the OS/distribution and install it
+(https://github.com/siemens/cshargextcap/releases). Read the
+documentation here: =&gt; https://github.com/siemens/cshargextcap</p>
+<p>Edgeshark is composed of the following components: -
+ghcr.io/siemens/packetflix =&gt;
+https://github.com/siemens/packetflix/pkgs/container/packetflix -
+ghcr.io/siemens/ghostwire =&gt;
+https://github.com/siemens/ghostwire/pkgs/container/ghostwire</p>
+<p>Each server where containerlab has been installed contains an
+edgeshark suite. Also, the Ubuntu-01 server has edgeshark containers but
+not restarted automatically.</p>
+<pre><code> wget -q --no-cache -O - \\n  https://github.com/siemens/edgeshark/raw/main/deployments/wget/docker-compose.yaml \\n  | docker compose -f - up -d</code></pre>
+<p>A script has been created to start the edgeshark containers:</p>
+<pre><code>netadmin@srv-containerlab-02:/home/netadmin/edgeshark $ cat edgesharkd.sh
+#!/bin/bash
+
+wget -q --no-cache -O - \
+  https://github.com/siemens/edgeshark/raw/main/deployments/wget/docker-compose.yaml \
+  | docker compose -f - up -d
+
+
+netadmin@srv-containerlab-02:/home/netadmin/edgeshark $ ./edgesharkd.sh
+[+] Running 6/6
+ ✔ edgeshark 2 layers [⣿⣿]      0B/0B      Pulled                                                                                                                                                         8.1s
+   ✔ ce715ac60835 Pull complete                                                                                                                                                                           4.0s
+   ✔ e27fab22e5de Pull complete                                                                                                                                                                           4.1s
+ ✔ gostwire 2 layers [⣿⣿]      0B/0B      Pulled                                                                                                                                                          7.1s
+   ✔ 4abcf2066143 Already exists                                                                                                                                                                          0.0s
+   ✔ ee2c3397c828 Pull complete                                                                                                                                                                           4.0s
+[+] Running 2/2
+ ✔ Container edgeshark-edgeshark-1  Started                                                                                                                                                               1.0s
+ ✔ Container edgeshark-gostwire-1   Started
+
+</code></pre>
+<p>Example of the Edgeshark GUI:</p>
+<figure>
+<img src="./images/LAB-AWS-DX-RTP-Edgeshark-GUI.png" alt="Edgeshark" />
+<figcaption aria-hidden="true">Edgeshark</figcaption>
+</figure>
+<p>While deploying a lab we can see all the other containers. Here a lab
+with 2x 8201-32FH:</p>
+<figure>
+<img src="./images/LAB-AWS-DX-RTP-Edgeshark-Example.png"
+alt="Edgeshark" />
+<figcaption aria-hidden="true">Edgeshark</figcaption>
+</figure>
+</body>
+</html>

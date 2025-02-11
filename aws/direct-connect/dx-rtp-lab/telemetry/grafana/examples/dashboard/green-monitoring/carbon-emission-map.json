@@ -1,0 +1,174 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 120,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-green",
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "value": 150
+                },
+                {
+                  "color": "#EF843C",
+                  "value": 250
+                },
+                {
+                  "color": "red",
+                  "value": 500
+                }
+              ]
+            },
+            "unit": "massg"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 29,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "basemap": {
+            "config": {
+              "showLabels": true,
+              "theme": "auto"
+            },
+            "name": "Layer 0",
+            "type": "carto"
+          },
+          "controls": {
+            "mouseWheelZoom": true,
+            "showAttribution": true,
+            "showDebug": false,
+            "showScale": true,
+            "showZoom": true
+          },
+          "layers": [
+            {
+              "config": {
+                "showLegend": true,
+                "style": {
+                  "color": {
+                    "field": "_value",
+                    "fixed": "dark-green"
+                  },
+                  "opacity": 1,
+                  "rotation": {
+                    "fixed": 0,
+                    "max": 360,
+                    "min": -360,
+                    "mode": "mod"
+                  },
+                  "size": {
+                    "fixed": 10,
+                    "max": 15,
+                    "min": 2
+                  },
+                  "symbol": {
+                    "fixed": "img/icons/marker/circle.svg",
+                    "mode": "fixed"
+                  },
+                  "text": {
+                    "field": "_value",
+                    "fixed": "",
+                    "mode": "field"
+                  },
+                  "textConfig": {
+                    "fontSize": 30,
+                    "offsetX": 0,
+                    "offsetY": 0,
+                    "textAlign": "right",
+                    "textBaseline": "top"
+                  }
+                }
+              },
+              "location": {
+                "gazetteer": "public/gazetteer/countries.json",
+                "lookup": "cc",
+                "mode": "lookup"
+              },
+              "name": "Layer 1",
+              "type": "markers"
+            }
+          ],
+          "view": {
+            "id": "europe",
+            "lat": 46,
+            "lon": 14,
+            "zoom": 6
+          }
+        },
+        "pluginVersion": "8.3.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "PAA239D41A0EF0C37"
+            },
+            "hide": false,
+            "query": "import \"strings\"\n\nfrom(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  \t  r._measurement == \"electricity-map\" and\n      r._field == \"carbonIntensity\")\n  |> map(fn: (r) => ({\n    r with\n    \tcc: strings.split(v: r.cc, t: \"-\")[0],\n\t}))\n  |> drop(columns: [\"_measurement\", \"host\"])\n  |> drop(columns: [\"_start\", \"_stop\", \"_time\", \"region\"])\n  |> last()\n  |> group()",
+            "refId": "A"
+          }
+        ],
+        "title": "Live carbon intensity",
+        "type": "geomap"
+      }
+    ],
+    "schemaVersion": 33,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-2d",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Carbon intensity map",
+    "uid": "yTPCB2cIz",
+    "version": 8,
+    "weekStart": ""
+  }

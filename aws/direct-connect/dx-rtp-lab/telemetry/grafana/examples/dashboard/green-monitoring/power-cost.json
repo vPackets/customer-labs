@@ -1,0 +1,1071 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Overview of power consumption for RON lab and others",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 42,
+    "iteration": 1723671087410,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 207,
+        "panels": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "PAA239D41A0EF0C37"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "displayName": "${__field.labels.__values}",
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 500
+                    },
+                    {
+                      "color": "orange",
+                      "value": 600
+                    },
+                    {
+                      "color": "red",
+                      "value": 800
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 1000
+                    }
+                  ]
+                },
+                "unit": "currencyEUR"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 5,
+              "x": 0,
+              "y": 1
+            },
+            "id": 212,
+            "options": {
+              "colorMode": "background",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "textMode": "auto"
+            },
+            "pluginVersion": "8.3.0",
+            "repeatDirection": "v",
+            "targets": [
+              {
+                "datasource": "InfluxDB-2",
+                "hide": false,
+                "query": "//Estimated cost (extrapolated to 1h x num_hours)\n\n//Gives us the cost per year\nnum_hours = float(v: 24*${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  r._measurement == \"show environment power\" and\n  r._field == \"powersup/power_summary/tot_pow_input_actual_draw\" and\n    (r.source =~ /r25-eu-spdc/) // Get only the 92xx\n    )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> map(fn: (r) => ({\n    r with\n      cost: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"cost\", \"source\"])\n  |> yield()",
+                "refId": "Dynamic measures - Total carbon emissions - sorted"
+              }
+            ],
+            "title": "Estimated cost - ${nr_days} days",
+            "transformations": [],
+            "type": "stat"
+          }
+        ],
+        "title": "Nexus 3K",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "id": 200,
+        "panels": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "PAA239D41A0EF0C37"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "displayName": "${__field.labels.__values}",
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 500
+                    },
+                    {
+                      "color": "orange",
+                      "value": 600
+                    },
+                    {
+                      "color": "red",
+                      "value": 800
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 1000
+                    }
+                  ]
+                },
+                "unit": "currencyEUR"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 4,
+              "w": 5,
+              "x": 0,
+              "y": 2
+            },
+            "id": 205,
+            "options": {
+              "colorMode": "background",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "textMode": "auto"
+            },
+            "pluginVersion": "8.3.0",
+            "repeatDirection": "v",
+            "targets": [
+              {
+                "datasource": "InfluxDB-2",
+                "hide": false,
+                "query": "//Cost based on EUR variable (extrapolated to 1h x num_hours)\n\nnum_hours = float(v: 24*${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  r._measurement == \"show environment power\" and\n  r._field == \"powersup/power_summary/tot_pow_input_actual_draw\" and\n    (r.source =~ /r[0-9][2-4]-eu-spdc/) // Get only the 92xx\n    )\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> yield()\n",
+                "refId": "Dynamic measures - Total carbon emissions - sorted"
+              }
+            ],
+            "title": "Estimated cost - ${nr_days} days",
+            "transformations": [],
+            "type": "stat"
+          }
+        ],
+        "title": "Nexus 92xx",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 2
+        },
+        "id": 193,
+        "panels": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "PAA239D41A0EF0C37"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "displayName": "${__field.labels.__values}",
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 500
+                    },
+                    {
+                      "color": "orange",
+                      "value": 600
+                    },
+                    {
+                      "color": "red",
+                      "value": 800
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 1000
+                    }
+                  ]
+                },
+                "unit": "currencyEUR"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 15,
+              "w": 5,
+              "x": 0,
+              "y": 3
+            },
+            "id": 198,
+            "options": {
+              "colorMode": "background",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "textMode": "auto"
+            },
+            "pluginVersion": "8.3.0",
+            "repeatDirection": "v",
+            "targets": [
+              {
+                "datasource": "InfluxDB-2",
+                "hide": false,
+                "query": "//Cost based on EUR variable (extrapolated to 1h x num_hours)\n\nnum_hours = float(v: 24*${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  r._measurement == \"show environment power\" and\n  r._field == \"powersup/power_summary/tot_pow_input_actual_draw\" and\n    (r.source == \"Yavin-129\" or r.source =~ /rs1-core.*/ or r.source =~ /rs[0-9]-mgm-tor/ or r.source =~ /rs[0-9]-mgm-mor/ or r.source =~ /ipn[0-9][0-9]-eu-spdc/ or r.source == \"Tatooine-136\" or r.source =~ /rl[0-9][0-9][0-9]-eu-spdc/ or r.source =~ /cl[0-9][0-9][0-9]-eu-spdc/) // Get only the 93xx\n    )\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> yield()\n",
+                "refId": "Dynamic measures - Total carbon emissions - sorted"
+              },
+              {
+                "datasource": {
+                  "type": "influxdb",
+                  "uid": "PAA239D41A0EF0C37"
+                },
+                "hide": false,
+                "query": "//Carbon emission (extrapolated to 1h x num_hours)\n\nnum_hours = float(v: 24*${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"apic-switch\")\n  |> filter(fn: (r) => r[\"_field\"] == \"pIn\")\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"name\"])\n  |> yield()",
+                "refId": "APIC - Special case: 93xx GX2B"
+              }
+            ],
+            "title": "Estimated cost - ${nr_days} days",
+            "transformations": [],
+            "type": "stat"
+          }
+        ],
+        "title": "Nexus 93xx",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 3
+        },
+        "id": 170,
+        "panels": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "PAA239D41A0EF0C37"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "displayName": "${__field.labels.source}",
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 500
+                    },
+                    {
+                      "color": "#EF843C",
+                      "value": 600
+                    },
+                    {
+                      "color": "red",
+                      "value": 800
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 1000
+                    }
+                  ]
+                },
+                "unit": "currencyEUR"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 5,
+              "x": 0,
+              "y": 4
+            },
+            "id": 175,
+            "options": {
+              "colorMode": "background",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "textMode": "auto"
+            },
+            "pluginVersion": "8.3.0",
+            "repeatDirection": "v",
+            "targets": [
+              {
+                "datasource": "InfluxDB-2",
+                "hide": false,
+                "query": "//Cost based on EUR variable (extrapolated to 1h x num_hours)\n\nnum_hours = float(v: 24*${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  r._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and\n  r.source == \"Lyon-23\" and\n  r._field == \"system_power_input\")\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> yield()",
+                "refId": "Dynamic measures - Total carbon emissions"
+              }
+            ],
+            "title": "Estimated cost - ${nr_days} days",
+            "transformations": [],
+            "type": "stat"
+          }
+        ],
+        "title": "NCS5xx",
+        "type": "row"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 4
+        },
+        "id": 214,
+        "panels": [],
+        "title": "NCS5xxL",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "displayName": "${__field.labels.source}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 500
+                },
+                {
+                  "color": "orange",
+                  "value": 600
+                },
+                {
+                  "color": "red",
+                  "value": 800
+                },
+                {
+                  "color": "dark-red",
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "currencyEUR"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 5,
+          "x": 0,
+          "y": 5
+        },
+        "id": 219,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.3.0",
+        "repeatDirection": "v",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "//Cost based on EUR variable (extrapolated to 1h x num_hours)\n\nnum_hours = float(v: 24 * ${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n    r.device_type != \"cisco-8k\" and\n  \tr._measurement == \"Cisco-IOS-XR-envmon-oper:power-management/rack/chassis\" and\n    r._field == \"total_pwr_output\"\n    )\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"source\", \"cc\"])\n  |> map(fn: (r) => ({\n    r with\n    _value: (float(v: r._value) * 0.1 + float(v: r._value)) // Workaround: consider +10% of the output as input power\n   }))\n\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> yield()",
+            "refId": "Dynamic measures - Total carbon emissions"
+          }
+        ],
+        "title": "Estimated cost - ${nr_days} days",
+        "transformations": [],
+        "type": "stat"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 9
+        },
+        "id": 2,
+        "panels": [],
+        "title": "NCS5xxx",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "displayName": "${__field.labels.__values}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 500
+                },
+                {
+                  "color": "orange",
+                  "value": 600
+                },
+                {
+                  "color": "red",
+                  "value": 800
+                },
+                {
+                  "color": "dark-red",
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "currencyEUR"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 20,
+          "w": 5,
+          "x": 0,
+          "y": 10
+        },
+        "id": 166,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.3.0",
+        "repeatDirection": "v",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "//Cost based on EUR variable (extrapolated to 1h x num_hours)\n\nnum_hours = float(v: 24 * ${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  r._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and\n  r.source != \"Lyon-23\" and\n  r._field == \"system_power_input\")\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> yield()",
+            "refId": "Dynamic measures - Total carbon emissions - sorted"
+          }
+        ],
+        "title": "Estimated cost - ${nr_days} days",
+        "transformations": [],
+        "type": "stat"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 30
+        },
+        "id": 4,
+        "panels": [],
+        "title": "ASR 9K",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "displayName": "${__field.labels.__values}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 500
+                },
+                {
+                  "color": "orange",
+                  "value": 600
+                },
+                {
+                  "color": "red",
+                  "value": 800
+                },
+                {
+                  "color": "dark-red",
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "currencyEUR"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 5,
+          "x": 0,
+          "y": 31
+        },
+        "id": 164,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.3.0",
+        "repeatDirection": "v",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "num_hours = float(v: 24 * ${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  r._measurement == \"Cisco-IOS-XR-sysadmin-asr9k-envmon-ui:environment/oper/power/location/pem_attributes\" and\n  r._field == \"system_power_input\")\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> yield()",
+            "refId": "Dynamic measurements - Total carbon emissions - sorted"
+          }
+        ],
+        "title": "Estimated cost - ${nr_days} days",
+        "transformations": [],
+        "type": "stat"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 45
+        },
+        "id": 221,
+        "panels": [],
+        "title": "ASR 9K (32-bit)",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "displayName": "${__field.labels.__values}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 500
+                },
+                {
+                  "color": "orange",
+                  "value": 600
+                },
+                {
+                  "color": "red",
+                  "value": 800
+                },
+                {
+                  "color": "dark-red",
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "currencyEUR"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 5,
+          "x": 0,
+          "y": 46
+        },
+        "id": 231,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.3.0",
+        "repeatDirection": "v",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "num_hours = float(v: 24 * ${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"asr9k_power\")\n  |> sort(columns: [\"_time\", \"source\"], desc: true)\n  |> unique(column: \"source\")\n  |> pivot(columnKey: [\"_field\"], rowKey: [\"source\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({r with _value: (r.voltage1 * r.current1 + r.voltage2 * r.current2) / 1000000}))\n  |> keep(columns: [\"_time\", \"_value\", \"source\", \"cc\"])\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> yield()",
+            "refId": "Dynamic measurements - Total carbon emissions - sorted"
+          }
+        ],
+        "title": "Estimated cost - ${nr_days} days",
+        "transformations": [],
+        "type": "stat"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 51
+        },
+        "id": 34,
+        "panels": [],
+        "title": "C8K",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "displayName": "${__field.labels.__values}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 500
+                },
+                {
+                  "color": "orange",
+                  "value": 600
+                },
+                {
+                  "color": "red",
+                  "value": 800
+                },
+                {
+                  "color": "dark-red",
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "currencyEUR"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 5,
+          "x": 0,
+          "y": 52
+        },
+        "id": 168,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.3.0",
+        "repeatDirection": "v",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "PAA239D41A0EF0C37"
+            },
+            "hide": false,
+            "query": "//Cost based on EUR variable (extrapolated to 1h x num_hours)\nnum_hours = float(v: 24 * ${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n    r.device_type == \"cisco-8k\" and\n    r._measurement == \"Cisco-IOS-XR-envmon-oper:power-management/rack/producers/producer-nodes/producer-node\" and \n    (\n    r._field == \"pem_info_array/current_in_a\" or\n    r._field == \"pem_info_array/voltage_in_a\" or \n    r._field == \"pem_info_array/current_in_b\" or\n    r._field == \"pem_info_array/voltage_in_b\"\n    ))\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> rename(columns: {\"pem_info_array/voltage_in_a\": \"voltage_in_a\", \"pem_info_array/current_in_a\": \"current_in_a\", \"pem_info_array/voltage_in_b\": \"voltage_in_b\", \"pem_info_array/current_in_b\": \"current_in_b\"})\n  |> map(fn: (r) => ({\n    r with\n    power_in_a: if float(v: r.current_in_a) > 100 then (float(v: r.voltage_in_a)/1000.0) * (float(v: r.current_in_a)/1000.0) else float(v: r.voltage_in_a) * float(v: r.current_in_a),\n    power_in_b: if float(v: r.current_in_b) > 100 then (float(v: r.voltage_in_b)/1000.0) * (float(v: r.current_in_b)/1000.0) else float(v: r.voltage_in_b) * float(v: r.current_in_b),\n   }))\n  |> map(fn: (r) => ({\n    r with\n    in_power: r.power_in_a + r.power_in_b,\n  }))\n  |> last(column: \"in_power\")\n  |> keep(columns: [\"_time\", \"in_power\", \"_field\", \"_value\", \"source\", \"cc\"])\n  //|> keep(columns: [\"_time\", \"in_power\", \"_field\", \"_value\", \"source\", \"cc\", \"node\", \"name\", \"pem_info_array/node_name\"])\n  |> sum(column: \"in_power\")\n  |> map(fn: (r) => ({\n    r with\n    _value: r.in_power,\n  }))\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> yield()",
+            "refId": "Dynamic measurements - Total Carbon emissions per hour - sorted"
+          }
+        ],
+        "title": "Estimated cost - ${nr_days} days",
+        "transformations": [],
+        "type": "stat"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 59
+        },
+        "id": 233,
+        "panels": [],
+        "title": "ASR 9xx (IOS XE)",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "displayName": "${__field.labels.__values}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 500
+                },
+                {
+                  "color": "orange",
+                  "value": 600
+                },
+                {
+                  "color": "red",
+                  "value": 800
+                },
+                {
+                  "color": "dark-red",
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "currencyEUR"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 5,
+          "x": 0,
+          "y": 60
+        },
+        "id": 238,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.3.0",
+        "repeatDirection": "v",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "num_hours = float(v: 24 * ${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XE-environment-oper:environment-sensors/environment-sensor\" and r._field == \"current_reading\" and (r.name == \"PEM Iout\" or r.name == \"PEM Vout\"))\n  |> sort(columns: [\"_time\", \"source\"], desc: true)\n  |> unique(column: \"source\")\n  |> pivot(columnKey: [\"name\"], rowKey: [\"source\", \"location\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({r with _value: (r[\"PEM Iout\"] * r[\"PEM Vout\"])}))\n  |> group(columns: [\"source\", \"cc\"])\n  |> sum(column: \"_value\")\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> yield()",
+            "refId": "Dynamic measurements - Total carbon emissions - sorted"
+          }
+        ],
+        "title": "Estimated cost - ${nr_days} days",
+        "transformations": [],
+        "type": "stat"
+      }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 33,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "0.5",
+            "value": "0.5"
+          },
+          "description": "average cost per kWh",
+          "hide": 0,
+          "label": "€ per kWh",
+          "name": "cost",
+          "options": [
+            {
+              "selected": true,
+              "text": "0.12",
+              "value": "0.12"
+            }
+          ],
+          "query": "0.5",
+          "skipUrlSync": false,
+          "type": "textbox"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "yellow",
+            "value": "0.2"
+          },
+          "hide": 2,
+          "includeAll": false,
+          "multi": false,
+          "name": "threshold_color_coding",
+          "options": [
+            {
+              "selected": true,
+              "text": "yellow",
+              "value": "0.2"
+            },
+            {
+              "selected": false,
+              "text": "orange",
+              "value": "0.3"
+            },
+            {
+              "selected": false,
+              "text": "red",
+              "value": "0.4"
+            },
+            {
+              "selected": false,
+              "text": "darkred",
+              "value": "0.5"
+            }
+          ],
+          "query": "yellow : 0.2, orange : 0.3, red : 0.4, darkred : 0.5",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "365",
+            "value": "365"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "number of days",
+          "multi": false,
+          "name": "nr_days",
+          "options": [
+            {
+              "selected": false,
+              "text": "1",
+              "value": "1"
+            },
+            {
+              "selected": false,
+              "text": "30",
+              "value": "30"
+            },
+            {
+              "selected": false,
+              "text": "90",
+              "value": "90"
+            },
+            {
+              "selected": false,
+              "text": "180",
+              "value": "180"
+            },
+            {
+              "selected": true,
+              "text": "365",
+              "value": "365"
+            }
+          ],
+          "query": "1, 30, 90, 180, 365",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-3h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Overview - cost",
+    "uid": "j_eDYjDVz",
+    "version": 14,
+    "weekStart": ""
+  }

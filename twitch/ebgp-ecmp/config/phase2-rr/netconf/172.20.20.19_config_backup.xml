@@ -1,0 +1,2867 @@
+<?xml version="1.0" ?>
+<data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+  
+  
+  <bgp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-bgp-cfg">
+    
+   
+    <instance>
+      
+    
+      <instance-name>default</instance-name>
+      
+    
+      <instance-as>
+        
+     
+        <as>0</as>
+        
+     
+        <four-byte-as>
+          
+      
+          <as>46489</as>
+          
+      
+          <bgp-running/>
+          
+      
+          <default-vrf>
+            
+       
+            <global>
+              
+        
+              <router-id>172.16.30.1</router-id>
+              
+        
+              <global-afs>
+                
+         
+                <global-af>
+                  
+          
+                  <af-name>ipv4-unicast</af-name>
+                  
+          
+                  <enable/>
+                  
+          
+                  <ibgp>
+                    
+           
+                    <paths-value>128</paths-value>
+                    
+           
+                    <unequal-cost>false</unequal-cost>
+                    
+           
+                    <selective>false</selective>
+                    
+          
+                  </ibgp>
+                  
+          
+                  <sourced-networks>
+                    
+           
+                    <sourced-network>
+                      
+            
+                      <network-addr>11.11.11.0</network-addr>
+                      
+            
+                      <network-prefix>24</network-prefix>
+                      
+           
+                    </sourced-network>
+                    
+          
+                  </sourced-networks>
+                  
+         
+                </global-af>
+                
+        
+              </global-afs>
+              
+       
+            </global>
+            
+       
+            <bgp-entity>
+              
+        
+              <neighbors>
+                
+         
+                <neighbor>
+                  
+          
+                  <neighbor-address>172.16.30.2</neighbor-address>
+                  
+          
+                  <create/>
+                  
+          
+                  <remote-as>
+                    
+           
+                    <as-xx>0</as-xx>
+                    
+           
+                    <as-yy>46489</as-yy>
+                    
+          
+                  </remote-as>
+                  
+          
+                  <update-source-interface>Loopback0</update-source-interface>
+                  
+          
+                  <neighbor-afs>
+                    
+           
+                    <neighbor-af>
+                      
+            
+                      <af-name>ipv4-unicast</af-name>
+                      
+            
+                      <activate/>
+                      
+            
+                      <route-policy-in>ALLOW</route-policy-in>
+                      
+            
+                      <route-policy-out>ALLOW</route-policy-out>
+                      
+            
+                      <soft-reconfiguration>
+                        
+             
+                        <inbound-soft>true</inbound-soft>
+                        
+             
+                        <soft-always>false</soft-always>
+                        
+             
+                        <rpki-options>rpki-default-option</rpki-options>
+                        
+            
+                      </soft-reconfiguration>
+                      
+           
+                    </neighbor-af>
+                    
+          
+                  </neighbor-afs>
+                  
+         
+                </neighbor>
+                
+         
+                <neighbor>
+                  
+          
+                  <neighbor-address>172.16.30.3</neighbor-address>
+                  
+          
+                  <create/>
+                  
+          
+                  <remote-as>
+                    
+           
+                    <as-xx>0</as-xx>
+                    
+           
+                    <as-yy>46489</as-yy>
+                    
+          
+                  </remote-as>
+                  
+          
+                  <update-source-interface>Loopback0</update-source-interface>
+                  
+          
+                  <neighbor-afs>
+                    
+           
+                    <neighbor-af>
+                      
+            
+                      <af-name>ipv4-unicast</af-name>
+                      
+            
+                      <activate/>
+                      
+            
+                      <route-policy-in>ALLOW</route-policy-in>
+                      
+            
+                      <route-policy-out>ALLOW</route-policy-out>
+                      
+            
+                      <soft-reconfiguration>
+                        
+             
+                        <inbound-soft>true</inbound-soft>
+                        
+             
+                        <soft-always>false</soft-always>
+                        
+             
+                        <rpki-options>rpki-default-option</rpki-options>
+                        
+            
+                      </soft-reconfiguration>
+                      
+           
+                    </neighbor-af>
+                    
+          
+                  </neighbor-afs>
+                  
+         
+                </neighbor>
+                
+         
+                <neighbor>
+                  
+          
+                  <neighbor-address>172.16.30.4</neighbor-address>
+                  
+          
+                  <create/>
+                  
+          
+                  <remote-as>
+                    
+           
+                    <as-xx>0</as-xx>
+                    
+           
+                    <as-yy>46489</as-yy>
+                    
+          
+                  </remote-as>
+                  
+          
+                  <update-source-interface>Loopback0</update-source-interface>
+                  
+          
+                  <neighbor-afs>
+                    
+           
+                    <neighbor-af>
+                      
+            
+                      <af-name>ipv4-unicast</af-name>
+                      
+            
+                      <activate/>
+                      
+            
+                      <route-policy-in>ALLOW</route-policy-in>
+                      
+            
+                      <route-policy-out>ALLOW</route-policy-out>
+                      
+            
+                      <soft-reconfiguration>
+                        
+             
+                        <inbound-soft>true</inbound-soft>
+                        
+             
+                        <soft-always>false</soft-always>
+                        
+             
+                        <rpki-options>rpki-default-option</rpki-options>
+                        
+            
+                      </soft-reconfiguration>
+                      
+           
+                    </neighbor-af>
+                    
+          
+                  </neighbor-afs>
+                  
+         
+                </neighbor>
+                
+         
+                <neighbor>
+                  
+          
+                  <neighbor-address>172.16.30.5</neighbor-address>
+                  
+          
+                  <create/>
+                  
+          
+                  <remote-as>
+                    
+           
+                    <as-xx>0</as-xx>
+                    
+           
+                    <as-yy>46489</as-yy>
+                    
+          
+                  </remote-as>
+                  
+          
+                  <update-source-interface>Loopback0</update-source-interface>
+                  
+          
+                  <neighbor-afs>
+                    
+           
+                    <neighbor-af>
+                      
+            
+                      <af-name>ipv4-unicast</af-name>
+                      
+            
+                      <activate/>
+                      
+            
+                      <route-policy-in>ALLOW</route-policy-in>
+                      
+            
+                      <route-policy-out>ALLOW</route-policy-out>
+                      
+            
+                      <soft-reconfiguration>
+                        
+             
+                        <inbound-soft>true</inbound-soft>
+                        
+             
+                        <soft-always>false</soft-always>
+                        
+             
+                        <rpki-options>rpki-default-option</rpki-options>
+                        
+            
+                      </soft-reconfiguration>
+                      
+           
+                    </neighbor-af>
+                    
+          
+                  </neighbor-afs>
+                  
+         
+                </neighbor>
+                
+        
+              </neighbors>
+              
+       
+            </bgp-entity>
+            
+      
+          </default-vrf>
+          
+     
+        </four-byte-as>
+        
+    
+      </instance-as>
+      
+   
+    </instance>
+    
+  
+  </bgp>
+  
+  
+  <routing-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-policy-repository-cfg">
+    
+   
+    <route-policies>
+      
+    
+      <route-policy>
+        
+     
+        <route-policy-name>ALLOW</route-policy-name>
+        
+     
+        <rpl-route-policy>route-policy ALLOW
+  pass
+end-policy
+</rpl-route-policy>
+        
+    
+      </route-policy>
+      
+   
+    </route-policies>
+    
+  
+  </routing-policy>
+  
+  
+  <grpc xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-man-ems-cfg">
+    
+   
+    <no-tls/>
+    
+   
+    <enable/>
+    
+   
+    <address-family>dual</address-family>
+    
+  
+  </grpc>
+  
+  
+  <ospf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-ospf-cfg">
+    
+   
+    <processes>
+      
+    
+      <process>
+        
+     
+        <process-name>1</process-name>
+        
+     
+        <default-vrf>
+          
+      
+          <router-id>172.16.30.1</router-id>
+          
+      
+          <area-addresses>
+            
+       
+            <area-area-id>
+              
+        
+              <area-id>0</area-id>
+              
+        
+              <name-scopes>
+                
+         
+                <name-scope>
+                  
+          
+                  <interface-name>Loopback0</interface-name>
+                  
+         
+                </name-scope>
+                
+         
+                <name-scope>
+                  
+          
+                  <interface-name>FourHundredGigE0/0/0/1</interface-name>
+                  
+         
+                </name-scope>
+                
+         
+                <name-scope>
+                  
+          
+                  <interface-name>FourHundredGigE0/0/0/2</interface-name>
+                  
+         
+                </name-scope>
+                
+        
+              </name-scopes>
+              
+       
+            </area-area-id>
+            
+      
+          </area-addresses>
+          
+     
+        </default-vrf>
+        
+    
+      </process>
+      
+   
+    </processes>
+    
+  
+  </ospf>
+  
+  
+  <netconf-yang xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-man-netconf-cfg">
+    
+   
+    <agent>
+      
+    
+      <ssh>
+        
+     
+        <enable/>
+        
+    
+      </ssh>
+      
+   
+    </agent>
+    
+  
+  </netconf-yang>
+  
+  
+  <aaa xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg">
+    
+   
+    <usernames xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg">
+      
+    
+      <username>
+        
+     
+        <ordering-index>0</ordering-index>
+        
+     
+        <name>cisco</name>
+        
+     
+        <usergroup-under-usernames>
+          
+      
+          <usergroup-under-username>
+            
+       
+            <name>root-lr</name>
+            
+      
+          </usergroup-under-username>
+          
+      
+          <usergroup-under-username>
+            
+       
+            <name>cisco-support</name>
+            
+      
+          </usergroup-under-username>
+          
+     
+        </usergroup-under-usernames>
+        
+     
+        <secret>
+          
+      
+          <type>type10</type>
+          
+      
+          <secret10>$6$wRDCF/rXHIs23F/.$RFS/NuzVFTco/OFGGxC5wANcKOqweAdxXcdIl.2hMu4TMRxhXvRk1Zd6MvOeMcxpoMdCfqEjiIfOHlZFISjBW/</secret10>
+          
+     
+        </secret>
+        
+    
+      </username>
+      
+    
+      <username>
+        
+     
+        <ordering-index>1</ordering-index>
+        
+     
+        <name>cisco123</name>
+        
+     
+        <usergroup-under-usernames>
+          
+      
+          <usergroup-under-username>
+            
+       
+            <name>root-lr</name>
+            
+      
+          </usergroup-under-username>
+          
+      
+          <usergroup-under-username>
+            
+       
+            <name>cisco-support</name>
+            
+      
+          </usergroup-under-username>
+          
+     
+        </usergroup-under-usernames>
+        
+     
+        <secret>
+          
+      
+          <type>type10</type>
+          
+      
+          <secret10>$6$yq2ay/BVdTMu5y/.$GtMe0Kz80mn4ndy.1RL3qO/20EZODgZMEVe5ycj4J1q5beqaZB5/0m9CeZWSKpBq5XntFevs59S./4NyJkVod.</secret10>
+          
+     
+        </secret>
+        
+    
+      </username>
+      
+   
+    </usernames>
+    
+  
+  </aaa>
+  
+  
+  <router-static xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg">
+    
+   
+    <default-vrf>
+      
+    
+      <address-family>
+        
+     
+        <vrfipv4>
+          
+      
+          <vrf-unicast>
+            
+       
+            <vrf-prefixes>
+              
+        
+              <vrf-prefix>
+                
+         
+                <prefix>0.0.0.0</prefix>
+                
+         
+                <prefix-length>0</prefix-length>
+                
+         
+                <vrf-route>
+                  
+          
+                  <vrf-next-hop-table>
+                    
+           
+                    <vrf-next-hop-next-hop-address>
+                      
+            
+                      <next-hop-address>172.20.20.1</next-hop-address>
+                      
+           
+                    </vrf-next-hop-next-hop-address>
+                    
+           
+                    <vrf-next-hop-interface-name-next-hop-address>
+                      
+            
+                      <interface-name>MgmtEth0/RP0/CPU0/0</interface-name>
+                      
+            
+                      <next-hop-address>172.20.20.1</next-hop-address>
+                      
+           
+                    </vrf-next-hop-interface-name-next-hop-address>
+                    
+          
+                  </vrf-next-hop-table>
+                  
+         
+                </vrf-route>
+                
+        
+              </vrf-prefix>
+              
+       
+            </vrf-prefixes>
+            
+      
+          </vrf-unicast>
+          
+     
+        </vrfipv4>
+        
+     
+        <vrfipv6>
+          
+      
+          <vrf-unicast>
+            
+       
+            <vrf-prefixes>
+              
+        
+              <vrf-prefix>
+                
+         
+                <prefix>::</prefix>
+                
+         
+                <prefix-length>0</prefix-length>
+                
+         
+                <vrf-route>
+                  
+          
+                  <vrf-next-hop-table>
+                    
+           
+                    <vrf-next-hop-interface-name-next-hop-address>
+                      
+            
+                      <interface-name>MgmtEth0/RP0/CPU0/0</interface-name>
+                      
+            
+                      <next-hop-address>2001:172:20:20::1</next-hop-address>
+                      
+           
+                    </vrf-next-hop-interface-name-next-hop-address>
+                    
+          
+                  </vrf-next-hop-table>
+                  
+         
+                </vrf-route>
+                
+        
+              </vrf-prefix>
+              
+       
+            </vrf-prefixes>
+            
+      
+          </vrf-unicast>
+          
+     
+        </vrfipv6>
+        
+    
+      </address-family>
+      
+   
+    </default-vrf>
+    
+  
+  </router-static>
+  
+  
+  <syslog xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg">
+    
+   
+    <console-logging>
+      
+    
+      <logging-level>disable</logging-level>
+      
+   
+    </console-logging>
+    
+  
+  </syslog>
+  
+  
+  <ssh xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg">
+    
+   
+    <server>
+      
+    
+      <v2/>
+      
+    
+      <netconf-vrf-table>
+        
+     
+        <vrf>
+          
+      
+          <vrf-name>default</vrf-name>
+          
+      
+          <enable/>
+          
+     
+        </vrf>
+        
+    
+      </netconf-vrf-table>
+      
+   
+    </server>
+    
+  
+  </ssh>
+  
+  
+  <interface-configurations xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg">
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>Loopback0</interface-name>
+      
+    
+      <interface-virtual/>
+      
+    
+      <ipv4-network xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg">
+        
+     
+        <addresses>
+          
+      
+          <primary>
+            
+       
+            <address>172.16.30.1</address>
+            
+       
+            <netmask>255.255.255.255</netmask>
+            
+      
+          </primary>
+          
+     
+        </addresses>
+        
+    
+      </ipv4-network>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>MgmtEth0/RP0/CPU0/0</interface-name>
+      
+    
+      <ipv4-network xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg">
+        
+     
+        <addresses>
+          
+      
+          <primary>
+            
+       
+            <address>172.20.20.19</address>
+            
+       
+            <netmask>255.255.255.0</netmask>
+            
+      
+          </primary>
+          
+     
+        </addresses>
+        
+    
+      </ipv4-network>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/0</interface-name>
+      
+    
+      <ipv4-network xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg">
+        
+     
+        <addresses>
+          
+      
+          <primary>
+            
+       
+            <address>11.11.11.254</address>
+            
+       
+            <netmask>255.255.255.0</netmask>
+            
+      
+          </primary>
+          
+     
+        </addresses>
+        
+    
+      </ipv4-network>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/1</interface-name>
+      
+    
+      <ipv4-network xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg">
+        
+     
+        <addresses>
+          
+      
+          <primary>
+            
+       
+            <address>10.10.0.30</address>
+            
+       
+            <netmask>255.255.255.252</netmask>
+            
+      
+          </primary>
+          
+     
+        </addresses>
+        
+    
+      </ipv4-network>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/2</interface-name>
+      
+    
+      <ipv4-network xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg">
+        
+     
+        <addresses>
+          
+      
+          <primary>
+            
+       
+            <address>10.10.0.25</address>
+            
+       
+            <netmask>255.255.255.252</netmask>
+            
+      
+          </primary>
+          
+     
+        </addresses>
+        
+    
+      </ipv4-network>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/3</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/4</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/5</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/6</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/7</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/8</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/9</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/10</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/11</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/12</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/13</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/14</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/15</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/16</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/17</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/18</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/19</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/20</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/21</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/22</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/23</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/24</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/25</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/26</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/27</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/28</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/29</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/30</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+   
+    <interface-configuration>
+      
+    
+      <active>act</active>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/31</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface-configuration>
+    
+  
+  </interface-configurations>
+  
+  
+  <host-names xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-shellutil-cfg">
+    
+   
+    <host-name>twitch-r1</host-name>
+    
+  
+  </host-names>
+  
+  
+  <tty xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-tty-server-cfg">
+    
+   
+    <tty-lines>
+      
+    
+      <tty-line>
+        
+     
+        <name>console</name>
+        
+     
+        <exec>
+          
+      
+          <timeout>
+            
+       
+            <minutes>0</minutes>
+            
+       
+            <seconds>0</seconds>
+            
+      
+          </timeout>
+          
+     
+        </exec>
+        
+     
+        <general>
+          
+      
+          <absolute-timeout>0</absolute-timeout>
+          
+     
+        </general>
+        
+     
+        <connection xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-tty-management-cfg">
+          
+      
+          <session-timeout>
+            
+       
+            <timeout>0</timeout>
+            
+       
+            <direction>in</direction>
+            
+      
+          </session-timeout>
+          
+     
+        </connection>
+        
+    
+      </tty-line>
+      
+    
+      <tty-line>
+        
+     
+        <name>default</name>
+        
+     
+        <exec>
+          
+      
+          <timeout>
+            
+       
+            <minutes>0</minutes>
+            
+       
+            <seconds>0</seconds>
+            
+      
+          </timeout>
+          
+     
+        </exec>
+        
+     
+        <general>
+          
+      
+          <absolute-timeout>0</absolute-timeout>
+          
+     
+        </general>
+        
+     
+        <connection xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-tty-management-cfg">
+          
+      
+          <session-timeout>
+            
+       
+            <timeout>0</timeout>
+            
+       
+            <direction>in</direction>
+            
+      
+          </session-timeout>
+          
+      
+          <transport-input>
+            
+       
+            <select>some</select>
+            
+       
+            <protocol1>ssh</protocol1>
+            
+      
+          </transport-input>
+          
+     
+        </connection>
+        
+    
+      </tty-line>
+      
+   
+    </tty-lines>
+    
+  
+  </tty>
+  
+  
+  <hostname xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-hostname-cfg">
+    
+   
+    <system-network-name>twitch-r1</system-network-name>
+    
+  
+  </hostname>
+  
+  
+  <routing-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-route-policy-cfg">
+    
+   
+    <route-policies>
+      
+    
+      <route-policy>
+        
+     
+        <route-policy-name>ALLOW</route-policy-name>
+        
+     
+        <rpl-route-policy>route-policy ALLOW
+  pass
+end-policy
+</rpl-route-policy>
+        
+    
+      </route-policy>
+      
+   
+    </route-policies>
+    
+  
+  </routing-policy>
+  
+  
+  <logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg">
+    
+   
+    <console>disable</console>
+    
+  
+  </logging>
+  
+  
+  <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg">
+    
+   
+    <interface>
+      
+    
+      <interface-name>Loopback0</interface-name>
+      
+    
+      <ipv4>
+        
+     
+        <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+          
+      
+          <address>
+            
+       
+            <address>172.16.30.1</address>
+            
+       
+            <netmask>255.255.255.255</netmask>
+            
+      
+          </address>
+          
+     
+        </addresses>
+        
+    
+      </ipv4>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>MgmtEth0/RP0/CPU0/0</interface-name>
+      
+    
+      <ipv4>
+        
+     
+        <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+          
+      
+          <address>
+            
+       
+            <address>172.20.20.19</address>
+            
+       
+            <netmask>255.255.255.0</netmask>
+            
+      
+          </address>
+          
+     
+        </addresses>
+        
+    
+      </ipv4>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/0</interface-name>
+      
+    
+      <ipv4>
+        
+     
+        <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+          
+      
+          <address>
+            
+       
+            <address>11.11.11.254</address>
+            
+       
+            <netmask>255.255.255.0</netmask>
+            
+      
+          </address>
+          
+     
+        </addresses>
+        
+    
+      </ipv4>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/1</interface-name>
+      
+    
+      <ipv4>
+        
+     
+        <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+          
+      
+          <address>
+            
+       
+            <address>10.10.0.30</address>
+            
+       
+            <netmask>255.255.255.252</netmask>
+            
+      
+          </address>
+          
+     
+        </addresses>
+        
+    
+      </ipv4>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/2</interface-name>
+      
+    
+      <ipv4>
+        
+     
+        <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+          
+      
+          <address>
+            
+       
+            <address>10.10.0.25</address>
+            
+       
+            <netmask>255.255.255.252</netmask>
+            
+      
+          </address>
+          
+     
+        </addresses>
+        
+    
+      </ipv4>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/3</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/4</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/5</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/6</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/7</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/8</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/9</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/10</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/11</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/12</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/13</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/14</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/15</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/16</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/17</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/18</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/19</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/20</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/21</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/22</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/23</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/24</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/25</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/26</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/27</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/28</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/29</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/30</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+   
+    <interface>
+      
+    
+      <interface-name>FourHundredGigE0/0/0/31</interface-name>
+      
+    
+      <shutdown/>
+      
+   
+    </interface>
+    
+  
+  </interfaces>
+  
+  
+  <line xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-cfg">
+    
+   
+    <console>
+      
+    
+      <exec-timeout xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-exec-timeout-cfg">
+        
+     
+        <timeout-in-minutes>0</timeout-in-minutes>
+        
+     
+        <timeout-in-seconds>0</timeout-in-seconds>
+        
+    
+      </exec-timeout>
+      
+    
+      <absolute-timeout xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-general-cfg">0</absolute-timeout>
+      
+    
+      <session-timeout>
+        
+     
+        <timeout-interval>0</timeout-interval>
+        
+    
+      </session-timeout>
+      
+   
+    </console>
+    
+   
+    <default>
+      
+    
+      <exec-timeout xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-exec-timeout-cfg">
+        
+     
+        <timeout-in-minutes>0</timeout-in-minutes>
+        
+     
+        <timeout-in-seconds>0</timeout-in-seconds>
+        
+    
+      </exec-timeout>
+      
+    
+      <absolute-timeout xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-general-cfg">0</absolute-timeout>
+      
+    
+      <session-timeout>
+        
+     
+        <timeout-interval>0</timeout-interval>
+        
+    
+      </session-timeout>
+      
+    
+      <transport>
+        
+     
+        <input>
+          
+      
+          <ssh/>
+          
+     
+        </input>
+        
+    
+      </transport>
+      
+   
+    </default>
+    
+  
+  </line>
+  
+  
+  <aaa xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-cfg">
+    
+   
+    <usernames xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg">
+      
+    
+      <username>
+        
+     
+        <ordering-index>0</ordering-index>
+        
+     
+        <name>cisco</name>
+        
+     
+        <group>
+          
+      
+          <root-lr/>
+          
+      
+          <cisco-support/>
+          
+     
+        </group>
+        
+     
+        <secret>
+          
+      
+          <ten>$6$wRDCF/rXHIs23F/.$RFS/NuzVFTco/OFGGxC5wANcKOqweAdxXcdIl.2hMu4TMRxhXvRk1Zd6MvOeMcxpoMdCfqEjiIfOHlZFISjBW/</ten>
+          
+     
+        </secret>
+        
+    
+      </username>
+      
+    
+      <username>
+        
+     
+        <ordering-index>1</ordering-index>
+        
+     
+        <name>cisco123</name>
+        
+     
+        <group>
+          
+      
+          <root-lr/>
+          
+      
+          <cisco-support/>
+          
+     
+        </group>
+        
+     
+        <secret>
+          
+      
+          <ten>$6$yq2ay/BVdTMu5y/.$GtMe0Kz80mn4ndy.1RL3qO/20EZODgZMEVe5ycj4J1q5beqaZB5/0m9CeZWSKpBq5XntFevs59S./4NyJkVod.</ten>
+          
+     
+        </secret>
+        
+    
+      </username>
+      
+   
+    </usernames>
+    
+  
+  </aaa>
+  
+  
+  <router xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-bgp-cfg">
+    
+   
+    <bgp>
+      
+    
+      <as>
+        
+     
+        <as-number>46489</as-number>
+        
+     
+        <bgp>
+          
+      
+          <router-id>172.16.30.1</router-id>
+          
+     
+        </bgp>
+        
+     
+        <address-families>
+          
+      
+          <address-family>
+            
+       
+            <af-name>ipv4-unicast</af-name>
+            
+       
+            <maximum-paths>
+              
+        
+              <ibgp>
+                
+         
+                <multipath>128</multipath>
+                
+        
+              </ibgp>
+              
+       
+            </maximum-paths>
+            
+       
+            <networks>
+              
+        
+              <network>
+                
+         
+                <address>11.11.11.0</address>
+                
+         
+                <masklength>24</masklength>
+                
+        
+              </network>
+              
+       
+            </networks>
+            
+      
+          </address-family>
+          
+     
+        </address-families>
+        
+     
+        <neighbors>
+          
+      
+          <neighbor>
+            
+       
+            <neighbor-address>172.16.30.2</neighbor-address>
+            
+       
+            <remote-as>46489</remote-as>
+            
+       
+            <update-source>Loopback0</update-source>
+            
+       
+            <address-families>
+              
+        
+              <address-family>
+                
+         
+                <af-name>ipv4-unicast</af-name>
+                
+         
+                <route-policy>
+                  
+          
+                  <in>ALLOW</in>
+                  
+          
+                  <out>ALLOW</out>
+                  
+         
+                </route-policy>
+                
+         
+                <soft-reconfiguration>
+                  
+          
+                  <inbound/>
+                  
+         
+                </soft-reconfiguration>
+                
+        
+              </address-family>
+              
+       
+            </address-families>
+            
+      
+          </neighbor>
+          
+      
+          <neighbor>
+            
+       
+            <neighbor-address>172.16.30.3</neighbor-address>
+            
+       
+            <remote-as>46489</remote-as>
+            
+       
+            <update-source>Loopback0</update-source>
+            
+       
+            <address-families>
+              
+        
+              <address-family>
+                
+         
+                <af-name>ipv4-unicast</af-name>
+                
+         
+                <route-policy>
+                  
+          
+                  <in>ALLOW</in>
+                  
+          
+                  <out>ALLOW</out>
+                  
+         
+                </route-policy>
+                
+         
+                <soft-reconfiguration>
+                  
+          
+                  <inbound/>
+                  
+         
+                </soft-reconfiguration>
+                
+        
+              </address-family>
+              
+       
+            </address-families>
+            
+      
+          </neighbor>
+          
+      
+          <neighbor>
+            
+       
+            <neighbor-address>172.16.30.4</neighbor-address>
+            
+       
+            <remote-as>46489</remote-as>
+            
+       
+            <update-source>Loopback0</update-source>
+            
+       
+            <address-families>
+              
+        
+              <address-family>
+                
+         
+                <af-name>ipv4-unicast</af-name>
+                
+         
+                <route-policy>
+                  
+          
+                  <in>ALLOW</in>
+                  
+          
+                  <out>ALLOW</out>
+                  
+         
+                </route-policy>
+                
+         
+                <soft-reconfiguration>
+                  
+          
+                  <inbound/>
+                  
+         
+                </soft-reconfiguration>
+                
+        
+              </address-family>
+              
+       
+            </address-families>
+            
+      
+          </neighbor>
+          
+      
+          <neighbor>
+            
+       
+            <neighbor-address>172.16.30.5</neighbor-address>
+            
+       
+            <remote-as>46489</remote-as>
+            
+       
+            <update-source>Loopback0</update-source>
+            
+       
+            <address-families>
+              
+        
+              <address-family>
+                
+         
+                <af-name>ipv4-unicast</af-name>
+                
+         
+                <route-policy>
+                  
+          
+                  <in>ALLOW</in>
+                  
+          
+                  <out>ALLOW</out>
+                  
+         
+                </route-policy>
+                
+         
+                <soft-reconfiguration>
+                  
+          
+                  <inbound/>
+                  
+         
+                </soft-reconfiguration>
+                
+        
+              </address-family>
+              
+       
+            </address-families>
+            
+      
+          </neighbor>
+          
+     
+        </neighbors>
+        
+    
+      </as>
+      
+   
+    </bgp>
+    
+  
+  </router>
+  
+  
+  <router xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg">
+    
+   
+    <static>
+      
+    
+      <address-family>
+        
+     
+        <ipv4>
+          
+      
+          <unicast>
+            
+       
+            <prefixes>
+              
+        
+              <prefix>
+                
+         
+                <prefix-address>0.0.0.0</prefix-address>
+                
+         
+                <prefix-length>0</prefix-length>
+                
+         
+                <nexthop-addresses>
+                  
+          
+                  <nexthop-address>
+                    
+           
+                    <address>172.20.20.1</address>
+                    
+          
+                  </nexthop-address>
+                  
+         
+                </nexthop-addresses>
+                
+         
+                <nexthop-interface-addresses>
+                  
+          
+                  <nexthop-interface-address>
+                    
+           
+                    <interface-name>MgmtEth0/RP0/CPU0/0</interface-name>
+                    
+           
+                    <address>172.20.20.1</address>
+                    
+          
+                  </nexthop-interface-address>
+                  
+         
+                </nexthop-interface-addresses>
+                
+        
+              </prefix>
+              
+       
+            </prefixes>
+            
+      
+          </unicast>
+          
+     
+        </ipv4>
+        
+     
+        <ipv6>
+          
+      
+          <unicast>
+            
+       
+            <prefixes>
+              
+        
+              <prefix>
+                
+         
+                <prefix-address>::</prefix-address>
+                
+         
+                <prefix-length>0</prefix-length>
+                
+         
+                <nexthop-interface-addresses>
+                  
+          
+                  <nexthop-interface-address>
+                    
+           
+                    <interface-name>MgmtEth0/RP0/CPU0/0</interface-name>
+                    
+           
+                    <address>2001:172:20:20::1</address>
+                    
+          
+                  </nexthop-interface-address>
+                  
+         
+                </nexthop-interface-addresses>
+                
+        
+              </prefix>
+              
+       
+            </prefixes>
+            
+      
+          </unicast>
+          
+     
+        </ipv6>
+        
+    
+      </address-family>
+      
+   
+    </static>
+    
+  
+  </router>
+  
+  
+  <netconf-yang xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-netconf-yang-cfg">
+    
+   
+    <agent>
+      
+    
+      <ssh/>
+      
+   
+    </agent>
+    
+  
+  </netconf-yang>
+  
+  
+  <ssh xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg">
+    
+   
+    <server>
+      
+    
+      <v2/>
+      
+    
+      <netconf>
+        
+     
+        <vrfs>
+          
+      
+          <vrf>
+            
+       
+            <vrf-name>default</vrf-name>
+            
+      
+          </vrf>
+          
+     
+        </vrfs>
+        
+    
+      </netconf>
+      
+   
+    </server>
+    
+  
+  </ssh>
+  
+  
+  <grpc xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-grpc-cfg">
+    
+   
+    <no-tls/>
+    
+   
+    <address-family>
+      
+    
+      <dual/>
+      
+   
+    </address-family>
+    
+  
+  </grpc>
+  
+  
+  <router xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-ospf-cfg">
+    
+   
+    <ospf>
+      
+    
+      <processes>
+        
+     
+        <process>
+          
+      
+          <process-name>1</process-name>
+          
+      
+          <router-id>172.16.30.1</router-id>
+          
+      
+          <areas>
+            
+       
+            <area>
+              
+        
+              <area-id>0</area-id>
+              
+        
+              <interfaces>
+                
+         
+                <interface>
+                  
+          
+                  <interface-name>Loopback0</interface-name>
+                  
+         
+                </interface>
+                
+         
+                <interface>
+                  
+          
+                  <interface-name>FourHundredGigE0/0/0/1</interface-name>
+                  
+         
+                </interface>
+                
+         
+                <interface>
+                  
+          
+                  <interface-name>FourHundredGigE0/0/0/2</interface-name>
+                  
+         
+                </interface>
+                
+        
+              </interfaces>
+              
+       
+            </area>
+            
+      
+          </areas>
+          
+     
+        </process>
+        
+    
+      </processes>
+      
+   
+    </ospf>
+    
+  
+  </router>
+  
+ 
+</data>

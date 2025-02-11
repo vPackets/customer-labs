@@ -1,0 +1,60 @@
+{
+  "id": 26,
+  "gridPos": {
+    "h": 8,
+    "w": 24,
+    "x": 0,
+    "y": 54
+  },
+  "type": "bargauge",
+  "title": "Producers power efficiency",
+  "transformations": [],
+  "datasource": {
+    "type": "influxdb",
+    "uid": "PAA239D41A0EF0C37"
+  },
+  "pluginVersion": "8.3.0",
+  "description": "",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "red",
+            "value": null
+          }
+        ]
+      },
+      "mappings": [],
+      "color": {
+        "mode": "continuous-RdYlGr"
+      },
+      "max": 100,
+      "min": 1,
+      "unit": "percent"
+    },
+    "overrides": []
+  },
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "lastNotNull"
+      ],
+      "fields": ""
+    },
+    "orientation": "vertical",
+    "displayMode": "lcd",
+    "showUnfilled": true
+  },
+  "targets": [
+    {
+      "datasource": "InfluxDB-2",
+      "hide": false,
+      "query": "power_in = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n    r._measurement == \"Cisco-IOS-XR-envmon-oper:power-management/rack/producers/producer-nodes/producer-node\" and \n    (\n    r._field == \"pem_info_array/current_in_a\" or\n    r._field == \"pem_info_array/voltage_in_a\" or \n    r._field == \"pem_info_array/current_in_b\" or\n    r._field == \"pem_info_array/voltage_in_b\"\n    ))\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> rename(columns: {\"pem_info_array/voltage_in_a\": \"voltage_in_a\", \"pem_info_array/current_in_a\": \"current_in_a\", \"pem_info_array/voltage_in_b\": \"voltage_in_b\", \"pem_info_array/current_in_b\": \"current_in_b\"})\n  |> map(fn: (r) => ({\n    r with\n    power_in_a: if float(v: r.current_in_a) > 100 then (float(v: r.voltage_in_a)/1000.0) * (float(v: r.current_in_a)/1000.0) else (float(v: r.voltage_in_a)) * (float(v: r.current_in_a)),\n    power_in_b: if float(v: r.current_in_b) > 100 then (float(v: r.voltage_in_b)/1000.0) * (float(v: r.current_in_b)/1000.0) else (float(v: r.voltage_in_b)) * (float(v: r.current_in_b)),\n   }))\n  |> map(fn: (r) => ({\n    r with\n    total_power_in: r.power_in_a + r.power_in_b,\n  }))\n  |> last(column: \"total_power_in\")\n  |> keep(columns: [\"total_power_in\", \"_field\", \"_value\", \"source\"])\n  |> reduce(fn: (r, accumulator) => ({ sum: float(v: r.total_power_in) + accumulator.sum }), identity: {sum: 0.0})\n\npower_out = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => \n    r._measurement == \"Cisco-IOS-XR-envmon-oper:power-management/rack/producers/producer-nodes/producer-node\" and \n    (\n    r._field == \"pem_info_array/voltage_out\" or\n    r._field == \"pem_info_array/current_out\"\n    ))\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> rename(columns: {\"pem_info_array/voltage_out\": \"voltage_out\", \"pem_info_array/current_out\": \"current_out\"})\n  |> keep(columns: [\"voltage_out\", \"current_out\", \"_field\", \"_value\", \"_time\", \"node\", \"name\", \"pem_info_array/node_name\", \"pem_info_array/node_type\", \"pem_info_array/node_status\", \"source\"])\n  |> map(fn: (r) => ({\n    r with\n    power_out: if float(v: r.current_out) > 100 then (float(v: r.voltage_out)/1000.0) * (float(v: r.current_out)/1000.0) else float(v: r.voltage_out)*float(v: r.current_out),\n   }))\n  |> last(column: \"power_out\")\n  |> keep(columns: [\"power_out\", \"_field\", \"_value\", \"_time\", \"source\"])\n  |> reduce(fn: (r, accumulator) => ({ sum: float(v: r.power_out) + accumulator.sum }), identity: {sum: 0.0})\n\njoin(\n\ttables: {d1: power_in, d2: power_out},\n    on: [\"source\"],\n)\n\n  |> map(fn: (r) => ({\n    r with\n    power_in: r.sum_d1,\n    power_out: r.sum_d2\n   }))\n  |> filter(fn: (r) => \n    r.power_in > 0\n    )\n  |> map(fn: (r) => ({\n    r with\n    power_eff: (r.power_out / r.power_in) * 100.0\n   }))\n  |> drop(columns: [\"sum_d1\", \"sum_d2\", \"power_in\", \"power_out\"])\n  |> group(columns: [\"source\"])",
+      "refId": "C"
+    }
+  ]
+}
+

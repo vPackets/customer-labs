@@ -1,0 +1,92 @@
+
+hostname twitch-r3
+
+!
+interface Loopback0
+ ipv4 address 172.16.30.3 255.255.255.255
+
+ !
+interface FourHundredGigE0/0/0/0
+ shutdown
+!
+interface FourHundredGigE0/0/0/1
+ ipv4 address 10.10.0.26 255.255.255.252
+ no shut
+!
+interface FourHundredGigE0/0/0/2
+ ipv4 address 10.10.0.6 255.255.255.252
+  no shut
+!
+interface FourHundredGigE0/0/0/3
+ ipv4 address 10.10.0.14 255.255.255.252
+  no shut
+!
+interface FourHundredGigE0/0/0/4
+ ipv4 address 10.10.0.22 255.255.255.252
+  no shut
+!
+
+!
+route-policy ALLOW
+  pass
+end-policy
+!
+
+!
+router ospf 1
+ router-id 172.16.30.3
+ area 0
+  interface Loopback0
+  !
+  interface FourHundredGigE0/0/0/1
+  !
+  interface FourHundredGigE0/0/0/2
+  !
+  interface FourHundredGigE0/0/0/3
+  !
+  interface FourHundredGigE0/0/0/4
+  !
+ !
+!
+router bgp 46489
+ bgp router-id 172.16.30.3
+ address-family ipv4 unicast
+  maximum-paths ibgp 128
+ !
+ neighbor 172.16.30.1
+  remote-as 46489
+  update-source Loopback0
+  address-family ipv4 unicast
+   route-policy ALLOW in
+   route-policy ALLOW out
+   soft-reconfiguration inbound
+  !
+ !
+ neighbor 172.16.30.2
+  remote-as 46489
+  update-source Loopback0
+  address-family ipv4 unicast
+   route-policy ALLOW in
+   route-policy ALLOW out
+   soft-reconfiguration inbound
+  !
+ !
+ neighbor 172.16.30.4
+  remote-as 46489
+  update-source Loopback0
+  address-family ipv4 unicast
+   route-policy ALLOW in
+   route-policy ALLOW out
+   soft-reconfiguration inbound
+  !
+ !
+ neighbor 172.16.30.5
+  remote-as 46489
+  update-source Loopback0
+  address-family ipv4 unicast
+   route-policy ALLOW in
+   route-policy ALLOW out
+   soft-reconfiguration inbound
+  !
+ !
+!

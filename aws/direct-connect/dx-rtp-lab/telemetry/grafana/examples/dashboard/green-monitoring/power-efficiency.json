@@ -1,0 +1,1048 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "sysadmin-fretta-envmon-ui YANG model",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 18,
+    "iteration": 1723671072981,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 18,
+        "panels": [],
+        "title": "CHASSIS LEVEL POWER INFO",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-RdYlGr"
+            },
+            "mappings": [],
+            "max": 100,
+            "min": 1,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "id": 20,
+        "options": {
+          "displayMode": "lcd",
+          "orientation": "vertical",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "8.3.0",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"system_power_input\" or \n    r._field == \"system_power_used\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({\n    r with\n    _value: (float(v: r.system_power_used) / float(v: r.system_power_input)) * 100.0\n   }))\n  |> drop(columns: [\"system_power_used\", \"system_power_input\"])",
+            "refId": "A"
+          }
+        ],
+        "title": "Power efficiency",
+        "transformations": [],
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "blue",
+                  "value": 150
+                },
+                {
+                  "color": "yellow",
+                  "value": 200
+                },
+                {
+                  "color": "red",
+                  "value": 300
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "usable_power_capacity"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "capacity: USABLE - ${__field.labels.__values}"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "protection_power_capacity"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "PROTECTION - ${__field.labels.__values}"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "system_power_input"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "input: SYSTEM INPUT - ${__field.labels.__values}"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "system_power_used"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "output: SYSTEM USED - ${__field.labels.__values}"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "power_resrv_and_alloc"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "required: RESVR & ALLOC - ${__field.labels.__values}"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 9
+        },
+        "id": 14,
+        "options": {
+          "displayMode": "lcd",
+          "orientation": "vertical",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true,
+          "text": {
+            "titleSize": 14
+          }
+        },
+        "pluginVersion": "8.3.0",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"usable_power_capacity\" or \n    r._field == \"protection_power_capacity\" or\n    r._field == \"system_power_input\" or \n    r._field == \"system_power_used\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"pem\", \"location\", \"pem_id/value\", \"source\", \"confgd_power_redundancy_mode/value\"])",
+            "refId": "chassis power"
+          },
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"power_resrv_and_alloc\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"pem\", \"location\", \"source\", \"pem_id/value\", \"confgd_power_redundancy_mode/value\"])",
+            "refId": "A"
+          }
+        ],
+        "title": "Usable capacity, protection, input and usage",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {}
+          }
+        ],
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 30,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 2,
+              "pointSize": 4,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "always",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "usable_power_capacity"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "capacity: USABLE - ${__field.labels}"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "protection_power_capacity"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "PROTECTION - ${__field.labels}"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "system_power_input"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "input: SYSTEM INPUT - ${__field.labels}"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "system_power_used"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "output: SYSTEM USED - ${__field.labels}"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 13,
+          "w": 12,
+          "x": 0,
+          "y": 15
+        },
+        "id": 7,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.3.0",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"usable_power_capacity\" or \n    r._field == \"protection_power_capacity\" or\n    r._field == \"system_power_input\" or \n    r._field == \"system_power_used\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"pem\", \"location\", \"pem_id/value\", \"confgd_power_redundancy_mode/value\", \"source\"])",
+            "refId": "chassis power"
+          }
+        ],
+        "title": "Usable, protection power capacity and system input and usage",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {}
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 30,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 2,
+              "pointSize": 6,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "displayName": "required: RSVR+ALLOC - ${__field.labels}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 13,
+          "w": 12,
+          "x": 12,
+          "y": 15
+        },
+        "id": 6,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.3.0",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"power_resrv_and_alloc\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"pem\", \"location\", \"source\", \"pem_id/value\", \"confgd_power_redundancy_mode/value\"])",
+            "refId": "chassis power"
+          }
+        ],
+        "title": "Reserved and allocated power",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {}
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 28
+        },
+        "id": 16,
+        "panels": [],
+        "title": "POWER DISTRIBUTION PER RESOURCE (POWER MODULES, FANS, ROUTE PROCESSORS)",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "custom": {
+              "fillOpacity": 30,
+              "lineWidth": 2
+            },
+            "displayName": "${__field.labels.__values}",
+            "mappings": [
+              {
+                "options": {
+                  "OFF": {
+                    "color": "red",
+                    "index": 1,
+                    "text": "OFF"
+                  },
+                  "ON": {
+                    "color": "green",
+                    "index": 0,
+                    "text": "ON"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 29
+        },
+        "id": 10,
+        "options": {
+          "alignValue": "center",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "mergeValues": false,
+          "rowHeight": 0.45,
+          "showValue": "always",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "PAA239D41A0EF0C37"
+            },
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"power_status/value\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"pem\", \"location\", \"source\", \"pem_id/value\"])",
+            "refId": "A"
+          }
+        ],
+        "title": "Current status",
+        "type": "state-timeline"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "fillOpacity": 30,
+              "lineWidth": 2
+            },
+            "displayName": "${__field.labels}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "#6ED0E0",
+                  "value": 1
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 2
+                },
+                {
+                  "color": "red",
+                  "value": 3
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 38
+        },
+        "id": 11,
+        "options": {
+          "alignValue": "left",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "mergeValues": false,
+          "rowHeight": 0.8,
+          "showValue": "always",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "PAA239D41A0EF0C37"
+            },
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"power_level\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"pem\", \"location\", \"source\", \"pem_id/value\"])",
+            "refId": "A"
+          }
+        ],
+        "title": "Power level",
+        "type": "state-timeline"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-RdYlGr"
+            },
+            "displayName": "${__field.labels.location}",
+            "mappings": [],
+            "max": 100,
+            "min": 1,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 47
+        },
+        "id": 21,
+        "options": {
+          "displayMode": "lcd",
+          "orientation": "vertical",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "8.3.0",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": true,
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"system_power_input\" or \n    r._field == \"system_power_used\"\n    ))\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> map(fn: (r) => ({\n    r with\n    _value: (float(v: r.system_power_used) / float(v: r.system_power_input)) * 100.0\n   }))\n  |> drop(columns: [\"system_power_used\", \"system_power_input\"])",
+            "refId": "A"
+          },
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"input_power_to_ps\" or \n    r._field == \"output_power_from_ps\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> group(columns: [\"_time\", \"_start\", \"_stop\", \"_value\"], mode: \"except\")\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"pem\", \"location\", \"source\", \"pem_id/value\"])\n  |> pivot(rowKey:[\"_time\"], columnKey:[\"_field\"], valueColumn:\"_value\")\n  |> map(fn: (r) => ({\n      r with\n      _value: float(v: r.output_power_from_ps) / float(v: r.input_power_to_ps) * 100.0\n    })\n  )\n  |> last()\n  |> drop(columns: [\"_measurement\", \"subscription\", \"host\", \"path\", \"input_power_to_ps\", \"output_power_from_ps\"])",
+            "refId": "B"
+          }
+        ],
+        "title": "Power efficiency",
+        "transformations": [],
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 30,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 2,
+              "pointSize": 4,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "always",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "input_power_to_ps"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "INPUT - ${__field.labels}"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "output_power_from_ps"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "OUTPUT - ${__field.labels}"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 12,
+          "x": 0,
+          "y": 55
+        },
+        "id": 3,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.3.0",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"input_power_to_ps\" or \n    r._field == \"output_power_from_ps\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"pem\", \"location\", \"source\", \"pem_id/value\"])",
+            "refId": "input_power_to_ps"
+          }
+        ],
+        "title": "Input and output power for PS",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {}
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 30,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 2,
+              "pointSize": 4,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "always",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "displayName": "DIFF - ${__field.labels}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 12,
+          "x": 12,
+          "y": 55
+        },
+        "id": 4,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.3.0",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"input_power_to_ps\" or \n    r._field == \"output_power_from_ps\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> group(columns: [\"_time\", \"_start\", \"_stop\", \"_value\"], mode: \"except\")\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"pem\", \"location\", \"source\", \"pem_id/value\"])\n  |> pivot(rowKey:[\"_time\"], columnKey:[\"_field\"], valueColumn:\"_value\")\n  |> map(fn: (r) => ({\n      r with\n      _value: r.input_power_to_ps - r.output_power_from_ps\n    })\n  )\n  |> drop(columns: [\"_measurement\", \"subscription\", \"host\", \"path\", \"input_power_to_ps\", \"output_power_from_ps\"])",
+            "refId": "A"
+          }
+        ],
+        "title": "(input - output) power for PS - calculated",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {}
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PAA239D41A0EF0C37"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 30,
+              "gradientMode": "opacity",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 2,
+              "pointSize": 4,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "always",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "displayName": "ALLOCATED - ${__field.labels}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 12,
+          "x": 12,
+          "y": 67
+        },
+        "id": 5,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.3.0",
+        "targets": [
+          {
+            "datasource": "InfluxDB-2",
+            "hide": false,
+            "query": "from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => \n  \tr._measurement == \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\" and \n    (\n    r._field == \"power_allocated\" or\n    r._field == \"power_consumed/value\"\n    ) and\n    r.source == \"${host}\"\n    )\n  |> keep(columns: [\"_field\", \"_value\", \"_time\", \"pem\", \"location\", \"source\"])",
+            "refId": "input_power_to_ps"
+          }
+        ],
+        "title": "Allocated power",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {}
+          }
+        ],
+        "type": "timeseries"
+      }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 33,
+    "style": "dark",
+    "tags": [
+      "NCS5xx",
+      "envmon"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Lyon-23",
+            "value": "Lyon-23"
+          },
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PAA239D41A0EF0C37"
+          },
+          "definition": "import \"influxdata/influxdb/v1\"\n\nv1.measurementTagValues(\n  bucket: \"bucket1\",\n  measurement: \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\",\n  tag: \"source\"\n)",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "host",
+          "options": [],
+          "query": "import \"influxdata/influxdb/v1\"\n\nv1.measurementTagValues(\n  bucket: \"bucket1\",\n  measurement: \"Cisco-IOS-XR-sysadmin-fretta-envmon-ui:environment/oper/power/location/pem_attributes\",\n  tag: \"source\"\n)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Fretta - Power",
+    "uid": "8PuvYO27k",
+    "version": 2,
+    "weekStart": ""
+  }

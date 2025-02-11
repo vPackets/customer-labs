@@ -1,0 +1,151 @@
+name: AWS-DX
+
+# Version v0.1.CISCO
+# Lab Description:
+# This lab demonstrates an end to end topology between a physical AWS-DX topology and a virtualized AWS Core with virtualized EC2 Compute.
+
+topology:
+  nodes:
+
+    ######################################
+    ## Compute Nodes in the Data Center ##
+    ######################################
+    ec2-vpc01-01:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.11
+      mgmt-ipv6: 2001:172:20:20::11
+
+    ec2-vpc02-01:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.12
+      mgmt-ipv6: 2001:172:20:20::12
+
+    ec2-vpc03-01:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.13
+      mgmt-ipv6: 2001:172:20:20::13
+
+    ##########################################
+    ## AWS Core Routers based on Cisco 8000 ##
+    ##########################################
+    Cisco8201-1:
+      kind: cisco_c8000
+      image: 8201-32fh_242:24.2.1.23l
+      mgmt-ipv4: 172.20.20.2
+      mgmt-ipv6: 2001:172:20:20::2
+
+    Cisco8201-2:
+      kind: cisco_c8000
+      image: 8201-32fh_242:24.2.1.23l
+      mgmt-ipv4: 172.20.20.3
+      mgmt-ipv6: 2001:172:20:20::3
+
+    Cisco8201-3:
+      kind: cisco_c8000
+      image: 8201-32fh_242:24.2.1.23l
+      mgmt-ipv4: 172.20.20.4
+      mgmt-ipv6: 2001:172:20:20::4
+
+    Cisco8201-4:
+      kind: cisco_c8000
+      image: 8201-32fh_242:24.2.1.23l
+      mgmt-ipv4: 172.20.20.5
+      mgmt-ipv6: 2001:172:20:20::5
+
+    ##########
+    ## EDGE ##
+    ##########
+
+    Cisco8201-5:
+      kind: cisco_c8000
+      image: 8201-32fh_242:24.2.1.23l
+      mgmt-ipv4: 172.20.20.6
+      mgmt-ipv6: 2001:172:20:20::6
+
+
+    ################
+    ## VPC Router ##
+    ################
+    vpc-router:
+      kind: linux
+      image: vpackets/ubuntu-22.04-frr:latest
+      mgmt-ipv4: 172.20.20.20
+      mgmt-ipv6: 2001:172:20:20::20
+
+  links:
+  - type: macvlan
+    endpoint:
+      node: Cisco8201-1
+      interface: FH0_0_0_0
+    host-interface: ens192
+    mode: passthru
+
+  - type: veth
+    endpoints:
+      - node: Cisco8201-1
+        interface: FH0_0_0_1
+      - node: Cisco8201-2
+        interface: FH0_0_0_1
+
+  - type: veth
+    endpoints:
+      - node: Cisco8201-1
+        interface: FH0_0_0_2
+      - node: Cisco8201-3
+        interface: FH0_0_0_2
+
+  - type: veth
+    endpoints:
+      - node: Cisco8201-2
+        interface: FH0_0_0_0
+      - node: Cisco8201-4
+        interface: FH0_0_0_0
+
+  - type: veth
+    endpoints:
+      - node: Cisco8201-3
+        interface: FH0_0_0_0
+      - node: Cisco8201-4
+        interface: FH0_0_0_1
+
+  - type: veth
+    endpoints:
+      - node: Cisco8201-4
+        interface: FH0_0_0_2
+      - node: Cisco8201-5
+        interface: FH0_0_0_2
+
+  - type: veth
+    endpoints:
+      - node: Cisco8201-5
+        interface: FH0_0_0_0
+      - node: vpc-router
+        interface: eth1
+
+    ######################
+    ## VPC Router Links ##
+    ######################
+  - type: veth
+    endpoints:
+      - node: vpc-router
+        interface: eth2
+      - node: ec2-vpc01-01
+        interface: eth1
+
+  - type: veth
+    endpoints:
+      - node: vpc-router
+        interface: eth3
+      - node: ec2-vpc02-01
+        interface: eth1
+
+  - type: veth
+    endpoints:
+      - node: vpc-router
+        interface: eth4
+      - node: ec2-vpc03-01
+        interface: eth1
+

@@ -1,0 +1,211 @@
+
+
+Fri Nov  8 21:48:41.278 UTC
+!! Building configuration...
+!! IOS XR Configuration 24.1.1
+!! Last configuration change at Thu Sep 26 21:25:00 2024 by cisco
+!
+hostname twitch-r3
+logging console disable
+username cisco
+ group root-lr
+ group cisco-support
+ secret 10 $6$UCUM0016aUW7600.$m1n.heiMgJRUPb1FpM77WZ5ulq2A4dtmBibtVIiSX2dDPlA7yNtK3czkdMiSjmnv8J8tN6SM8pqMhqV59njsp1
+!
+username cisco123
+ group root-lr
+ group cisco-support
+ secret 10 $6$FjWDh/fsHPyo4h/.$0wmM3rV3GjgGc0fl0ZSepAgdLRyvrPPAxcp8drGtdlUB5Ok.IP8lx/2o0LeVLaR1Y5Sw8No/H6Jy6z7tx3Q4r1
+!
+grpc
+ no-tls
+ address-family dual
+!
+line console
+ exec-timeout 0 0
+ absolute-timeout 0
+ session-timeout 0
+!
+line default
+ exec-timeout 0 0
+ absolute-timeout 0
+ session-timeout 0
+ transport input ssh
+!
+netconf-yang agent
+ ssh
+!
+interface Loopback0
+ ipv4 address 172.16.30.3 255.255.255.255
+!
+interface MgmtEth0/RP0/CPU0/0
+ ipv4 address 172.20.20.7 255.255.255.0
+!
+interface FourHundredGigE0/0/0/0
+ shutdown
+!
+interface FourHundredGigE0/0/0/1
+ ipv4 address 10.10.0.26 255.255.255.252
+!
+interface FourHundredGigE0/0/0/2
+ ipv4 address 10.10.0.6 255.255.255.252
+!
+interface FourHundredGigE0/0/0/3
+ ipv4 address 10.10.0.14 255.255.255.252
+!
+interface FourHundredGigE0/0/0/4
+ ipv4 address 10.10.0.22 255.255.255.252
+!
+interface FourHundredGigE0/0/0/5
+ ipv4 address 10.10.0.45 255.255.255.252
+!
+interface FourHundredGigE0/0/0/6
+ ipv4 address 10.10.0.37 255.255.255.252
+!
+interface FourHundredGigE0/0/0/7
+ shutdown
+!
+interface FourHundredGigE0/0/0/8
+ shutdown
+!
+interface FourHundredGigE0/0/0/9
+ shutdown
+!
+interface FourHundredGigE0/0/0/10
+ shutdown
+!
+interface FourHundredGigE0/0/0/11
+ shutdown
+!
+interface FourHundredGigE0/0/0/12
+ shutdown
+!
+interface FourHundredGigE0/0/0/13
+ shutdown
+!
+interface FourHundredGigE0/0/0/14
+ shutdown
+!
+interface FourHundredGigE0/0/0/15
+ shutdown
+!
+interface FourHundredGigE0/0/0/16
+ shutdown
+!
+interface FourHundredGigE0/0/0/17
+ shutdown
+!
+interface FourHundredGigE0/0/0/18
+ shutdown
+!
+interface FourHundredGigE0/0/0/19
+ shutdown
+!
+interface FourHundredGigE0/0/0/20
+ shutdown
+!
+interface FourHundredGigE0/0/0/21
+ shutdown
+!
+interface FourHundredGigE0/0/0/22
+ shutdown
+!
+interface FourHundredGigE0/0/0/23
+ shutdown
+!
+interface FourHundredGigE0/0/0/24
+ shutdown
+!
+interface FourHundredGigE0/0/0/25
+ shutdown
+!
+interface FourHundredGigE0/0/0/26
+ shutdown
+!
+interface FourHundredGigE0/0/0/27
+ shutdown
+!
+interface FourHundredGigE0/0/0/28
+ shutdown
+!
+interface FourHundredGigE0/0/0/29
+ shutdown
+!
+interface FourHundredGigE0/0/0/30
+ shutdown
+!
+interface FourHundredGigE0/0/0/31
+ shutdown
+!
+route-policy ALLOW
+  pass
+end-policy
+!
+router static
+ address-family ipv4 unicast
+  0.0.0.0/0 172.20.20.1
+  0.0.0.0/0 MgmtEth0/RP0/CPU0/0 172.20.20.1
+ !
+ address-family ipv6 unicast
+  ::/0 MgmtEth0/RP0/CPU0/0 2001:172:20:20::1
+ !
+!
+router ospf 1
+ router-id 172.16.30.3
+ area 0
+  interface Loopback0
+  !
+  interface FourHundredGigE0/0/0/1
+  !
+  interface FourHundredGigE0/0/0/2
+  !
+  interface FourHundredGigE0/0/0/3
+  !
+  interface FourHundredGigE0/0/0/4
+  !
+  interface FourHundredGigE0/0/0/5
+  !
+  interface FourHundredGigE0/0/0/6
+  !
+ !
+!
+router bgp 46489
+ bgp router-id 172.16.30.3
+ bgp bestpath as-path multipath-relax
+ address-family ipv4 unicast
+  additional-paths receive
+  additional-paths send
+  maximum-paths ibgp 128
+  additional-paths selection route-policy ALLOW
+ !
+ neighbor 172.16.30.10
+  remote-as 46489
+  capability additional-paths receive
+  capability additional-paths send
+  update-source Loopback0
+  address-family ipv4 unicast
+   route-policy ALLOW in
+   route-policy ALLOW out
+   soft-reconfiguration inbound always
+   additional-paths receive
+   additional-paths send
+  !
+ !
+ neighbor 172.16.30.20
+  remote-as 46489
+  capability additional-paths receive
+  capability additional-paths send
+  update-source Loopback0
+  address-family ipv4 unicast
+   route-policy ALLOW in
+   route-policy ALLOW out
+   soft-reconfiguration inbound always
+   additional-paths receive
+   additional-paths send
+  !
+ !
+!
+ssh server v2
+ssh server netconf vrf default
+end
+

@@ -1,0 +1,174 @@
+{
+  "id": 198,
+  "gridPos": {
+    "h": 21,
+    "w": 5,
+    "x": 0,
+    "y": 0
+  },
+  "type": "stat",
+  "title": "Networking cost - ${nr_days} days",
+  "repeatDirection": "v",
+  "transformations": [],
+  "datasource": {
+    "type": "influxdb",
+    "uid": "PAA239D41A0EF0C37"
+  },
+  "pluginVersion": "8.3.0",
+  "description": "",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "#EAB839",
+            "value": 500
+          },
+          {
+            "color": "orange",
+            "value": 600
+          },
+          {
+            "color": "red",
+            "value": 800
+          },
+          {
+            "color": "dark-red",
+            "value": 1000
+          }
+        ]
+      },
+      "mappings": [],
+      "color": {
+        "mode": "thresholds"
+      },
+      "decimals": 2,
+      "displayName": "${__field.labels.__values}",
+      "unit": "currencyEUR"
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "Tat.*"
+        },
+        "properties": [
+          {
+            "id": "displayName",
+            "value": "bl206-eu-spdc"
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "Yav.*"
+        },
+        "properties": [
+          {
+            "id": "displayName",
+            "value": "ipn21-eu-spdc"
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "r.*1"
+        },
+        "properties": [
+          {
+            "id": "displayName",
+            "value": "bl205-eu-spdc"
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "r.*2"
+        },
+        "properties": [
+          {
+            "id": "displayName",
+            "value": "r22-eu-spdc"
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "rs2.*-mor"
+        },
+        "properties": [
+          {
+            "id": "displayName",
+            "value": "ipn22-eu-spdc"
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "rs3.*tor"
+        },
+        "properties": [
+          {
+            "id": "displayName",
+            "value": "cl202-eu-spdc"
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "rs2.*-tor"
+        },
+        "properties": [
+          {
+            "id": "displayName",
+            "value": "cl201-eu-spdc"
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "lastNotNull"
+      ],
+      "fields": ""
+    },
+    "orientation": "horizontal",
+    "textMode": "auto",
+    "colorMode": "background",
+    "graphMode": "none",
+    "justifyMode": "auto"
+  },
+  "targets": [
+    {
+      "datasource": "InfluxDB-2",
+      "hide": false,
+      "query": "//Cost based on EUR variable (extrapolated to 1h x num_hours)\n\nnum_hours = float(v: 24*${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n  r._measurement == \"show environment power\" and\n  r._field == \"powersup/power_summary/tot_pow_input_actual_draw\" and\n    (r.source == \"Yavin-129\" or r.source =~ /rs1-core.*/ or r.source =~ /rs[0-9]-mgm-tor/ or r.source =~ /rs[0-9]-mgm-mor/ or r.source =~ /ipn[0-9][0-9]-eu-spdc/ or r.source == \"Tatooine-136\" or r.source =~ /rl[0-9][0-9][0-9]-eu-spdc/ or r.source =~ /cl[0-9][0-9][0-9]-eu-spdc/) // Get only the 93xx\n    )\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"source\"])\n  |> yield()\n",
+      "refId": "Dynamic measures - Total carbon emissions - sorted"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PAA239D41A0EF0C37"
+      },
+      "hide": true,
+      "query": "//Carbon emission (extrapolated to 1h x num_hours)\n\nnum_hours = float(v: 24*${nr_days})\n\nsrc = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"apic-switch\")\n  |> filter(fn: (r) => r[\"_field\"] == \"pIn\")\n  |> last()\n  |> map(fn: (r) => ({\n    r with\n      _value: float(v:r._value) * ${cost}/1000.0 * num_hours,\n    })\n  )\n  |> keep(columns: [\"_value\", \"name\"])\n  |> yield()",
+      "refId": "APIC - Special case: 93xx GX2B"
+    }
+  ]
+}
+
+

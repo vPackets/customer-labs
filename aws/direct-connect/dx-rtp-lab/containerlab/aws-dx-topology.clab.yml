@@ -1,0 +1,146 @@
+name: AWS-DX
+topology:
+  nodes:
+
+    ec2-vpc01-01:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.11
+      mgmt-ipv6: '2001:172:20:20::11'
+      binds:
+        - binds/ec2-01:/home
+      exec:
+        - ip addr add 172.31.10.100/24 dev eth1
+        - ip route add 172.31.0.0/16 via 172.31.10.1
+        - ip route add 10.0.0.0/24 via 172.31.10.1
+        - chmod +x /home/iperf.sh
+
+
+    ec2-vpc02-01:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.12
+      mgmt-ipv6: '2001:172:20:20::12'
+      binds:
+        - binds/ec2-02:/home
+      exec:
+        - ip addr add 172.31.20.100/24 dev eth1
+        - ip route add 172.31.0.0/16 via 172.31.20.1
+        - ip route add 10.0.0.0/24 via 172.31.20.1
+        - chmod +x /home/iperf.sh
+
+
+    ec2-vpc03-01:
+      kind: linux
+      image: vpackets/alpine-tools
+      mgmt-ipv4: 172.20.20.13
+      mgmt-ipv6: '2001:172:20:20::13'
+      binds:
+        - binds/ec2-03:/home
+      exec:
+        - ip addr add 172.31.30.100/24 dev eth1
+        - ip route add 172.31.0.0/16 via 172.31.30.1
+        - ip route add 10.0.0.0/24 via 172.31.30.1 
+        - chmod +x /home/iperf.sh 
+
+
+    ceos1:
+      kind: ceos
+      image: 'ceos:4.30.3M'
+      mgmt-ipv4: 172.20.20.2
+      mgmt-ipv6: '2001:172:20:20::2'
+
+    ceos2:
+      kind: ceos
+      image: 'ceos:4.30.3M'
+      mgmt-ipv4: 172.20.20.3
+      mgmt-ipv6: '2001:172:20:20::3'
+
+    ceos3:
+      kind: ceos
+      image: 'ceos:4.30.3M'
+      mgmt-ipv4: 172.20.20.4
+      mgmt-ipv6: '2001:172:20:20::4'
+
+    ceos4:
+      kind: ceos
+      image: 'ceos:4.30.3M'
+      mgmt-ipv4: 172.20.20.5
+      mgmt-ipv6: '2001:172:20:20::5'
+
+    Cisco8201-5:
+      kind: cisco_c8000
+      image: '8201-32fh_242:24.2.1.23l'
+      mgmt-ipv4: 172.20.20.6
+      mgmt-ipv6: '2001:172:20:20::6'
+
+    vpc-router:
+      kind: ceos
+      image: 'ceos:4.30.3M'
+      mgmt-ipv4: 172.20.20.20
+      mgmt-ipv6: '2001:172:20:20::20'
+
+
+
+
+  links:
+    - type: macvlan
+      endpoint:
+        node: ceos1
+        interface: eth1
+      host-interface: ens192
+      mode: passthru
+    - type: veth
+      endpoints:
+        - node: ceos1
+          interface: eth2
+        - node: ceos2
+          interface: eth2
+    - type: veth
+      endpoints:
+        - node: ceos1
+          interface: eth3
+        - node: ceos3
+          interface: eth3
+    - type: veth
+      endpoints:
+        - node: ceos2
+          interface: eth1
+        - node: ceos4
+          interface: eth1
+    - type: veth
+      endpoints:
+        - node: ceos3
+          interface: eth1
+        - node: ceos4
+          interface: eth2
+    - type: veth
+      endpoints:
+        - node: ceos4
+          interface: eth3
+        - node: Cisco8201-5
+          interface: FH0_0_0_2
+    - type: veth
+      endpoints:
+        - node: Cisco8201-5
+          interface: FH0_0_0_0
+        - node: vpc-router
+          interface: eth1
+    - type: veth
+      endpoints:
+        - node: vpc-router
+          interface: eth2
+        - node: ec2-vpc01-01
+          interface: eth1
+    - type: veth
+      endpoints:
+        - node: vpc-router
+          interface: eth3
+        - node: ec2-vpc02-01
+          interface: eth1
+    - type: veth
+      endpoints:
+        - node: vpc-router
+          interface: eth4
+        - node: ec2-vpc03-01
+          interface: eth1

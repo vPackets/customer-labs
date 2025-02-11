@@ -1,0 +1,69 @@
+
+hostname ispz-10
+
+!
+interface Loopback0
+ ip address 172.16.10.10 255.255.255.255
+!
+interface GigabitEthernet1
+ ip address 10.0.0.15 255.255.255.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet2
+ ip address 1.1.1.254 255.255.255.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet3
+ ip address 2.2.2.254 255.255.255.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet4
+ ip address 3.3.3.254 255.255.255.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet5
+ ip address 10.1.0.6 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet6
+ ip address 10.1.0.10 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+router ospf 1
+ network 10.1.0.4 0.0.0.3 area 0
+ network 10.1.0.8 0.0.0.3 area 0
+ network 172.16.10.10 0.0.0.0 area 0
+!
+router bgp 1111
+ bgp log-neighbor-changes
+ network 1.1.1.0 mask 255.255.255.0
+ network 2.2.2.0 mask 255.255.255.0
+ network 3.3.3.0 mask 255.255.255.0
+ neighbor 172.16.10.1 remote-as 1111
+ neighbor 172.16.10.1 update-source Loopback0
+ neighbor 172.16.10.1 soft-reconfiguration inbound
+ neighbor 172.16.10.2 remote-as 1111
+ neighbor 172.16.10.2 update-source Loopback0
+ neighbor 172.16.10.2 soft-reconfiguration inbound
+!
+!
+!
+!

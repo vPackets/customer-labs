@@ -1,0 +1,250 @@
+BEFORE LOCAL PREF:
+
+
+RP/0/RP0/CPU0:twitch-r1#show ip bgp
+Fri Sep 20 18:41:45.789 UTC
+BGP router identifier 172.16.30.1, local AS number 46489
+BGP generic scan interval 60 secs
+Non-stop routing is enabled
+BGP table state: Active
+Table ID: 0xe0000000   RD version: 174
+BGP table nexthop route policy:
+BGP main routing table version 174
+BGP NSR Initial initsync version 3 (Reached)
+BGP NSR/ISSU Sync-Group versions 0/0
+BGP scan interval 60 secs
+
+Status codes: s suppressed, d damped, h history, * valid, > best
+              i - internal, r RIB-failure, S stale, N Nexthop-discard
+Origin codes: i - IGP, e - EGP, ? - incomplete
+   Network            Next Hop            Metric LocPrf Weight Path
+*>i1.1.1.0/24         172.16.30.4                   100      0 1111 i
+* i                   172.16.30.5                   100      0 1111 i
+*>i2.2.2.0/24         172.16.30.4                   100      0 1111 i
+* i                   172.16.30.5                   100      0 1111 i
+*>i3.3.3.0/24         172.16.30.4                   100      0 1111 i
+* i                   172.16.30.5                   100      0 1111 i
+*>i5.5.5.0/24         172.16.30.4                   100      0 2222 i
+* i                   172.16.30.5                   100      0 2222 i
+*>i6.6.6.0/24         172.16.30.4                   100      0 2222 i
+* i                   172.16.30.5                   100      0 2222 i
+*>i7.7.7.0/24         172.16.30.4                   100      0 2222 i
+* i                   172.16.30.5                   100      0 2222 i
+*> 11.11.11.0/24      0.0.0.0                  0         32768 i
+
+Processed 7 prefixes, 13 paths
+RP/0/RP0/CPU0:twitch-r1#
+RP/0/RP0/CPU0:twitch-r1#
+RP/0/RP0/CPU0:twitch-r1#show ip route bgp
+Fri Sep 20 18:42:04.576 UTC
+
+B    1.1.1.0/24 [200/0] via 172.16.30.4, 00:07:21
+B    2.2.2.0/24 [200/0] via 172.16.30.4, 00:07:21
+B    3.3.3.0/24 [200/0] via 172.16.30.4, 00:07:21
+B    5.5.5.0/24 [200/0] via 172.16.30.4, 00:07:21
+B    6.6.6.0/24 [200/0] via 172.16.30.4, 00:07:21
+B    7.7.7.0/24 [200/0] via 172.16.30.4, 00:07:21
+RP/0/RP0/CPU0:twitch-r1#
+
+
+
+APPLYING LOCAL PREF ON R5:
+
+
+RP/0/RP0/CPU0:twitch-r5(config)#show
+Fri Sep 20 18:41:30.557 UTC
+!! Building configuration...
+!! IOS XR Configuration 24.1.1
+route-policy LOCAL_PREF_150_TAG_2222
+  set community (2222:2222) additive
+  set local-preference 150
+  pass
+end-policy
+!
+router bgp 46489
+ neighbor 203.0.113.14
+  address-family ipv4 unicast
+   route-policy LOCAL_PREF_150_TAG_2222 in
+  !
+ !
+!
+end
+
+RP/0/RP0/CPU0:twitch-r5(config)#commit
+Fri Sep 20 18:42:34.344 UTC
+
+
+
+
+
+AFTER LOCAL PREF, ROUTE FOR AS 2222 are going to R5:
+
+
+
+RP/0/RP0/CPU0:twitch-r1#show ip bgp
+Fri Sep 20 18:43:00.309 UTC
+BGP router identifier 172.16.30.1, local AS number 46489
+BGP generic scan interval 60 secs
+Non-stop routing is enabled
+BGP table state: Active
+Table ID: 0xe0000000   RD version: 177
+BGP table nexthop route policy:
+BGP main routing table version 177
+BGP NSR Initial initsync version 3 (Reached)
+BGP NSR/ISSU Sync-Group versions 0/0
+BGP scan interval 60 secs
+
+Status codes: s suppressed, d damped, h history, * valid, > best
+              i - internal, r RIB-failure, S stale, N Nexthop-discard
+Origin codes: i - IGP, e - EGP, ? - incomplete
+   Network            Next Hop            Metric LocPrf Weight Path
+*>i1.1.1.0/24         172.16.30.4                   100      0 1111 i
+* i                   172.16.30.5                   100      0 1111 i
+*>i2.2.2.0/24         172.16.30.4                   100      0 1111 i
+* i                   172.16.30.5                   100      0 1111 i
+*>i3.3.3.0/24         172.16.30.4                   100      0 1111 i
+* i                   172.16.30.5                   100      0 1111 i
+*>i5.5.5.0/24         172.16.30.5                   150      0 2222 i
+*>i6.6.6.0/24         172.16.30.5                   150      0 2222 i
+*>i7.7.7.0/24         172.16.30.5                   150      0 2222 i
+*> 11.11.11.0/24      0.0.0.0                  0         32768 i
+
+Processed 7 prefixes, 10 paths
+RP/0/RP0/CPU0:twitch-r1#show ip route bgp
+Fri Sep 20 18:43:50.322 UTC
+
+B    1.1.1.0/24 [200/0] via 172.16.30.4, 00:09:07
+B    2.2.2.0/24 [200/0] via 172.16.30.4, 00:09:07
+B    3.3.3.0/24 [200/0] via 172.16.30.4, 00:09:07
+B    5.5.5.0/24 [200/0] via 172.16.30.5, 00:01:13
+B    6.6.6.0/24 [200/0] via 172.16.30.5, 00:01:13
+B    7.7.7.0/24 [200/0] via 172.16.30.5, 00:01:13
+
+
+
+ENABLING ECMP on R1
+
+RP/0/RP0/CPU0:twitch-r1(config)#router bgp 46489
+RP/0/RP0/CPU0:twitch-r1(config-bgp)#address-family ipv4 unicast
+RP/0/RP0/CPU0:twitch-r1(config-bgp-af)#maximum-paths ibgp 128
+RP/0/RP0/CPU0:twitch-r1(config-bgp-af)#exit
+RP/0/RP0/CPU0:twitch-r1(config-bgp)#exit
+RP/0/RP0/CPU0:twitch-r1(config)#show
+Fri Sep 20 18:45:45.059 UTC
+!! Building configuration...
+!! IOS XR Configuration 24.1.1
+router bgp 46489
+ address-family ipv4 unicast
+  maximum-paths ibgp 128
+ !
+!
+end
+
+RP/0/RP0/CPU0:twitch-r1(config)#commit
+Fri Sep 20 18:46:09.282 UTC
+RP/0/RP0/CPU0:twitch-r1(config)#
+
+
+
+
+
+
+
+AFTER ENABLING ECMP on R1:
+
+
+RP/0/RP0/CPU0:twitch-r1#show ip bgp
+Fri Sep 20 18:46:32.123 UTC
+BGP router identifier 172.16.30.1, local AS number 46489
+BGP generic scan interval 60 secs
+Non-stop routing is enabled
+BGP table state: Active
+Table ID: 0xe0000000   RD version: 180
+BGP table nexthop route policy:
+BGP main routing table version 180
+BGP NSR Initial initsync version 3 (Reached)
+BGP NSR/ISSU Sync-Group versions 0/0
+BGP scan interval 60 secs
+
+Status codes: s suppressed, d damped, h history, * valid, > best
+              i - internal, r RIB-failure, S stale, N Nexthop-discard
+Origin codes: i - IGP, e - EGP, ? - incomplete
+   Network            Next Hop            Metric LocPrf Weight Path
+*>i1.1.1.0/24         172.16.30.4                   100      0 1111 i
+* i                   172.16.30.5                   100      0 1111 i
+*>i2.2.2.0/24         172.16.30.4                   100      0 1111 i
+* i                   172.16.30.5                   100      0 1111 i
+*>i3.3.3.0/24         172.16.30.4                   100      0 1111 i
+* i                   172.16.30.5                   100      0 1111 i
+*>i5.5.5.0/24         172.16.30.5                   150      0 2222 i
+*>i6.6.6.0/24         172.16.30.5                   150      0 2222 i
+*>i7.7.7.0/24         172.16.30.5                   150      0 2222 i
+*> 11.11.11.0/24      0.0.0.0                  0         32768 i
+
+Processed 7 prefixes, 10 paths
+
+
+
+
+RP/0/RP0/CPU0:twitch-r1#show ip route bgp
+Fri Sep 20 18:46:40.744 UTC
+
+B    1.1.1.0/24 [200/0] via 172.16.30.5, 00:00:29
+                [200/0] via 172.16.30.4, 00:00:29
+B    2.2.2.0/24 [200/0] via 172.16.30.5, 00:00:29
+                [200/0] via 172.16.30.4, 00:00:29
+B    3.3.3.0/24 [200/0] via 172.16.30.5, 00:00:29
+                [200/0] via 172.16.30.4, 00:00:29
+B    5.5.5.0/24 [200/0] via 172.16.30.5, 00:04:04
+B    6.6.6.0/24 [200/0] via 172.16.30.5, 00:04:04
+B    7.7.7.0/24 [200/0] via 172.16.30.5, 00:04:04
+
+
+
+
+
+CONNECTIVITY TEST ON TWITCH SERVER
+
+/ # for ip in 1.1.1.1 2.2.2.2 3.3.3.3 5.5.5.5 6.6.6.6 7.7.7.7; do ping -c 2 $ip; done
+PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
+64 bytes from 1.1.1.1: icmp_seq=1 ttl=59 time=9.89 ms
+64 bytes from 1.1.1.1: icmp_seq=2 ttl=59 time=6.62 ms
+
+--- 1.1.1.1 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 6.624/8.255/9.887/1.631 ms
+PING 2.2.2.2 (2.2.2.2) 56(84) bytes of data.
+64 bytes from 2.2.2.2: icmp_seq=1 ttl=59 time=8.12 ms
+64 bytes from 2.2.2.2: icmp_seq=2 ttl=59 time=4.88 ms
+
+--- 2.2.2.2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 4.880/6.500/8.120/1.620 ms
+PING 3.3.3.3 (3.3.3.3) 56(84) bytes of data.
+64 bytes from 3.3.3.3: icmp_seq=1 ttl=59 time=3.85 ms
+64 bytes from 3.3.3.3: icmp_seq=2 ttl=59 time=5.48 ms
+
+--- 3.3.3.3 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 3.854/4.664/5.475/0.810 ms
+PING 5.5.5.5 (5.5.5.5) 56(84) bytes of data.
+64 bytes from 5.5.5.5: icmp_seq=1 ttl=59 time=8.21 ms
+64 bytes from 5.5.5.5: icmp_seq=2 ttl=59 time=5.76 ms
+
+--- 5.5.5.5 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 5.756/6.985/8.214/1.229 ms
+PING 6.6.6.6 (6.6.6.6) 56(84) bytes of data.
+64 bytes from 6.6.6.6: icmp_seq=1 ttl=59 time=4.49 ms
+64 bytes from 6.6.6.6: icmp_seq=2 ttl=59 time=4.57 ms
+
+--- 6.6.6.6 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 4.485/4.526/4.567/0.041 ms
+PING 7.7.7.7 (7.7.7.7) 56(84) bytes of data.
+64 bytes from 7.7.7.7: icmp_seq=1 ttl=59 time=5.06 ms
+64 bytes from 7.7.7.7: icmp_seq=2 ttl=59 time=4.98 ms
+
+--- 7.7.7.7 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 4.975/5.017/5.059/0.042 ms

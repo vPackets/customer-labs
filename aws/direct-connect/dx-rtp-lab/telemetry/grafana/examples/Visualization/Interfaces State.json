@@ -1,0 +1,123 @@
+{
+  "id": 2,
+  "gridPos": {
+    "h": 36,
+    "w": 13,
+    "x": 0,
+    "y": 1
+  },
+  "type": "table",
+  "title": "Interfaces State",
+  "transformations": [],
+  "datasource": {
+    "type": "influxdb",
+    "uid": "PAA239D41A0EF0C37"
+  },
+  "pluginVersion": "8.3.0",
+  "fieldConfig": {
+    "defaults": {
+      "custom": {
+        "align": "center",
+        "displayMode": "color-background",
+        "filterable": true
+      },
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "transparent",
+            "value": null
+          }
+        ]
+      },
+      "mappings": [
+        {
+          "options": {
+            "pattern": "/.*up.*/",
+            "result": {
+              "color": "green",
+              "index": 0
+            }
+          },
+          "type": "regex"
+        },
+        {
+          "options": {
+            "pattern": "/.*down.*/",
+            "result": {
+              "color": "red",
+              "index": 1
+            }
+          },
+          "type": "regex"
+        }
+      ],
+      "color": {
+        "mode": "thresholds"
+      },
+      "displayName": "${__field.labels.__values}"
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "if_type"
+        },
+        "properties": [
+          {
+            "id": "custom.displayMode",
+            "value": "auto"
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "interface_name"
+        },
+        "properties": [
+          {
+            "id": "custom.displayMode",
+            "value": "auto"
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "source"
+        },
+        "properties": [
+          {
+            "id": "custom.displayMode",
+            "value": "auto"
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "showHeader": true,
+    "footer": {
+      "show": false,
+      "reducer": [
+        "sum"
+      ],
+      "fields": ""
+    },
+    "frameIndex": 39,
+    "sortBy": []
+  },
+  "targets": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PAA239D41A0EF0C37"
+      },
+      "query": "type = from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XR-pfi-im-cmd-oper:interfaces/interface-briefs/interface-brief\" and r._field == \"type\")\n  |> drop(columns: [\"subscription\", \"host\", \"path\", \"_measurement\"])\n  |> map(fn: (r) => ({\n    r with\n    if_type: if r._field == \"type\" then r._value\n    else \"test\"\n   }))\n  |> group(columns: [\"interface_name\", \"source\"])\n  |> drop(columns: [\"_start\", \"_stop\", \"_field\", \"_time\", \"_value\"])\n  |> distinct(column: \"if_type\")\n\n\nstate=from(bucket: \"bucket1\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"Cisco-IOS-XR-pfi-im-cmd-oper:interfaces/interface-briefs/interface-brief\" and r._field == \"state\")\n  |> drop(columns: [\"subscription\", \"host\", \"path\", \"_measurement\"])\n  |> map(fn: (r) => ({\n    r with\n    if_state: if r._field == \"state\" then r._value\n    else \"NA\"\n   }))\n  |> group(columns: [\"interface_name\", \"source\"])\n  |> drop(columns: [\"_start\", \"_stop\",  \"_field\", \"_time\"])\n  |> last()\n \njoin(\n\ttables: {d1: state, d2: type},\n    on: [\"interface_name\", \"source\"],\n)\n\n  |> map(fn: (r) => ({\n    r with\n    if_state: r._value_d1,\n    if_type: r._value_d2\n   }))\n  |> drop(columns: [\"_value_d1\", \"_value_d2\"])\n  |> group(columns: [\"type\"])",
+      "refId": "A"
+    }
+  ]
+}
+
+

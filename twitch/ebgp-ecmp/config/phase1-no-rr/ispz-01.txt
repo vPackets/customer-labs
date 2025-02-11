@@ -1,0 +1,63 @@
+
+hostname ispz-01
+
+
+!
+interface Loopback0
+ ip address 172.16.10.1 255.255.255.255
+!
+interface GigabitEthernet1
+ ip address 10.0.0.15 255.255.255.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+!
+interface GigabitEthernet2
+ ip address 203.0.113.1 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+ no shut
+ !
+interface GigabitEthernet3
+ ip address 10.1.0.5 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+  no shut
+!
+interface GigabitEthernet4
+ ip address 10.1.0.1 255.255.255.252
+ negotiation auto
+ no mop enabled
+ no mop sysid
+  no shut
+!
+router ospf 1
+ network 10.1.0.0 0.0.0.3 area 0
+ network 10.1.0.4 0.0.0.3 area 0
+ network 172.16.10.1 0.0.0.0 area 0
+!
+router bgp 1111
+ bgp log-neighbor-changes
+ neighbor 172.16.10.2 remote-as 1111
+ neighbor 172.16.10.2 update-source Loopback0
+ neighbor 172.16.10.2 next-hop-self
+ neighbor 172.16.10.2 send-community
+ neighbor 172.16.10.2 soft-reconfiguration inbound
+ neighbor 172.16.10.10 remote-as 1111
+ neighbor 172.16.10.10 update-source Loopback0
+ neighbor 172.16.10.10 next-hop-self
+ neighbor 172.16.10.10 send-community
+ neighbor 172.16.10.10 soft-reconfiguration inbound
+ neighbor 203.0.113.2 remote-as 46489
+ neighbor 203.0.113.2 soft-reconfiguration inbound
+ neighbor 203.0.113.2 route-map TAG_ALL_TWITCH in
+!
+!
+route-map TAG_ALL_TWITCH permit 10
+ set community 3046749593 additive
+!
+!
+!

@@ -1,0 +1,70 @@
+{
+  "id": 255,
+  "gridPos": {
+    "h": 8,
+    "w": 6,
+    "x": 18,
+    "y": 29
+  },
+  "type": "bargauge",
+  "title": "Power supply efficiency",
+  "repeatDirection": "v",
+  "transformations": [],
+  "datasource": {
+    "type": "influxdb",
+    "uid": "PAA239D41A0EF0C37"
+  },
+  "pluginVersion": "8.3.0",
+  "description": "Ratio between Input Power/Output Power",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "red",
+            "value": null
+          },
+          {
+            "color": "#EAB839",
+            "value": 80
+          },
+          {
+            "color": "green",
+            "value": 90
+          }
+        ]
+      },
+      "mappings": [],
+      "color": {
+        "mode": "thresholds"
+      },
+      "displayName": "${__field.labels.monitoredObjectId}",
+      "max": 100,
+      "min": 1,
+      "unit": "percent"
+    },
+    "overrides": []
+  },
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "lastNotNull"
+      ],
+      "fields": ""
+    },
+    "orientation": "horizontal",
+    "displayMode": "gradient",
+    "showUnfilled": true
+  },
+  "targets": [
+    {
+      "datasource": "InfluxDB-2",
+      "hide": false,
+      "query": "from(bucket: \"prometheus\")\n  |> range(start: 2024-02-02T10:00:00Z, stop: 2024-02-02T10:30:00Z)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"device_psu_efficiency_percent\")\n  |> filter(fn: (r) => r[\"network-segment\"] == \"${network_segment}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"last\")",
+      "refId": "prometheus"
+    }
+  ]
+}
+
