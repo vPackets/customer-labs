@@ -1,0 +1,78 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1" pages="2">
+  <diagram name="Topology" id="SprodCr7fQvlN6jNAmRH">
+    <mxGraphModel dx="591" dy="382" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="6AGRos8TYjNE0n_Loqr7-0" />
+        <mxCell id="6AGRos8TYjNE0n_Loqr7-1" parent="6AGRos8TYjNE0n_Loqr7-0" />
+        <mxCell id="6AGRos8TYjNE0n_Loqr7-2" value="" style="sketch=0;points=[[0.015,0.015,0],[0.985,0.015,0],[0.985,0.985,0],[0.015,0.985,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];verticalLabelPosition=bottom;html=1;verticalAlign=top;aspect=fixed;align=center;pointerEvents=1;shape=mxgraph.cisco19.rect;prIcon=l2_switch;fillColor=#FAFAFA;strokeColor=#005073;" vertex="1" parent="6AGRos8TYjNE0n_Loqr7-1">
+          <mxGeometry x="200" y="450" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="6AGRos8TYjNE0n_Loqr7-3" value="" style="sketch=0;points=[[0.015,0.015,0],[0.985,0.015,0],[0.985,0.985,0],[0.015,0.985,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];verticalLabelPosition=bottom;html=1;verticalAlign=top;aspect=fixed;align=center;pointerEvents=1;shape=mxgraph.cisco19.rect;prIcon=l2_switch;fillColor=#FAFAFA;strokeColor=#005073;" vertex="1" parent="6AGRos8TYjNE0n_Loqr7-1">
+          <mxGeometry x="450" y="450" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="6AGRos8TYjNE0n_Loqr7-4" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="6AGRos8TYjNE0n_Loqr7-1" source="6AGRos8TYjNE0n_Loqr7-2" target="6AGRos8TYjNE0n_Loqr7-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6AGRos8TYjNE0n_Loqr7-5" value="Catalyst 9300-48U&#xa;IOS-XE v16.10.1" style="text;whiteSpace=wrap;align=center;" vertex="1" parent="6AGRos8TYjNE0n_Loqr7-1">
+          <mxGeometry x="130" y="410" width="190" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="6AGRos8TYjNE0n_Loqr7-7" value="Root bridge vlan 102" style="text;whiteSpace=wrap;align=center;" vertex="1" parent="6AGRos8TYjNE0n_Loqr7-1">
+          <mxGeometry x="160" y="500" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="6AGRos8TYjNE0n_Loqr7-8" value="gi1/0/1" style="text;whiteSpace=wrap;align=center;fontSize=13;fontStyle=0" vertex="1" parent="6AGRos8TYjNE0n_Loqr7-1">
+          <mxGeometry x="240" y="451" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="6AGRos8TYjNE0n_Loqr7-9" value="gi1/0/48" style="text;whiteSpace=wrap;align=center;fontSize=13;fontStyle=0" vertex="1" parent="6AGRos8TYjNE0n_Loqr7-1">
+          <mxGeometry x="383" y="451" width="70" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="oHs4wtUH44andZxCugLD-0" value="Catalyst 9200-48T&#xa;IOS-XE v17.09.05" style="text;whiteSpace=wrap;align=center;" vertex="1" parent="6AGRos8TYjNE0n_Loqr7-1">
+          <mxGeometry x="415" y="410" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="oHs4wtUH44andZxCugLD-1" value="&#xa;Root Port" style="text;whiteSpace=wrap;align=center;fontSize=13;fontStyle=0" vertex="1" parent="6AGRos8TYjNE0n_Loqr7-1">
+          <mxGeometry x="383" y="455" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="oHs4wtUH44andZxCugLD-3" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;Designated Port&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="6AGRos8TYjNE0n_Loqr7-1">
+          <mxGeometry x="240" y="471" width="130" height="24" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="General" id="zMI4epcQc7n-O5YtlMUf">
+    <mxGraphModel dx="591" dy="382" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="f8mehID8OwY0ktUPKXbB-1" value="" style="sketch=0;points=[[0.015,0.015,0],[0.985,0.015,0],[0.985,0.985,0],[0.015,0.985,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];verticalLabelPosition=bottom;html=1;verticalAlign=top;aspect=fixed;align=center;pointerEvents=1;shape=mxgraph.cisco19.rect;prIcon=l2_switch;fillColor=#FAFAFA;strokeColor=#005073;" vertex="1" parent="1">
+          <mxGeometry x="200" y="450" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f8mehID8OwY0ktUPKXbB-2" value="" style="sketch=0;points=[[0.015,0.015,0],[0.985,0.015,0],[0.985,0.985,0],[0.015,0.985,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];verticalLabelPosition=bottom;html=1;verticalAlign=top;aspect=fixed;align=center;pointerEvents=1;shape=mxgraph.cisco19.rect;prIcon=l2_switch;fillColor=#FAFAFA;strokeColor=#005073;" vertex="1" parent="1">
+          <mxGeometry x="450" y="450" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="f8mehID8OwY0ktUPKXbB-3" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="f8mehID8OwY0ktUPKXbB-1" target="f8mehID8OwY0ktUPKXbB-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f8mehID8OwY0ktUPKXbB-4" value="ssh netadmin@10.93.178.253" style="text;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="150" y="390" width="190" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="f8mehID8OwY0ktUPKXbB-5" value="ssh netadmin@10.93.178.246" style="text;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="390" y="390" width="190" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="f8mehID8OwY0ktUPKXbB-6" value="Root bridge vlan 102" style="text;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+          <mxGeometry x="130" y="420" width="190" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="f8mehID8OwY0ktUPKXbB-7" value="gi1/0/1&#xa;DP - FWD" style="text;whiteSpace=wrap;align=center;fontSize=13;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="250" y="455" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="f8mehID8OwY0ktUPKXbB-8" value="gi1/0/48&#xa;RP - FWD" style="text;whiteSpace=wrap;align=center;fontSize=13;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="380" y="455" width="70" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
