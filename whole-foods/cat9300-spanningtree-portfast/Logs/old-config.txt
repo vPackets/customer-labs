@@ -1,0 +1,91 @@
+C9348-CoreCorpIT-1
+
+interface GigabitEthernet1/0/1
+ no switchport
+ ip address 10.93.175.6 255.255.255.252
+ ip ospf mtu-ignore
+end
+
+
+C9348-CoreCorpIT-1(config)#do sh cdp neigh
+Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge
+                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone,
+                  D - Remote, C - CVTA, M - Two-port Mac Relay
+
+Device ID        Local Intrfce     Holdtme    Capability  Platform  Port ID
+Lab_SW1_LRT0055817
+                 Gig 1/0/47        143             R S I  WS-C3850- Gig 4/0/18
+9348-access-corpit
+                 Gig 1/0/3         148             R S I  C9300-48U Gig 1/0/37
+C9324-Acc-to-3850mgnt
+                 Gig 0/0           169             R S I  C9300-24U Gig 1/0/3
+C9200-4-Aggr2CorpIT.amazon.com
+                 Gig 1/0/2         126             R S I  C9200-48T Gig 1/0/47
+C9200-4-Aggr1CorpIT.amazon.com
+                 Gig 1/0/1         177             R S I  C9200-48T Gig 1/0/48
+C9348-CoreCorpIT-2.amazonaccountteam.com
+                 Gig 1/0/48        153             R S I  C9300-48U Gig 1/0/48
+
+
+
+
+C9200-4-Aggr1CorpIT#show spanning interface g1/0/48
+no spanning tree info available for GigabitEthernet1/0/48
+
+C9200-4-Aggr1CorpIT#show cdp neigh
+Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge
+                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone,
+                  D - Remote, C - CVTA, M - Two-port Mac Relay
+
+Device ID        Local Intrfce     Holdtme    Capability  Platform  Port ID
+C9324-Acc-to-3850mgnt
+                 Gig 0/0           131             R S I  C9300-24U Gig 1/0/16
+C9200-4-Aggr2CorpIT.amazon.com
+                 Gig 1/0/1         170             R S I  C9200-48T Gig 1/0/1
+wlc5.9840.amazonaccountteam.com
+                 Gig 1/0/45        169              R I   C9800-40- Ten 0/0/1
+C9348-CoreCorpIT-2.amazonaccountteam.com
+                 Gig 1/0/47        161             R S I  C9300-48U Gig 1/0/2
+C9348-CoreCorpIT-1.amazonaccountteam.com
+                 Gig 1/0/48        174             R S I  C9300-48U Gig 1/0/1
+
+Total cdp entries displayed : 5
+
+
+interface GigabitEthernet1/0/48
+ no switchport
+ ip address 10.93.175.5 255.255.255.252
+ ip ospf mtu-ignore
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+C9348-CoreCorpIT-1(config)#do sh run int gi1/0/1
+Building configuration...
+
+Current configuration : 100 bytes
+!
+interface GigabitEthernet1/0/1
+ switchport access vlan 102
+ switchport mode access
+ shutdown
+end
+
+C9348-CoreCorpIT-1(config)#do sh run | inc spanning
+spanning-tree mode rapid-pvst
+spanning-tree portfast default
+spanning-tree extend system-id
+C9348-CoreCorpIT-1(config)#
+
+

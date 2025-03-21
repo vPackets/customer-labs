@@ -451,3 +451,13 @@ C9348-CoreCorpIT-1#
 004608: *Mar 21 06:18:18.563:     CFG P:0000 V:02 T:02 F:3C R:0066 50f7.222b.ba80 00000000
 004609: *Mar 21 06:18:18.563:     B:0066 50f7.222b.ba80 80.01 A:0000 M:1400 H:0200 F:0F00
 ```
+
+
+
+
+# Backlog:
+
+The following documentation says https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/24062-146.html
+
+An edge port that receives a BPDU immediately loses edge port status and becomes a normal spanning tree port. At this point, there is a user-configured value and an operational value for the edge port state.
+

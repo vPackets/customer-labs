@@ -1,0 +1,445 @@
+C9348-CoreCorpIT-1#sh spanning interface gigabitEthernet 1/0/1 detail
+no spanning tree info available for GigabitEthernet1/0/1
+
+C9348-CoreCorpIT-1#
+003643: *Mar 20 21:29:22.066: STP SW: RX ISR: 0180.c200.0000<-b44c.9092.4fb0 type/len 0027
+003644: *Mar 20 21:29:22.066:     encap SAP linktype ieee-st vlan 102 len 53 on v102 Gi1/0/1
+003645: *Mar 20 21:29:22.066:     42 42 03 SPAN
+003646: *Mar 20 21:29:22.066:     CFG P:0000 V:02 T:02 F:0E R:8066 b44c.9092.4f80 00000000
+003647: *Mar 20 21:29:22.066:     B:8066 b44c.9092.4f80 80.30 A:0000 M:1400 H:0200 F:0F00STP: pak->vlan_id: 102
+
+003648: *Mar 20 21:29:22.067: STP SW: PROC RX: 0180.c200.0000<-b44c.9092.4fb0 type/len 0027
+003649: *Mar 20 21:29:22.067:     encap SAP linktype ieee-st vlan 102 len 53 on v102 Gi1/0/1
+003650: *Mar 20 21:29:22.067:     42 42 03 SPAN
+003651: *Mar 20 21:29:22.067:     CFG P:0000 V:02 T:02 F:0E R:8066 b44c.9092.4f80 00000000
+003652: *Mar 20 21:29:22.067:     B:8066 b44c.9092.4f80 80.30 A:0000 M:1400 H:0200 F:0F00
+003653: *Mar 20 21:29:22.067: STP SW: DROP BPDU: received ieee-st(19) BPDU on interface Gi1/0/1 vlan 102: invalid port mode none(10)
+003654: *Mar 20 21:29:22.207: STP SW: 1 virtual port being added single: Gi1/0/1.102
+003655: *Mar 20 21:29:22.207: STP SW: 1 virtual port link up single: Gi1/0/1.102
+003656: *Mar 20 21:29:22.207: Created spanning tree: VLAN0102 (7F78E199D1F8)
+003657: *Mar 20 21:29:22.207: Setting spanning tree MAC address: VLAN0102 (7F78E199D1F8) to 50f7.222b.ba80
+003658: *Mar 20 21:29:22.207: setting bridge id (which=3) prio 102 prio cfg 0 sysid 102 (on) id 0066.50f7.222b.ba80
+003659: *Mar 20 21:29:22.207: STP PVST: Assigned bridge address of 50f7.222b.ba80 for VLAN0102 [66] @ 7F78E199D1F8.
+003660: *Mar 20 21:29:22.208: Starting spanning tree: VLAN0102 (7F78E199D1F8)
+003661: *Mar 20 21:29:22.208: STP CFG: found port cfg GigabitEthernet1/0/1 (7F78DEEBE700)
+003662: *Mar 20 21:29:22.208: Created spanning tree port Gi1/0/1 (7F78D77D0058) for tree VLAN0102 (7F78E199D1F8)
+003663: *Mar 20 21:29:22.208:  STP: PVST vlan 102 port Gi1/0/1 created, ext id 7F78DEEBE700
+003664: *Mar 20 21:29:22.208: Enabling spanning tree port: GigabitEthernet1/0/1 (7F78D77D0058)
+003665: *Mar 20 21:29:22.208: RSTP(102): initializing port Gi1/0/1
+003666: *Mar 20 21:29:22.208: RSTP HA: rstp_ha_send Type=PORT_INSTANCE_STATE_CHANGE [Dropped: sync disabled]
+003667: *Mar 20 21:29:22.208: STP HA: stp_ha_event (OPEN , SET_PORT_STATE, )[Dropped: sync disabled]
+003668: *Mar 20 21:29:22.208: STP SW: Gi1/0/1 new blocking req for 1 vlans
+003669: *Mar 20 21:29:22.208: Found no corresponding dummy port for instance 102, port_id 128.1
+003670: *Mar 20 21:29:22.208: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003671: *Mar 20 21:29:22.208: STP SW: VLAN102: age time is currently 300 secs
+003672: *Mar 20 21:29:22.208: RSTP(102): Gi1/0/1 is now designated
+003673: *Mar 20 21:29:22.208: RSTP HA: rstp_ha_send Type=TREE_INSTANCE_ROOT_INFO [Dropped: sync disabled]
+003674: *Mar 20 21:29:22.208: RSTP HA: rstp_ha_send Type=PORT_INSTANCE_STATE_CHANGE [Dropped: sync disabled]
+003675: *Mar 20 21:29:22.208: STP: stp_helper_remove_from_other_queues closing EV:0 for empty request
+003676: *Mar 20 21:29:22.208: STP HA: stp_ha_event (CLOSE, SET_PORT_STATE, )[Dropped: sync disabled]
+003677: *Mar 20 21:29:22.208: STP HA: stp_ha_event (OPEN , SET_PORT_STATE, )[Dropped: sync disabled]
+003678: *Mar 20 21:29:22.208: STP SW: Gi1/0/1 new forwarding req for 1 vlans
+003679: *Mar 20 21:29:22.208: Found no corresponding dummy port for instance 102, port_id 128.1
+003680: *Mar 20 21:29:22.208: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003681: *Mar 20 21:29:22.209: STP SW: VLAN102: age time is currently 300 secs
+003682: *Mar 20 21:29:22.209: Found no corresponding dummy port for instance 102, port_id 128.1
+003683: *Mar 20 21:29:22.209: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003684: *Mar 20 21:29:22.209: STP SW: VLAN102: age time is currently 300 secs
+003685: *Mar 20 21:29:22.209: RSTP HA: rstp_ha_send Type=PORT_INSTANCE_INFO [Dropped: sync disabled]
+003686: *Mar 20 21:29:22.209: STA HA: stp_helper_task BITMAP with EV=0 TreeType=2 State=forwarding
+003687: *Mar 20 21:29:22.210: STP HA: stp_ha_event (CLOSE, SET_PORT_STATE, )[Dropped: sync disabled]
+003688: *Mar 20 21:29:22.210: STP Helper: Gi1/0/1 forwarding 1 vlans agg 1 q 1 dur 0ms
+003689: *Mar 20 21:29:22.210: STP Helper: will sleep, processed 1, yield 0ms
+003690: *Mar 20 21:29:22.210: RSTP(102): sending BPDU out Gi1/0/1
+003691: *Mar 20 21:29:22.210: STP SW: TX: 0180.c200.0000<-50f7.222b.ba81 type/len 0027
+003692: *Mar 20 21:29:22.211:     encap SAP linktype ieee-st vlan 102 len 60 on v102 Gi1/0/1
+003693: *Mar 20 21:29:22.211:     42 42 03 SPAN
+003694: *Mar 20 21:29:22.211:     CFG P:0000 V:02 T:02 F:3C R:0066 50f7.222b.ba80 00000000
+003695: *Mar 20 21:29:22.211:     B:0066 50f7.222b.ba80 80.01 A:0000 M:1400 H:0200 F:0F00
+003696: *Mar 20 21:29:22.214: STP SW: RX ISR: 0180.c200.0000<-b44c.9092.4fb0 type/len 0027
+003697: *Mar 20 21:29:22.214:     encap SAP linktype ieee-st vlan 102 len 53 on v102 Gi1/0/1
+003698: *Mar 20 21:29:22.214:     42 42 03 SPAN
+003699: *Mar 20 21:29:22.214:     CFG P:0000 V:02 T:02 F:39 R:0066 50f7.222b.ba80 00004E20
+003700: *Mar 20 21:29:22.214:     B:8066 b44c.9092.4f80 80.30 A:0000 M:1400 H:0200 F:0F00STP: pak->vlan_id: 102
+
+003701: *Mar 20 21:29:22.214: STP SW: PROC RX: 0180.c200.0000<-b44c.9092.4fb0 type/len 0027
+003702: *Mar 20 21:29:22.214:     encap SAP linktype ieee-st vlan 102 len 53 on v102 Gi1/0/1
+003703: *Mar 20 21:29:22.214:     42 42 03 SPAN
+003704: *Mar 20 21:29:22.214:     CFG P:0000 V:02 T:02 F:39 R:0066 50f7.222b.ba80 00004E20
+003705: *Mar 20 21:29:22.214:     B:8066 b44c.9092.4f80 80.30 A:0000 M:1400 H:0200 F:0F00
+003706: *Mar 20 21:29:22.214: STP CFG: found port cfg GigabitEthernet1/0/1 (7F78DEEBE700)
+003707: *Mar 20 21:29:22.214: STP: VLAN0102 rx BPDU: config protocol = rstp, packet from GigabitEthernet1/0/1  , linktype IEEE_SPANNING , enctype 2, encsize 17 sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 1, received 1
+C9348-CoreCorpIT-1#
+003708: *Mar 20 21:29:22.214: STP: enc  1 80 C2  0  0  0 B4 4C 90 92 4F B0  0 27 42 42  3
+003709: *Mar 20 21:29:22.215: STP: Data      0 0 2 239 06650F7222BBA80 0 04E208066B44C90924F808030 0 014 0 2 0 F 0
+003710: *Mar 20 21:29:22.216: STP: VLAN0102 Gi1/0/1: 0 0  2  2 39  06650F7222BBA80  0 04E20 8066B44C90924F80 8030  0 0 14 0  2 0  F 0
+003711: *Mar 20 21:29:22.216: RSTP(102): Gi1/0/1 other msg
+003712: *Mar 20 21:29:22.216: STP SW: VLAN102: topology change over - this bridge is root
+003713: *Mar 20 21:29:22.216: RSTP(102): starting topology change timer for 35 seconds
+003714: *Mar 20 21:29:22.217: RSTP HA: rstp_ha_send Type=PORT_INSTANCE_INFO [Dropped: sync disabled]
+003715: *Mar 20 21:29:22.907: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003716: *Mar 20 21:29:22.907: STP SW: VLAN102: age time is currently 300 secs
+003717: *Mar 20 21:29:22.907: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003718: *Mar 20 21:29:23.059: STP SW: RX ISR: 0180.c200.0000<-b44c.9092.4fb0 type/len 0027
+003719: *Mar 20 21:29:23.059:     encap SAP linktype ieee-st vlan 102 len 53 on v102 Gi1/0/1
+003720: *Mar 20 21:29:23.059:     42 42 03 SPAN
+003721: *Mar 20 21:29:23.059:     CFG P:0000 V:02 T:02 F:39 R:0066 50f7.222b.ba80 00004E20
+003722: *Mar 20 21:29:23.059:     B:8066 b44c.9092.4f80 80.30 A:0000 M:1400 H:0200 F:0F00STP: pak->vlan_id: 102
+
+003723: *Mar 20 21:29:23.059: STP SW: PROC RX: 0180.c200.0000<-b44c.9092.4fb0 type/len 0027
+003724: *Mar 20 21:29:23.059:     encap SAP linktype ieee-st vlan 102 len 53 on v102 Gi1/0/1
+003725: *Mar 20 21:29:23.059:     42 42 03 SPAN
+003726: *Mar 20 21:29:23.059:     CFG P:0000 V:02 T:02 F:39 R:0066 50f7.222b.ba80 00004E20
+003727: *Mar 20 21:29:23.059:     B:8066 b44c.9092.4f80 80.30 A:0000 M:1400 H:0200 F:0F00
+003728: *Mar 20 21:29:23.059: STP CFG: found port cfg GigabitEthernet1/0/1 (7F78DEEBE700)
+003729: *Mar 20 21:29:23.059: STP: VLAN0102 rx BPDU: config protocol = rstp, packet from GigabitEthernet1/0/1  , linktype IEEE_SPANNING , enctype 2, encsize 17
+003730: *Mar 20 21:29:23.060: STP: enc  1 80 C2  0  0  0 B4 4C 90 92 4F B0  0 27 42 42  3
+003731: *Mar 20 21:29:23.060: STP: Data      0 0 2 239 06650F7222BBA80 0 04E208066B44C90924F808030 0 014 0 2 0 F 0
+003732: *Mar 20 21:29:23.060: STP: VLAN0102 Gi1/0/1: 0 0  2  2 39  06650F7222BBA80  0 04E20 8066B44C90924F80 8030  0 0 14 0  2 0  F 0
+003733: *Mar 20 21:29:23.061: RSTP(102): Gi1/0/1 other msg
+003734: *Mar 20 21:29:23.208: RSTP(102): sending BPDU out Gi1/0/1
+003735: *Mar 20 21:29:23.208: STP SW: TX: 0180.c200.0000<-50f7.222b.ba81 type/len 0027
+003736: *Mar 20 21:29:23.208:     encap SAP linktype ieee-st vlan 102 len 60 on v102 Gi1/0/1sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 2, received 2
+C9348-CoreCorpIT-1#
+003737: *Mar 20 21:29:23.208:     42 42 03 SPAN
+003738: *Mar 20 21:29:23.208:     CFG P:0000 V:02 T:02 F:3C R:0066 50f7.222b.ba80 00000000
+003739: *Mar 20 21:29:23.208:     B:0066 50f7.222b.ba80 80.01 A:0000 M:1400 H:0200 F:0F00
+003740: *Mar 20 21:29:23.543: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003741: *Mar 20 21:29:23.543: STP SW: VLAN102: age time is currently 300 secs
+003742: *Mar 20 21:29:23.543: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 2, received 2
+C9348-CoreCorpIT-1#sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 2, received 3
+C9348-CoreCorpIT-1#
+003743: *Mar 20 21:29:24.206: %LINK-3-UPDOWN: Interface GigabitEthernet1/0/1, changed state to up
+003744: *Mar 20 21:29:24.210: %LINK-3-UPDOWN: Interface Vlan102, changed state to up
+003745: *Mar 20 21:29:24.513: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003746: *Mar 20 21:29:24.513: STP SW: VLAN102: age time is currently 300 secs
+003747: *Mar 20 21:29:24.513: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003748: *Mar 20 21:29:25.059: STP SW: RX ISR: 0180.c200.0000<-b44c.9092.4fb0 type/len 0027
+003749: *Mar 20 21:29:25.059:     encap SAP linktype ieee-st vlan 102 len 53 on v102 Gi1/0/1
+003750: *Mar 20 21:29:25.059:     42 42 03 SPAN
+003751: *Mar 20 21:29:25.059:     CFG P:0000 V:02 T:02 F:39 R:0066 50f7.222b.ba80 00004E20
+003752: *Mar 20 21:29:25.059:     B:8066 b44c.9092.4f80 80.30 A:0000 M:1400 H:0200 F:0F00STP: pak->vlan_id: 102
+
+003753: *Mar 20 21:29:25.060: STP SW: PROC RX: 0180.c200.0000<-b44c.9092.4fb0 type/len 0027
+003754: *Mar 20 21:29:25.060:     encap SAP linktype ieee-st vlan 102 len 53 on v102 Gi1/0/1
+003755: *Mar 20 21:29:25.060:     42 42 03 SPAN
+003756: *Mar 20 21:29:25.060:     CFG P:0000 V:02 T:02 F:39 R:0066 50f7.222b.ba80 00004E20
+003757: *Mar 20 21:29:25.060:     B:8066 b44c.9092.4f80 80.30 A:0000 M:1400 H:0200 F:0F00
+003758: *Mar 20 21:29:25.060: STP CFG: found port cfg GigabitEthernet1/0/1 (7F78DEEBE700)
+003759: *Mar 20 21:29:25.060: STP: VLAN0102 rx BPDU: config protocol = rstp, packet from GigabitEthernet1/0/1  , linktype IEEE_SPANNING , enctype 2, encsize 17
+003760: *Mar 20 21:29:25.060: STP: enc  1 80 C2  0  0  0 B4 4C 90 92 4F B0  0 27 42 42  3
+003761: *Mar 20 21:29:25.060: STP: Data      0 0 2 239 06650F7222BBA80 0 04E208066B44C90924F808030 0 014 0 2 0 F 0
+003762: *Mar 20 21:29:25.061: STP: VLAN0102 Gi1/0/1: 0 0  2  2 39  06650F7222BBA80  0 04E20 8066B44C90924F80 8030  0 0 14 0  2 0  F 0
+003763: *Mar 20 21:29:25.061: RSTP(102): Gi1/0/1 other msg
+003764: *Mar 20 21:29:25.174: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003765: *Mar 20 21:29:25.174: STP SW: VLAN102: age time is currently 300 secs
+003766: *Mar 20 21:29:25.174: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003767: *Mar 20 21:29:25.207: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet1/0/1, changed state to up
+003768: *Mar 20 21:29:25.209: RSTP(102): sending BPDU out Gi1/0/1
+003769: *Mar 20 21:29:25.209: STP SW: TX: 0180.c200.0000<-50f7.222b.ba81 type/len 0027
+003770: *Mar 20 21:29:25.209:     encap SAP linktype ieee-st vlan 102 len 60 on v102 Gi1/0/1
+003771: *Mar 20 21:29:25.209:     42 42 03 SPAN
+003772: *Mar 20 21:29:25.209:     CFG P:0000 V:02 T:02 F:3C R:0066 50f7.222b.ba80 00000000
+003773: *Mar 20 21:29:25.209:     B:0066 50f7.222b.ba80 80.01 A:0000 M:1400 H:0200 F:0F00sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 3, received 3
+C9348-CoreCorpIT-1#
+003774: *Mar 20 21:29:25.210: %LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan102, changed state to upsh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 3, received 3
+C9348-CoreCorpIT-1#sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 4, received 3
+C9348-CoreCorpIT-1#
+003775: *Mar 20 21:29:25.906: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003776: *Mar 20 21:29:25.906: STP SW: VLAN102: age time is currently 300 secs
+003777: *Mar 20 21:29:25.906: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003778: *Mar 20 21:29:26.590: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003779: *Mar 20 21:29:26.590: STP SW: VLAN102: age time is currently 300 secs
+003780: *Mar 20 21:29:26.590: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003781: *Mar 20 21:29:27.209: RSTP(102): sending BPDU out Gi1/0/1
+003782: *Mar 20 21:29:27.209: STP SW: TX: 0180.c200.0000<-50f7.222b.ba81 type/len 0027
+003783: *Mar 20 21:29:27.209:     encap SAP linktype ieee-st vlan 102 len 60 on v102 Gi1/0/1
+003784: *Mar 20 21:29:27.209:     42 42 03 SPAN
+003785: *Mar 20 21:29:27.209:     CFG P:0000 V:02 T:02 F:3C R:0066 50f7.222b.ba80 00000000
+003786: *Mar 20 21:29:27.209:     B:0066 50f7.222b.ba80 80.01 A:0000 M:1400 H:0200 F:0F00
+003787: *Mar 20 21:29:27.270: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003788: *Mar 20 21:29:27.270: STP SW: VLAN102: age time is currently 300 secssh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 4, received 3
+C9348-CoreCorpIT-1#
+003789: *Mar 20 21:29:27.270: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003790: *Mar 20 21:29:27.938: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003791: *Mar 20 21:29:27.939: STP SW: VLAN102: age time is currently 300 secs
+003792: *Mar 20 21:29:27.939: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 4, received 3
+C9348-CoreCorpIT-1#sh spanning interface gigabitEthernet 1/0/1 detail
+003793: *Mar 20 21:29:28.634: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003794: *Mar 20 21:29:28.634: STP SW: VLAN102: age time is currently 300 secs
+003795: *Mar 20 21:29:28.634: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003796: *Mar 20 21:29:29.209: RSTP(102): sending BPDU out Gi1/0/1
+003797: *Mar 20 21:29:29.209: STP SW: TX: 0180.c200.0000<-50f7.222b.ba81 type/len 0027
+003798: *Mar 20 21:29:29.209:     encap SAP linktype ieee-st vlan 102 len 60 on v102 Gi1/0/1
+003799: *Mar 20 21:29:29.209:     42 42 03 SPAN
+003800: *Mar 20 21:29:29.209:     CFG P:0000 V:02 T:02 F:3C R:0066 50f7.222b.ba80 00000000
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 5, received 3
+C9348-CoreCorpIT-1#sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 5, received 3
+C9348-CoreCorpIT-1#
+003801: *Mar 20 21:29:29.209:     B:0066 50f7.222b.ba80 80.01 A:0000 M:1400 H:0200 F:0F00
+003802: *Mar 20 21:29:29.284: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003803: *Mar 20 21:29:29.284: STP SW: VLAN102: age time is currently 300 secs
+003804: *Mar 20 21:29:29.285: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003805: *Mar 20 21:29:29.979: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003806: *Mar 20 21:29:29.979: STP SW: VLAN102: age time is currently 300 secs
+003807: *Mar 20 21:29:29.979: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 5, received 3
+C9348-CoreCorpIT-1#sh spanning interface gigabitEthernet 1/0/1 detail
+003808: *Mar 20 21:29:30.644: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003809: *Mar 20 21:29:30.644: STP SW: VLAN102: age time is currently 300 secs
+003810: *Mar 20 21:29:30.644: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003811: *Mar 20 21:29:31.209: RSTP(102): sending BPDU out Gi1/0/1
+003812: *Mar 20 21:29:31.209: STP SW: TX: 0180.c200.0000<-50f7.222b.ba81 type/len 0027
+003813: *Mar 20 21:29:31.210:     encap SAP linktype ieee-st vlan 102 len 60 on v102 Gi1/0/1
+003814: *Mar 20 21:29:31.210:     42 42 03 SPAN
+003815: *Mar 20 21:29:31.210:     CFG P:0000 V:02 T:02 F:3C R:0066 50f7.222b.ba80 00000000
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 6, received 3
+C9348-CoreCorpIT-1#sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 6, received 3
+C9348-CoreCorpIT-1#
+003816: *Mar 20 21:29:31.210:     B:0066 50f7.222b.ba80 80.01 A:0000 M:1400 H:0200 F:0F00
+003817: *Mar 20 21:29:31.452: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003818: *Mar 20 21:29:31.452: STP SW: VLAN102: age time is currently 300 secs
+003819: *Mar 20 21:29:31.452: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003820: *Mar 20 21:29:32.106: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003821: *Mar 20 21:29:32.106: STP SW: VLAN102: age time is currently 300 secs
+003822: *Mar 20 21:29:32.106: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 6, received 3
+C9348-CoreCorpIT-1#
+003823: *Mar 20 21:29:32.824: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003824: *Mar 20 21:29:32.824: STP SW: VLAN102: age time is currently 300 secs
+003825: *Mar 20 21:29:32.824: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003826: *Mar 20 21:29:33.210: RSTP(102): sending BPDU out Gi1/0/1
+003827: *Mar 20 21:29:33.210: STP SW: TX: 0180.c200.0000<-50f7.222b.ba81 type/len 0027
+003828: *Mar 20 21:29:33.210:     encap SAP linktype ieee-st vlan 102 len 60 on v102 Gi1/0/1
+003829: *Mar 20 21:29:33.210:     42 42 03 SPAN
+003830: *Mar 20 21:29:33.210:     CFG P:0000 V:02 T:02 F:3C R:0066 50f7.222b.ba80 00000000sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 7, received 3
+C9348-CoreCorpIT-1#
+003831: *Mar 20 21:29:33.210:     B:0066 50f7.222b.ba80 80.01 A:0000 M:1400 H:0200 F:0F00
+003832: *Mar 20 21:29:33.824: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003833: *Mar 20 21:29:33.824: STP SW: VLAN102: age time is currently 300 secs
+003834: *Mar 20 21:29:33.824: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)sh spanning interface gigabitEthernet 1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 7, received 3
+C9348-CoreCorpIT-1#sh spanning interface gigabitEthernet 1/0/1 detail
+003835: *Mar 20 21:29:34.484: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003836: *Mar 20 21:29:34.484: STP SW: VLAN102: age time is currently 300 secs
+003837: *Mar 20 21:29:34.484: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058)
+003838: *Mar 20 21:29:35.211: RSTP(102): sending BPDU out Gi1/0/1
+003839: *Mar 20 21:29:35.211: STP SW: TX: 0180.c200.0000<-50f7.222b.ba81 type/len 0027
+003840: *Mar 20 21:29:35.211:     encap SAP linktype ieee-st vlan 102 len 60 on v102 Gi1/0/1
+003841: *Mar 20 21:29:35.211:     42 42 03 SPAN
+003842: *Mar 20 21:29:35.211:     CFG P:0000 V:02 T:02 F:3C R:0066 50f7.222b.ba80 00000000
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 8, received 3
+C9348-CoreCorpIT-1#u
+003843: *Mar 20 21:29:35.211:     B:0066 50f7.222b.ba80 80.01 A:0000 M:1400 H:0200 F:0F00
+003844: *Mar 20 21:29:35.337: Returning spanning tree stats for VLAN0102 (7F78E199D1F8)
+003845: *Mar 20 21:29:35.337: STP SW: VLAN102: age time is currently 300 secs
+003846: *Mar 20 21:29:35.337: Returning spanning tree port stats: GigabitEthernet1/0/1 (7F78D77D0058) all
+All possible debugging has been turned off
+C9348-CoreCorpIT-1#show spanning
+C9348-CoreCorpIT-1#show spanning-tree int
+C9348-CoreCorpIT-1#show spanning-tree interface g1/0/1
+
+Vlan                Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+VLAN0102            Desg FWD 4         128.1    P2p Edge
+C9348-CoreCorpIT-1#show spanning-tree interface gi1/0/1 ?
+  active         Report on active instances only
+  cost           Port path cost
+  detail         Detailed information
+  inconsistency  Port inconsistency state
+  portfast       Portfast operational status
+  priority       Port priority
+  rootcost       Path cost to root
+  state          Port spanning tree state
+  |              Output modifiers
+  <cr>           <cr>
+
+C9348-CoreCorpIT-1#show spanning-tree interface gi1/0/1 det
+C9348-CoreCorpIT-1#show spanning-tree interface gi1/0/1 detail
+ Port 1 (GigabitEthernet1/0/1) of VLAN0102 is designated forwarding
+   Port path cost 4, Port priority 128, Port Identifier 128.1.
+   Designated root has priority 102, address 50f7.222b.ba80
+   Designated bridge has priority 102, address 50f7.222b.ba80
+   Designated port id is 128.1, designated path cost 0
+   Timers: message age 0, forward delay 0, hold 0
+   Number of transitions to forwarding state: 1
+   The port is in the portfast mode by default
+   Link type is point-to-point by default
+   BPDU: sent 22, received 3
+C9348-CoreCorpIT-1#show spanning-tree interface gi1/0/1 port
+C9348-CoreCorpIT-1#show spanning-tree interface gi1/0/1 portfast
+VLAN0102            enabled
