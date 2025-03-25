@@ -1,0 +1,434 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 2,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {},
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 80,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 00"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 00"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 01"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 01"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 02"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 02"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "blue",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 03"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 03"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "orange",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 04"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 04"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "purple",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 05"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 05"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "teal",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 06"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 06"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 07"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 07"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "pink",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 08"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 08"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#8E44AD",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 09"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 09"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#3498DB",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 10"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 10"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#1ABC9C",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 11"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 11"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#F39C12",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 12"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 12"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#E74C3C",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 13"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 13"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#2ECC71",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 14"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 14"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#9B59B6",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "_value 15"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Bin 15"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#34495E",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 31,
+          "w": 16,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "barRadius": 0,
+          "barWidth": 0.97,
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "orientation": "auto",
+          "showValue": "auto",
+          "stacking": "none",
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          },
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 0
+        },
+        "pluginVersion": "10.2.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "edmi7f4dpg2yof"
+            },
+            "query": "from(bucket: \"telemetry\")\n  |> range(start: -5m)\n  |> filter(fn: (r) => r._measurement == \"fec_error_histogram\")\n  |> filter(fn: (r) => r._field == \"occurrences\")\n  |> last()\n  |> group(columns: [\"bin\"])\n  |> yield(name: \"last\")",
+            "refId": "A"
+          }
+        ],
+        "title": "FEC Error Histogram",
+        "type": "barchart"
+      }
+    ],
+    "refresh": "",
+    "schemaVersion": 38,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "OFC - FEC Bin Dashboard",
+    "uid": "bc6d8d40-9cea-4d98-8ded-831999da1789",
+    "version": 3,
+    "weekStart": ""
+  }

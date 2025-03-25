@@ -1,0 +1,207 @@
+{
+    "result" :
+    {
+            "output" :
+            {
+                    "Histogram of FEC Errors" :
+                    {
+                            "Bin 0" :
+                            {
+                                    "values" :
+                                    [
+                                            "[0]",
+                                            "152043439388"
+                                    ]
+                            },
+                            "Bin 1" :
+                            {
+                                    "values" :
+                                    [
+                                            "[1]",
+                                            "423752613"
+                                    ]
+                            },
+                            "Bin 10" :
+                            {
+                                    "values" :
+                                    [
+                                            "[10]",
+                                            "0"
+                                    ]
+                            },
+                            "Bin 11" :
+                            {
+                                    "values" :
+                                    [
+                                            "[11]",
+                                            "0"
+                                    ]
+                            },
+                            "Bin 12" :
+                            {
+                                    "values" :
+                                    [
+                                            "[12]",
+                                            "0"
+                                    ]
+                            },
+                            "Bin 13" :
+                            {
+                                    "values" :
+                                    [
+                                            "[13]",
+                                            "0"
+                                    ]
+                            },
+                            "Bin 14" :
+                            {
+                                    "values" :
+                                    [
+                                            "[14]",
+                                            "0"
+                                    ]
+                            },
+                            "Bin 15" :
+                            {
+                                    "values" :
+                                    [
+                                            "[15]",
+                                            "0"
+                                    ]
+                            },
+                            "Bin 2" :
+                            {
+                                    "values" :
+                                    [
+                                            "[2]",
+                                            "90914"
+                                    ]
+                            },
+                            "Bin 3" :
+                            {
+                                    "values" :
+                                    [
+                                            "[3]",
+                                            "5827"
+                                    ]
+                            },
+                            "Bin 4" :
+                            {
+                                    "values" :
+                                    [
+                                            "[4]",
+                                            "798"
+                                    ]
+                            },
+                            "Bin 5" :
+                            {
+                                    "values" :
+                                    [
+                                            "[5]",
+                                            "3"
+                                    ]
+                            },
+                            "Bin 6" :
+                            {
+                                    "values" :
+                                    [
+                                            "[6]",
+                                            "2"
+                                    ]
+                            },
+                            "Bin 7" :
+                            {
+                                    "values" :
+                                    [
+                                            "[7]",
+                                            "0"
+                                    ]
+                            },
+                            "Bin 8" :
+                            {
+                                    "values" :
+                                    [
+                                            "[8]",
+                                            "0"
+                                    ]
+                            },
+                            "Bin 9" :
+                            {
+                                    "values" :
+                                    [
+                                            "[9]",
+                                            "0"
+                                    ]
+                            },
+                            "Header" :
+                            {
+                                    "values" :
+                                    [
+                                            "Range",
+                                            "Occurrences"
+                                    ]
+                            }
+                    },
+                    "Operational Info" :
+                    {
+                            "Auto Negotiation" : "ON",
+                            "FEC" : "Standard_RS-FEC - (544,514)",
+                            "Loopback Mode" : "No Loopback",
+                            "Physical state" : "LinkUp",
+                            "Speed" : "400G",
+                            "State" : "Active",
+                            "Width" : "4x"
+                    },
+                    "Supported Info" :
+                    {
+                            "Enabled Link Speed (Ext.)" :
+                            {
+                                    "mask" : "0x00013ff2",
+                                    "values" :
+                                    [
+                                            "400G_4X",
+                                            "200G_2X",
+                                            "200G_4X",
+                                            "100G_1X",
+                                            "100G_2X",
+                                            "100G_4X",
+                                            "50G_1X",
+                                            "50G_2X",
+                                            "40G",
+                                            "25G",
+                                            "10G",
+                                            "1G"
+                                    ]
+                            },
+                            "Supported Cable Speed (Ext.)" :
+                            {
+                                    "mask" : "0x00011a00",
+                                    "values" :
+                                    [
+                                            "400G_4X",
+                                            "200G_4X",
+                                            "100G_1X",
+                                            "100G_4X"
+                                    ]
+                            }
+                    },
+                    "Tool Information" :
+                    {
+                            "Firmware Version" : "32.44.1036",
+                            "MFT Version" : "mft 4.31.0-149",
+                            "amBER Version" : "4.5"
+                    },
+                    "Troubleshooting Info" :
+                    {
+                            "Group Opcode" : "N/A",
+                            "Recommendation" : "No issue was observed",
+                            "Status Opcode" : "0"
+                    }
+            }
+    },
+    "status" :
+    {
+            "code" : 0,
+            "message" : "success"
+    }
+}
